@@ -16,21 +16,27 @@
                 Flipbook</div>
             <div id="sign-up">
                 Sign up</div>
-            <div id="login-form">
-                <div id="over-input">
-                    <div id="input"> </div>
-                    <div id="hint-text"> E-mail</div>
-                </div>
-                <div id="over-input">
-                    <div id="input"> </div>
-                    <div id="hint-text"> Password</div>
-                </div>
+            <form action="login.php" method="post">
+                <div id="login-form">
+                    <input type="text" id="username" name="username" placeholder="E-mail" required>
+                    <div class="password-toggle">
+                        <input type="password" name="password" id="password" placeholder="Hasło">
+                        <div class="toggle-button" onclick="togglePassword()">👁️</div>
+                    </div>
+                    <button type="submit">Zaloguj</button>
 
-            </div>
-            <div id="primary-button-bg">
-                <div id="primary-button-text">
-                    Sign up</div>
-            </div>
+                </div>
+            </form>
+            <script>
+                function togglePassword() {
+                    const passwordInput = document.getElementById('password');
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                    } else {
+                        passwordInput.type = 'password';
+                    }
+                }
+            </script>
             <div id="have-account-row">
                 <div id="have-account">
                     Dov you already have an account? </div>

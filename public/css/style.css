@@ -50,34 +50,51 @@ body {
 
 }
 
-#input {
+input {
     align-self: stretch;
     height: 48px;
-    left: 0px;
-    top: 0px;
-    position: relative;
     background: #FBFCFE;
     box-shadow: 0px 0px 10px rgba(164, 180, 218, 0.40);
     border-radius: 16px;
-
+    border: 0px solid #ccc;
+    display: flex;
+    padding-left: 16.0;
+    padding-left: 16.0px;
+    color:  #141414;
+/* Paragraph/P4/Light */
+font-family: Poppins;
+font-size: 16px;
+font-style: normal;
+font-weight: 300;
+line-height: normal;
 }
 
-#over-input {
+input::placeholder {
+    color:  #8F93D6;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    opacity: 0.5;
+}
+
+form {
     align-self: stretch;
-    height: 48px;
-    position: relative;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24;
+    display: flex;
 }
 
 #login-form {
     align-self: stretch;
-    height: 120px;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     gap: 24px;
     display: flex;
-
-
 }
 
 #hint-text {
@@ -91,8 +108,31 @@ body {
     word-wrap: break-word;
 
 }
+.password-toggle input[type="password"] {
+    flex: 1; /* Pole input dostosowuje swoją szerokość */
+    padding-right: 30px;
+}
+.password-toggle input[type="text"] {
+    flex: 1; /* Pole input dostosowuje swoją szerokość */
+    padding-right: 30px;
+}
 
-#primary-button-bg {
+.password-toggle {
+    display: flex;
+    align-items: center;
+    position: relative;
+    align-self: stretch;
+}
+
+.password-toggle .toggle-button {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+button {
     align-self: stretch;
     height: 48px;
     background: #311B8B;
@@ -101,17 +141,17 @@ body {
     align-items: center;
     gap: 10px;
     display: inline-flex;
-
-}
-
-#primary-button-text {
+    border: 0px solid #ccc;
     color: white;
     font-size: 18px;
     font-family: Poppins;
     font-weight: 600;
     word-wrap: break-word;
+    cursor: pointer;
+
 
 }
+
 
 #have-account {
     color: black;
