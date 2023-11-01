@@ -1,0 +1,107 @@
+
+.page-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+#sign-up {
+    align-self: stretch;
+    text-align: center;
+    color: black;
+    font-size: 30px;
+    font-family: Poppins;
+    font-weight: 600;
+    word-wrap: break-word;
+
+}
+
+
+.password-toggle input[type="password"] {
+    flex: 1;
+    /* Pole input dostosowuje swoją szerokość */
+    padding-right: 30px;
+}
+
+.password-toggle input[type="text"] {
+    flex: 1;
+    /* Pole input dostosowuje swoją szerokość */
+    padding-right: 30px;
+}
+
+.password-toggle {
+    display: flex;
+    align-items: center;
+    position: relative;
+    align-self: stretch;
+}
+
+.password-toggle .toggle-button {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+button {
+    align-self: stretch;
+    height: 48px;
+    background: #311B8B;
+    border-radius: 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    display: inline-flex;
+    border: 0px solid #ccc;
+    color: white;
+    font-size: 18px;
+    font-family: Poppins;
+    font-weight: 600;
+    word-wrap: break-word;
+    cursor: pointer;
+
+
+}
+
+
+#have-account {
+    color: black;
+    font-size: 18px;
+    font-family: Poppins;
+    font-weight: 600;
+    word-wrap: break-word;
+
+}
+
+#have-account-answer {
+    color: #311B8B;
+    font-size: 18px;
+    font-family: Poppins;
+    font-weight: 600;
+    word-wrap: break-word;
+
+
+}
+
+#have-account-row {
+    align-self: stretch;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    display: inline-flex;
+}
+
+@media (max-width: 600px) {
+
+
+
+    .login-container {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0px;
+    }
+}

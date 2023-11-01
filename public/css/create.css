@@ -1,0 +1,58 @@
+.create-content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+    width: 100%;
+    padding-left: 200px;
+    padding-right: 200px;
+    padding-bottom: 24px;
+    box-sizing: border-box;
+
+
+}
+
+.create-form {
+    align-self: stretch;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24px;
+    display: flex;
+}
+
+.image-section{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+
+}
+
+/* Hidden input[type="file"] element */
+input[type="file"] {
+    display: none;
+}
+
+/* Styled button that acts as a "Choose File" button */
+.custom-file-input {
+    background-color: var(--secondary-color);
+    color: #fff;
+    padding: 10px 15px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style the label text for the "Choose File" button */
+.custom-file-input-label {
+    font-size: 16px;
+}
+
+#imagePreview img {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    overflow: hidden;
+}
