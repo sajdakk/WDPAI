@@ -76,6 +76,8 @@ input[type="file"] {
     align-items: center;
     gap: 24px;
     box-sizing: border-box;
+    text-overflow: ellipsis;
+
 
 }
 
@@ -84,6 +86,10 @@ input[type="file"] {
     flex-direction: column;
     justify-content: start;
     align-items: start;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    height: 120px;
+
 }
 
 .card-header {
@@ -99,5 +105,85 @@ input[type="file"] {
     justify-content: center;
     gap: 8px;
     align-items: center;
-   
+
+}
+
+.profile-card-right-side{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 24px;
+    height: 100%;
+}
+
+.profile-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    padding-left: 48px;
+    padding-right: 48px;
+    box-sizing: border-box;
+}
+
+.selected-profile-menu-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.not-selected-profile-menu-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.not-selected-profile-menu-item .inter-semibold-16 {
+    font-weight: 400;
+}
+
+.not-selected-profile-menu-item .custom-icon {
+    color: var(--secondary-color);
+}
+
+.icon-background {
+    width: 90px;
+    height: 90px;
+    background-color: #FBFCFE;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-icon {
+    color: var(--primary-color);
+    font-size: 50px !important;
+}
+
+
+@media screen and (max-width: 780px) {
+    .profile-card-right-side{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        height: 100%;
+    }
+
+    .card{
+        gap: 8px;
+    }
+
 }

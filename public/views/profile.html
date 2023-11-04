@@ -13,9 +13,25 @@
 
     <title>Profile</title>
 </head>
-
-<body id="body">
+<body>
     <nav>
+        <div class="menu-hamburger">
+            <input id="menu__toggle" type="checkbox" />
+            <label class="menu__btn" for="menu__toggle">
+                <span></span>
+            </label>
+
+            <ul class="menu__box">
+                <li><a class="menu__item" href="dashboard.html">Home</a></li>
+                <li><a class="menu__item" href="top.html">Top</a></li>
+                <li><a class="menu__item" href="profile.html">Profile</a></li>
+                <li class="divider"></li>
+                <li><a class="secondary_menu__item" href="create-book.html">Add book</a></li>
+                <li><a class="secondary_menu__item" href="favorites.html">Favorites</a></li>
+                <li><a class="secondary_menu__item" href="login.html">Log in</a></li>
+                <li><a class="secondary_menu__item" href="registration.html">Sign up</a></li>
+            </ul>
+        </div>
         <div class="header-one-side">
             <div id="small-logo">
                 Flipbook</div>
@@ -80,6 +96,24 @@
                     }
                 }
             </script>
+            <div class="profile-menu">
+                <div class="selected-profile-menu-item">
+                    <div class="icon-background">
+                        <i class="material-icons custom-icon">menu_book</i>
+                    </div>
+                    <div class="inter-semibold-16">
+                        Your Reviews
+                    </div>
+                </div>
+                <div class="not-selected-profile-menu-item">
+                    <div class="icon-background">
+                        <i class="material-icons custom-icon">menu_book</i>
+                    </div>
+                    <div class="inter-semibold-16">
+                        Your Books
+                    </div>
+                </div>
+            </div>
             <div class="list">
                 <div class="card">
                     <div class="card-content">
@@ -92,22 +126,26 @@
                             </div>
                             <div class="dmsans-regular-14">
                                 Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                                poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem stosowanym
-                                jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w
+                                poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem
+                                stosowanym
+                                jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty
+                                w
                                 XV w. Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
                                 poligraficznym. Został po raz pierwszy użyty w XV w..
                             </div>
 
                         </div>
                     </div>
-                    <div class="stars">
-                        <i class="material-icons">star_border</i>
-                        <div class="inter-light-14">
-                            4.5/5
+                    <div class="profile-card-right-side">
+                        <div class="stars">
+                            <i class="material-icons">star_border</i>
+                            <div class="inter-light-14">
+                                4.5/5
+                            </div>
                         </div>
-                    </div>
-                    <div class="status-rejected">
-                        Rejected
+                        <div class="status-rejected">
+                            Rejected
+                        </div>
                     </div>
                 </div>
                 <div class="card">
@@ -121,22 +159,26 @@
                             </div>
                             <div class="dmsans-regular-14">
                                 Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                                poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem stosowanym
-                                jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w
+                                poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem
+                                stosowanym
+                                jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty
+                                w
                                 XV w. Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
                                 poligraficznym. Został po raz pierwszy użyty w XV w..
                             </div>
 
                         </div>
                     </div>
-                    <div class="stars">
-                        <i class="material-icons">star_border</i>
-                        <div class="inter-light-14">
-                            4.5/5
+                    <div class="profile-card-right-side">
+                        <div class="stars">
+                            <i class="material-icons">star_border</i>
+                            <div class="inter-light-14">
+                                4.5/5
+                            </div>
                         </div>
-                    </div>
-                    <div class="status-accepted">
-                        Accepted
+                        <div class="status-accepted">
+                            Accepted
+                        </div>
                     </div>
                 </div>
                 <div class="card" onclick="routeToDetails()">
@@ -150,22 +192,26 @@
                             </div>
                             <div class="dmsans-regular-14">
                                 Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                                poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem stosowanym
-                                jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w
+                                poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem
+                                stosowanym
+                                jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty
+                                w
                                 XV w. Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
                                 poligraficznym. Został po raz pierwszy użyty w XV w..
                             </div>
 
                         </div>
                     </div>
-                    <div class="stars">
-                        <i class="material-icons">star_border</i>
-                        <div class="inter-light-14">
-                            4.5/5
+                    <div class="profile-card-right-side">
+                        <div class="stars">
+                            <i class="material-icons">star_border</i>
+                            <div class="inter-light-14">
+                                4.5/5
+                            </div>
                         </div>
-                    </div>
-                    <div class="status-awaiting">
-                        Awaiting
+                        <div class="status-awaiting">
+                            Awaiting
+                        </div>
                     </div>
                 </div>
                 <script>
@@ -173,7 +219,7 @@
                         window.location.href = 'book-details.html';
                     }
 
-                 
+
                 </script>
             </div>
         </div>

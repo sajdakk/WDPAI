@@ -4,13 +4,119 @@
     --background-BG0-color: #EEF0F8;
 }
 
-body {
-    margin: 0px;
-    display: flex;
+#menu__toggle {
+    opacity: 0;
 }
 
-#body {
+#menu__toggle:checked+.menu__btn>span {
+    transform: rotate(45deg);
+}
+
+#menu__toggle:checked+.menu__btn>span::before {
+    top: 0;
+    transform: rotate(0deg);
+}
+
+#menu__toggle:checked+.menu__btn>span::after {
+    top: 0;
+    transform: rotate(90deg);
+}
+
+#menu__toggle:checked~.menu__box {
+    left: 0 !important;
+    z-index: 1;
+    background: #fff;
+    box-shadow: 0px 0px 10px 0px rgba(164, 180, 218, 0.40);
+}
+
+.menu__btn {
+    position: absolute;
+    top: 38px;
+    left: 20px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.menu__btn>span,
+.menu__btn>span::before,
+.menu__btn>span::after {
+    display: block;
+    position: absolute;
     width: 100%;
+    height: 2px;
+    background-color: #000;
+    transition-duration: .25s;
+}
+
+.menu__btn>span::before {
+    content: '';
+    top: -6px;
+}
+
+.menu__btn>span::after {
+    content: '';
+    top: 6px;
+}
+
+.menu__box {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 300px;
+    height: 100%;
+    margin: 0;
+    padding: 80px 0;
+    list-style: none;
+    background-color: #ECEFF1;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, .4);
+    transition-duration: .25s;
+}
+
+.menu__box>.divider {
+    margin: 12px 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.menu__item {
+    display: block;
+    padding: 12px 24px;
+    color: #000;
+    text-align: left;
+    font-family: Poppins;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+    transition-duration: .25s;
+}
+
+.secondary_menu__item {
+    display: block;
+    padding: 12px 24px;
+    color: var(--primary-text-light, #373E44);
+    text-align: left;
+    font-family: Poppins;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    line-height: normal;
+    text-decoration: none;
+    transition-duration: .25s;
+}
+
+.menu__item:hover {
+    background-color: #CFD8DC;
+}
+
+
+body {
+    margin: 0;
+    width: auto;
     height: 100%;
     background: #EEF0F8;
     flex-direction: column;
@@ -18,7 +124,6 @@ body {
     align-items: center;
     gap: 30px;
     display: inline-flex;
-
 }
 
 main {
@@ -27,13 +132,13 @@ main {
     box-sizing: border-box;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 100vw;
     height: calc(100vh - 70px);
 }
 
 nav {
     background-color: white;
-    width: calc(100vw - 2rem);
+    width: 100%;
     height: 70px;
     font-size: 1.5rem;
     display: flex;
@@ -43,7 +148,12 @@ nav {
     position: fixed;
     top: 0;
     left: 0;
+    box-sizing: border-box;
     box-shadow: 0px 0px 10px 0px rgba(164, 180, 218, 0.40);
+}
+
+nav>.menu-hamburger {
+    display: none;
 }
 
 nav .material-icons {
@@ -63,12 +173,12 @@ nav .material-icons {
     flex-direction: row;
     justify-content: stretch;
     display: flex;
-    gap: 24px;
+    gap: 16px;
 }
 
 button {
     align-self: stretch;
-    height: 48px;
+    height: 40px;
     background: #311B8B;
     border-radius: 12px;
     justify-content: center;
@@ -77,7 +187,7 @@ button {
     display: inline-flex;
     border: 0px solid #ccc;
     color: white;
-    font-size: 18px;
+    font-size: 16px;
     font-family: Poppins;
     font-weight: 600;
     word-wrap: break-word;
@@ -90,7 +200,7 @@ button {
 
 .secondary-button {
     align-self: stretch;
-    height: 48px;
+    height: 40px;
     background: var(--secondary-color);
     border-radius: 12px;
     justify-content: center;
@@ -99,7 +209,7 @@ button {
     display: inline-flex;
     border: 0px solid #ccc;
     color: white;
-    font-size: 18px;
+    font-size: 16px;
     font-family: Poppins;
     font-weight: 600;
     word-wrap: break-word;
@@ -114,7 +224,7 @@ button {
 
 .header {
     color: #000;
-    font-family: Poppins;
+    font-family: DMSans;
     font-size: 30px;
     font-style: normal;
     font-weight: 600;
@@ -156,7 +266,7 @@ input {
     border: 0px solid #ccc;
     padding-left: 16.0px;
     color: #141414;
-    font-family: Poppins;
+    font-family: DMSans;
     font-size: 16px;
     font-style: normal;
     font-weight: 300;
@@ -167,7 +277,7 @@ input {
 
 input::placeholder {
     color: #8F93D6;
-    font-family: Poppins;
+    font-family: DMSans;
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
@@ -185,7 +295,7 @@ select {
     border: 0px solid #ccc;
     padding-left: 16.0px;
     color: #141414;
-    font-family: Poppins;
+    font-family: DMSans;
     font-size: 16px;
     font-style: normal;
     font-weight: 300;
@@ -204,7 +314,7 @@ option {
     position: absolute;
     color: var(--secondary-color);
     font-size: 18px;
-    font-family: Poppins;
+    font-family: DMSans;
     font-weight: 600;
     word-wrap: break-word;
 
@@ -230,7 +340,7 @@ main>.elements {
     text-align: center;
     color: black;
     font-size: 50px;
-    font-family: Poppins;
+    font-family: DMSans;
     font-weight: 600;
     word-wrap: break-word;
 
@@ -239,7 +349,7 @@ main>.elements {
 #small-logo {
     color: #000;
     text-align: center;
-    font-family: Poppins;
+    font-family: DMSans;
     font-size: 30px;
     font-style: normal;
     font-weight: 600;
@@ -249,7 +359,7 @@ main>.elements {
 
 .h1 {
     color: #000;
-    font-family: Poppins;
+    font-family: DMSans;
     font-size: 30px;
     font-style: normal;
     font-weight: 600;
@@ -291,6 +401,8 @@ ul {
 
 .menu {
     list-style: none;
+    padding: 0;
+
 }
 
 
@@ -384,7 +496,7 @@ ul {
 
 .headline-h1-semibold {
     color: #000;
-    font-family: Poppins;
+    font-family: DMSans;
     font-size: 30px;
     font-style: normal;
     font-weight: 600;
@@ -393,7 +505,7 @@ ul {
 
 .headline-h4-regular {
     color: #000;
-    font-family: Poppins;
+    font-family: DMSans;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -420,6 +532,7 @@ ul {
     font-style: normal;
     font-weight: 400;
     line-height: 32px;
+    text-align: center;
 }
 
 .status-accepted {
@@ -429,6 +542,7 @@ ul {
     font-style: normal;
     font-weight: 400;
     line-height: 32px;
+    text-align: center;
 }
 
 .status-awaiting {
@@ -438,6 +552,7 @@ ul {
     font-style: normal;
     font-weight: 400;
     line-height: 32px;
+    text-align: center;
 }
 
 
@@ -448,8 +563,9 @@ ul {
     background-color: white;
     border-radius: 16px;
     box-shadow: 0px 0px 10px 0px rgba(164, 180, 218, 0.40);
-    width: 400px;
+    max-width: 400px;
     height: 150px;
+    width: auto;
 }
 
 
@@ -478,9 +594,59 @@ ul {
 }
 
 
-@media (max-width: 600px) {
-    /* #small-logo{
-    display: none;
-   } */
+@media screen and (max-width: 780px) {
+    body {
+        gap: 0;
+        padding: 16px;
+        box-sizing: border-box;
+        display:flex ;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+    }
 
+    nav {
+        background: transparent;
+        box-shadow: none;
+        justify-content: start;
+        height: 48px;
+        position: initial;
+        top: initial;
+        left: initial;
+    }
+
+    nav>.menu-hamburger {
+        display: flex;
+        align-items: center;
+        margin-right: 24px;
+    }
+
+    nav>.header-one-side:nth-child(2)>.menu {
+        display: none;
+    }
+
+    nav>.header-one-side:nth-of-type(3) {
+        display: none;
+    }
+
+    .header {
+        font-size: 24px;
+        padding-bottom: 0px;
+    }
+
+    main {
+        margin-top: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+    .header-form {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    #login-container {
+        background: transparent;
+        padding: 0;
+    }
 }

@@ -14,21 +14,6 @@
     align-items: center;
 }
 
-
-
-
-
-#sign-up {
-    align-self: stretch;
-    text-align: center;
-    color: black;
-    font-size: 30px;
-    font-family: Poppins;
-    font-weight: 600;
-    word-wrap: break-word;
-
-}
-
 form {
     align-self: stretch;
     flex-direction: column;
@@ -50,38 +35,8 @@ form {
     position: absolute;
     color: var(--secondary-color);
     font-size: 18px;
-    font-family: Poppins;
+    font-family: DMSans;
     font-weight: 600;
     word-wrap: break-word;
 
-}
-
-
-
-
-#have-account {
-    color: black;
-    font-size: 18px;
-    font-family: Poppins;
-    font-weight: 600;
-    word-wrap: break-word;
-
-}
-
-#have-account-answer {
-    color: #311B8B;
-    font-size: 18px;
-    font-family: Poppins;
-    font-weight: 600;
-    word-wrap: break-word;
-
-
-}
-
-#have-account-row {
-    align-self: stretch;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    display: inline-flex;
 }

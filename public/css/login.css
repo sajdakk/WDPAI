@@ -1,11 +1,14 @@
-
 .page-content {
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 100%;
+    max-width: 800px;
+    padding-bottom: 24px;
     box-sizing: border-box;
     padding-top: 24px;
-    padding-bottom: 24px;
 }
 
 #sign-up {
@@ -13,7 +16,7 @@
     text-align: center;
     color: black;
     font-size: 30px;
-    font-family: Poppins;
+    font-family: DMSans;
     font-weight: 600;
     word-wrap: break-word;
 
@@ -59,7 +62,7 @@ button {
     border: 0px solid #ccc;
     color: white;
     font-size: 18px;
-    font-family: Poppins;
+    font-family: DMSans;
     font-weight: 600;
     word-wrap: break-word;
     cursor: pointer;
@@ -71,7 +74,7 @@ button {
 #have-account {
     color: black;
     font-size: 18px;
-    font-family: Poppins;
+    font-family: DMSans;
     font-weight: 600;
     word-wrap: break-word;
 
@@ -80,7 +83,7 @@ button {
 #have-account-answer {
     color: #311B8B;
     font-size: 18px;
-    font-family: Poppins;
+    font-family: DMSans;
     font-weight: 600;
     word-wrap: break-word;
 
@@ -95,13 +98,50 @@ button {
     display: inline-flex;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 780px) {
+    body {
+        gap: 0;
+        padding: 16px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+    }
+
+    #login-container #logo {
+        display: none;
+    }
 
 
+    #sign-up {
+        align-self: stretch;
+        color: var(--primary-black, #000);
+        text-align: center;
+        font-family: DMSans;
+        font-size: 30px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
 
-    .login-container {
-        width: 100vw;
-        height: 100vh;
-        border-radius: 0px;
+    }
+
+    #have-account {
+        color: #000;
+        font-family: DMSans;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: normal;
+
+    }
+
+    #have-account-answer {
+        color: var(--primary-dark, #311B8B);
+        font-family: DMSans;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
     }
 }
