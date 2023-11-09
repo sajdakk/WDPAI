@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../css/global.css">
-    <link rel="stylesheet" type="text/css" href="../css/book-details.css">
+    <link rel="stylesheet" type="text/css" href="/public/css/global.css">
+    <link rel="stylesheet" type="text/css" href="/public/css/book-details.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=DM Sans' rel='stylesheet'>
@@ -22,33 +22,33 @@
             </label>
 
             <ul class="menu__box">
-                <li><a class="menu__item" href="dashboard.html">Home</a></li>
-                <li><a class="menu__item" href="top.html">Top</a></li>
-                <li><a class="menu__item" href="profile.html">Profile</a></li>
+                <li><a class="menu__item" href="/">Home</a></li>
+                <li><a class="menu__item" href="/top">Top</a></li>
+                <li><a class="menu__item" href="/profile">Profile</a></li>
                 <li class="divider"></li>
-                <li><a class="secondary_menu__item" href="create-book.html">Add book</a></li>
-                <li><a class="secondary_menu__item" href="favorites.html">Favorites</a></li>
-                <li><a class="secondary_menu__item" href="login.html">Log in</a></li>
-                <li><a class="secondary_menu__item" href="registration.html">Sign up</a></li>
+                <li><a class="secondary_menu__item" href="/create">Add book</a></li>
+                <li><a class="secondary_menu__item" href="/favorites">Favorites</a></li>
+                <li><a class="secondary_menu__item" href="/login">Log in</a></li>
+                <li><a class="secondary_menu__item" href="/registration">Sign up</a></li>
             </ul>
         </div>
         <div class="header-one-side">
             <div id="small-logo">
                 Flipbook</div>
             <ul class="menu">
-                <li><a href="dashboard.html">Home</a></li>
-                <li><a href="top.html">Top</a></li>
-                <li><a href="profile.html">Profile</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/top">Top</a></li>
+                <li><a href="/profile">Profile</a></li>
             </ul>
         </div>
         <div class="header-one-side">
             <div class="text-button">
                 <i class="material-icons">menu_book</i>
-                <a class="text-header" href="create-book.html">Create book</a>
+                <a class="text-header" href="/create">Create book</a>
             </div>
             <div class="text-button">
                 <i class="material-icons">favorite</i>
-                <a class="text-header" href="favorites.html">Favorites</a>
+                <a class="text-header" href="/favorites">Favorites</a>
             </div>
             <div class="header-form">
                 <button class="secondary-button" onclick="routeToLogin()">Log
@@ -57,9 +57,9 @@
                 </form>
                 <script>
                     function routeToLogin() {
-                        window.location.href = ' login.html';
+                        window.location.href = ' /login';
                     } function routeToRegistration() {
-                        window.location.href = 'registration.html';
+                        window.location.href = '/registration';
                     } </script>
             </div>
         </div>
