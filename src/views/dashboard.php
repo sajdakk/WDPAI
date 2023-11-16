@@ -70,8 +70,9 @@
     <main>
 
         <div class="elements">
-            <div class="header">
-                What can I find for you?
+            <div class="header">   
+               <?= $title ?>
+
             </div>
             <form class="header-form" action="dashboard.php" method="post">
                 <input type="text" id="title" name="title" placeholder="Title" required>
@@ -83,7 +84,39 @@
                     May interest you
                 </div>
                 <div class="news">
+                <?php foreach($books as $book): ?>
                     <div class="news-container">
+                        <img class="news-image" src=  <?= $book->getImageUrl() ?>  alt="News Image 1">
+                        <div class="news-description">
+                            <div class="card-header">
+                                <div class="title">
+                                    <div class="inter-semibold-16">
+                                        <?= $book->getTitle() ?> 
+                                        
+                                    </div>
+                                    <i class="material-icons">favorite_outline</i>
+                                </div>
+                                <div class="inter-regular-12">
+                                    Rowling, J.K.
+                                </div>
+
+                            </div>
+                            <div class="extra-info">
+                                <div class="score">
+                                    <i class="material-icons">star_border</i>
+                                    <div class="inter-light-14">
+                                        4.5 / 5
+                                    </div>
+                                </div>
+                                <div class="inter-extra-light-14">
+                                    104 reviews
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<?php endforeach; ?>
+
+                    <!-- <div class="news-container">
                         <img class="news-image" src="https://cdn2.thecatapi.com/images/bnr.jpg" alt="News Image 1">
                         <div class="news-description">
                             <div class="card-header">
@@ -251,7 +284,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
