@@ -2,18 +2,20 @@
 
 require_once 'AppController.php';
 require_once __DIR__.'/../models/Book.php';
+require_once __DIR__.'/../models/Session.php';
 
 class DefaultController extends AppController{
 
     function login() {
         if($this->isGet()){
             return $this -> render('login');
-
         }
-        if($this->isPost()){
-            var_dump($_POST);
-            return $this -> render('dashboard');
 
+        if($this->isPost()){
+            //TODO check if user cookie exist
+            $url = "http://$_SERVER[HTTP_HOST]";
+        header("Location: {$url}/dashboard");
+        return;
         }
     }
 
@@ -78,12 +80,14 @@ $books = [
     $book5,
 ];
 
+$data = Session::getInstance();
 
         $this -> render(
             'dashboard', 
             [
                 'title' => $title,
                 'books' => $books,
+                'isLogged' => $data->__get('is-logged'),
             ],
         );
     }

@@ -75,12 +75,12 @@
                     Flipbook</div>
                 <div id="sign-up">
                     Sign up</div>
-                <form class="login-form" action="login.php" method="post">
+                <form class="login-form" action="register" method="POST">
                     <input type="text" id="email" name="email" placeholder="E-mail" required>
                     <input type="text" id="name" name="name" placeholder="Name" required>
                     <input type="text" id="surname" name="surname" placeholder="Surname" required>
-                    <input type="password" name="password" id="password" placeholder="Passord">
-                    <input type="password" name="repeat-password" id="repeat-password" placeholder="Repeat passord">
+                    <input type="password" name="password" id="password" placeholder="Password">
+                    <input type="password" name="repeat-password" id="repeat-password" placeholder="Repeat password">
                     <button type="submit">Sign up</button>
 
                 </form>

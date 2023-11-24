@@ -14,6 +14,9 @@ Routing::get('registration', 'DefaultController');
 Routing::get('profile', 'DefaultController');
 Routing::get('create', 'DefaultController');
 Routing::get('details', 'DefaultController');
+Routing::post('login', 'SecurityController');
+Routing::post('register', 'SecurityController');
+Routing::post('logout', 'SecurityController');
 
 Routing::run($path);
 

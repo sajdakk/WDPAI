@@ -51,6 +51,7 @@
                 <a class="text-header" href="/favorites">Favorites</a>
             </div>
             <div class="header-form">
+                <?php if (!$isLogged): ?>
                 <button class="secondary-button" onclick="routeToLogin()">Log
                     in</button>
                 <button onclick="routeToRegistration()">Sign up</button>
@@ -64,6 +65,12 @@
                         window.location.href = '/registration';
                     }
                 </script>
+
+                <?php else: ?>
+                <form action="logout" method="post">
+                    <button class="secondary-button" type="submit">Log out</button>
+                </form>
+                <?php endif; ?>
             </div>
         </div>
     </nav>

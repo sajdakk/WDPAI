@@ -75,11 +75,18 @@
                     Flipbook</div>
                 <div id="sign-up">
                     Log in</div>
-                <form class="login-form" action="login.php" method="post">
-                    <input type="text" id="username" name="username" placeholder="E-mail" required>
+                <form class="login-form" action="login" method="POST">
+                    <input type="text" id="username" name="email" placeholder="E-mail" required>
                     <div class="password-toggle">
-                        <input type="password" name="password" id="password" placeholder="Passord">
+                        <input type="password" name="password" id="password" placeholder="Password">
                         <div class="toggle-button" onclick="togglePassword()">👁️</div>
+                    </div>
+                    <div id="validation">
+                        <?php if (isset($messages)) {
+                            foreach ($messages as $message) {
+                                echo $message;
+                            }
+                        } ?>
                     </div>
                     <button type="submit">Sign in</button>
 
