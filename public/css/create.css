@@ -21,6 +21,47 @@ body {
     display: inline-flex;
 }
 
+.checkboxContainer {
+    max-height: 200px; /* Ustaw maksymalną wysokość */
+    overflow-y: auto; /* Dodaj pasek przewijania w pionie */
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #addAuthorForm {
+    margin-top: 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    justify-content: center
+}
+
+#addAuthorForm label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.add-author{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 24px;
+
+}
+
+.add-author-section{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    padding-bottom: 24px;
+    text-align: center;
+
+}
+
 .create-form {
     align-self: stretch;
     flex-direction: column;

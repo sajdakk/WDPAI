@@ -35,8 +35,7 @@
             </ul>
         </div>
         <div class="header-one-side">
-            <div id="small-logo">
-                Flipbook</div>
+            <div id="small-logo">Flipbook</div>
             <ul class="menu">
                 <li><a href="/">Home</a></li>
                 <li><a class="selected" href="/top">Top</a></li>
@@ -53,20 +52,28 @@
                 <a class="text-header" href="/favorites">Favorites</a>
             </div>
             <div class="header-form">
-                <button class="secondary-button" onclick="routeToLogin()">Log
-                    in</button>
-                <button onclick="routeToRegistration()">Sign up</button>
-                </form>
-                <script>
-                    function routeToLogin() {
-                        window.location.href = '/login';
-                    }
+                <?php if (!$isLogged): ?>
+                    <button class="secondary-button" onclick="routeToLogin()">Log
+                        in</button>
+                    <button onclick="routeToRegistration()">Sign up</button>
+                    </form>
+                    <script>
+                        function routeToLogin() {
+                            window.location.href = '/login';
+                        }
 
-                    function routeToRegistration() {
-                        window.location.href = '/registration';
-                    }
-                </script>
+                        function routeToRegistration() {
+                            window.location.href = '/registration';
+                        }
+                    </script>
+
+                <?php else: ?>
+                    <form action="logout" method="post">
+                        <button class="secondary-button" type="submit">Log out</button>
+                    </form>
+                <?php endif; ?>
             </div>
+        </div>
     </nav>
     <main>
         <div class="top-content">

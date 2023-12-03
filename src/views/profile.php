@@ -13,6 +13,7 @@
 
     <title>Profile</title>
 </head>
+
 <body>
     <nav>
         <div class="menu-hamburger">
@@ -33,12 +34,11 @@
             </ul>
         </div>
         <div class="header-one-side">
-            <div id="small-logo">
-                Flipbook</div>
+            <div id="small-logo">Flipbook</div>
             <ul class="menu">
                 <li><a href="/">Home</a></li>
                 <li><a href="/top">Top</a></li>
-                <li><a href="/profile">Profile</a></li>
+                <li><a class="selected" href="/profile">Profile</a></li>
             </ul>
         </div>
         <div class="header-one-side">
@@ -51,177 +51,190 @@
                 <a class="text-header" href="/favorites">Favorites</a>
             </div>
             <div class="header-form">
-                <button class="secondary-button" onclick="routeToLogin()">Log
-                    in</button>
-                <button onclick="routeToRegistration()">Sign up</button>
-                </form>
-                <script>
-                    function routeToLogin() {
-                        window.location.href = '/login';
-                    }
+                <?php if (!$isLogged): ?>
+                    <button class="secondary-button" onclick="routeToLogin()">Log
+                        in</button>
+                    <button onclick="routeToRegistration()">Sign up</button>
+                    </form>
+                    <script>
+                        function routeToLogin() {
+                            window.location.href = '/login';
+                        }
 
-                    function routeToRegistration() {
-                        window.location.href = '/registration';
-                    }
-                </script>
+                        function routeToRegistration() {
+                            window.location.href = '/registration';
+                        }
+                    </script>
+
+                <?php else: ?>
+                    <form action="logout" method="post">
+                        <button class="secondary-button" type="submit">Log out</button>
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
     <main>
         <div class="profile-content">
-            <div class="image-section">
-                <div id="imagePreview">
-                    <div class="placeholder-image">
-                    </div>
+            <?php if (!$isLogged): ?>
+                <div class="header">
+                    You need to be logged in to see your profile.
                 </div>
-                <label for="imageUpload">
-                    <i class="material-icons">edit</i>
-                </label>
-                <input type="file" id="imageUpload" name="image" accept="image/*" onchange="previewImage()">
-            </div>
-            <div class="headline-h1-semibold">
-                Hello, Anita
-            </div>
+            <?php else: ?>
+                <div class="image-section">
+                    <div id="imagePreview">
+                        <div class="placeholder-image">
+                        </div>
+                    </div>
+                    <label for="imageUpload">
+                        <i class="material-icons">edit</i>
+                    </label>
+                    <input type="file" id="imageUpload" name="image" accept="image/*" onchange="previewImage()">
+                </div>
+                <div class="headline-h1-semibold">
+                    Hello, Anita
+                </div>
 
-            <script>
-                function previewImage() {
-                    const imageUpload = document.getElementById('imageUpload');
-                    const imagePreview = document.getElementById('imagePreview');
-
-                    if (imageUpload.files.length > 0) {
-                        const selectedImage = URL.createObjectURL(imageUpload.files[0]);
-                        imagePreview.innerHTML = `<img src="${selectedImage}" alt="Selected Image">`;
-                    } else {
-                        imagePreview.innerHTML = `<div class="placeholder-image">`;
-                    }
-                }
-            </script>
-            <div class="profile-menu">
-                <div class="selected-profile-menu-item">
-                    <div class="icon-background">
-                        <i class="material-icons custom-icon">menu_book</i>
-                    </div>
-                    <div class="inter-semibold-16">
-                        Your Reviews
-                    </div>
-                </div>
-                <div class="not-selected-profile-menu-item">
-                    <div class="icon-background">
-                        <i class="material-icons custom-icon">menu_book</i>
-                    </div>
-                    <div class="inter-semibold-16">
-                        Your Books
-                    </div>
-                </div>
-            </div>
-            <div class="list">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-header">
-                            <div class="inter-semibold-16">
-                                Harry Potter and the philosopher's stone
-                            </div>
-                            <div class="inter-regular-12">
-                                Rowling, J.K.
-                            </div>
-                            <div class="dmsans-regular-14">
-                                Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                                poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem
-                                stosowanym
-                                jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty
-                                w
-                                XV w. Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                                poligraficznym. Został po raz pierwszy użyty w XV w..
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="profile-card-right-side">
-                        <div class="stars">
-                            <i class="material-icons">star_border</i>
-                            <div class="inter-light-14">
-                                4.5/5
-                            </div>
-                        </div>
-                        <div class="status-rejected">
-                            Rejected
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-header">
-                            <div class="inter-semibold-16">
-                                Harry Potter and the philosopher's stone
-                            </div>
-                            <div class="inter-regular-12">
-                                Rowling, J.K.
-                            </div>
-                            <div class="dmsans-regular-14">
-                                Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                                poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem
-                                stosowanym
-                                jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty
-                                w
-                                XV w. Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                                poligraficznym. Został po raz pierwszy użyty w XV w..
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="profile-card-right-side">
-                        <div class="stars">
-                            <i class="material-icons">star_border</i>
-                            <div class="inter-light-14">
-                                4.5/5
-                            </div>
-                        </div>
-                        <div class="status-accepted">
-                            Accepted
-                        </div>
-                    </div>
-                </div>
-                <div class="card" onclick="routeToDetails()">
-                    <div class="card-content">
-                        <div class="card-header">
-                            <div class="inter-semibold-16">
-                                Harry Potter and the philosopher's stone
-                            </div>
-                            <div class="inter-regular-12">
-                                Rowling, J.K.
-                            </div>
-                            <div class="dmsans-regular-14">
-                                Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                                poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem
-                                stosowanym
-                                jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty
-                                w
-                                XV w. Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                                poligraficznym. Został po raz pierwszy użyty w XV w..
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="profile-card-right-side">
-                        <div class="stars">
-                            <i class="material-icons">star_border</i>
-                            <div class="inter-light-14">
-                                4.5/5
-                            </div>
-                        </div>
-                        <div class="status-awaiting">
-                            Awaiting
-                        </div>
-                    </div>
-                </div>
                 <script>
-                    function routeToDetails() {
-                        window.location.href = '/book-details';
+                    function previewImage() {
+                        const imageUpload = document.getElementById('imageUpload');
+                        const imagePreview = document.getElementById('imagePreview');
+
+                        if (imageUpload.files.length > 0) {
+                            const selectedImage = URL.createObjectURL(imageUpload.files[0]);
+                            imagePreview.innerHTML = `<img src="${selectedImage}" alt="Selected Image">`;
+                        } else {
+                            imagePreview.innerHTML = `<div class="placeholder-image">`;
+                        }
                     }
-
-
                 </script>
-            </div>
+                <div class="profile-menu">
+                    <div class="selected-profile-menu-item">
+                        <div class="icon-background">
+                            <i class="material-icons custom-icon">menu_book</i>
+                        </div>
+                        <div class="inter-semibold-16">
+                            Your Reviews
+                        </div>
+                    </div>
+                    <div class="not-selected-profile-menu-item">
+                        <div class="icon-background">
+                            <i class="material-icons custom-icon">menu_book</i>
+                        </div>
+                        <div class="inter-semibold-16">
+                            Your Books
+                        </div>
+                    </div>
+                </div>
+                <div class="list">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-header">
+                                <div class="inter-semibold-16">
+                                    Harry Potter and the philosopher's stone
+                                </div>
+                                <div class="inter-regular-12">
+                                    Rowling, J.K.
+                                </div>
+                                <div class="dmsans-regular-14">
+                                    Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
+                                    poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem
+                                    stosowanym
+                                    jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty
+                                    w
+                                    XV w. Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
+                                    poligraficznym. Został po raz pierwszy użyty w XV w..
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="profile-card-right-side">
+                            <div class="stars">
+                                <i class="material-icons">star_border</i>
+                                <div class="inter-light-14">
+                                    4.5/5
+                                </div>
+                            </div>
+                            <div class="status-rejected">
+                                Rejected
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-header">
+                                <div class="inter-semibold-16">
+                                    Harry Potter and the philosopher's stone
+                                </div>
+                                <div class="inter-regular-12">
+                                    Rowling, J.K.
+                                </div>
+                                <div class="dmsans-regular-14">
+                                    Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
+                                    poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem
+                                    stosowanym
+                                    jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty
+                                    w
+                                    XV w. Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
+                                    poligraficznym. Został po raz pierwszy użyty w XV w..
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="profile-card-right-side">
+                            <div class="stars">
+                                <i class="material-icons">star_border</i>
+                                <div class="inter-light-14">
+                                    4.5/5
+                                </div>
+                            </div>
+                            <div class="status-accepted">
+                                Accepted
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" onclick="routeToDetails()">
+                        <div class="card-content">
+                            <div class="card-header">
+                                <div class="inter-semibold-16">
+                                    Harry Potter and the philosopher's stone
+                                </div>
+                                <div class="inter-regular-12">
+                                    Rowling, J.K.
+                                </div>
+                                <div class="dmsans-regular-14">
+                                    Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
+                                    poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem
+                                    stosowanym
+                                    jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty
+                                    w
+                                    XV w. Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
+                                    poligraficznym. Został po raz pierwszy użyty w XV w..
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="profile-card-right-side">
+                            <div class="stars">
+                                <i class="material-icons">star_border</i>
+                                <div class="inter-light-14">
+                                    4.5/5
+                                </div>
+                            </div>
+                            <div class="status-awaiting">
+                                Awaiting
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        function routeToDetails() {
+                            window.location.href = '/book-details';
+                        }
+
+
+                    </script>
+                </div>
+            <?php endif; ?>
         </div>
     </main>
 </body>

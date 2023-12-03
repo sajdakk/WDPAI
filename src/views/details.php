@@ -14,7 +14,7 @@
 </head>
 
 <body id="body">
-    <nav>
+<nav>
         <div class="menu-hamburger">
             <input id="menu__toggle" type="checkbox" />
             <label class="menu__btn" for="menu__toggle">
@@ -33,10 +33,9 @@
             </ul>
         </div>
         <div class="header-one-side">
-            <div id="small-logo">
-                Flipbook</div>
+            <div id="small-logo">Flipbook</div>
             <ul class="menu">
-                <li><a href="/">Home</a></li>
+                <li><a class="selected" href="/">Home</a></li>
                 <li><a href="/top">Top</a></li>
                 <li><a href="/profile">Profile</a></li>
             </ul>
@@ -51,16 +50,26 @@
                 <a class="text-header" href="/favorites">Favorites</a>
             </div>
             <div class="header-form">
+                <?php if (!$isLogged): ?>
                 <button class="secondary-button" onclick="routeToLogin()">Log
                     in</button>
                 <button onclick="routeToRegistration()">Sign up</button>
                 </form>
                 <script>
                     function routeToLogin() {
-                        window.location.href = ' /login';
-                    } function routeToRegistration() {
+                        window.location.href = '/login';
+                    }
+
+                    function routeToRegistration() {
                         window.location.href = '/registration';
-                    } </script>
+                    }
+                </script>
+
+                <?php else: ?>
+                <form action="logout" method="post">
+                    <button class="secondary-button" type="submit">Log out</button>
+                </form>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
