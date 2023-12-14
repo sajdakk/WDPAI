@@ -29,8 +29,20 @@
                 <li class="divider"></li>
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
                 <li><a class="secondary_menu__item" href="/favorites">Favorites</a></li>
-                <li><a class="secondary_menu__item" href="/login">Log in</a></li>
-                <li><a class="secondary_menu__item" href="/registration">Sign up</a></li>
+                <?php if (!$isLogged): ?>
+                    <li><a class="secondary_menu__item" href="/login">Log in</a></li>
+                    <li><a class="secondary_menu__item" href="/registration">Sign up</a></li>
+
+                <?php else: ?>
+                    <li>
+                        <form action="logout" method="post">
+                            <a class="secondary_menu__item">
+                                <button type="submit">Log out</button>
+                            </a>
+                        </form>
+                    </li>
+
+                <?php endif; ?>
             </ul>
         </div>
         <div class="header-one-side">

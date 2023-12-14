@@ -29,8 +29,22 @@
                 <li class="divider"></li>
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
                 <li><a class="secondary_menu__item" href="/favorites">Favorites</a></li>
-                <li><a class="secondary_menu__item" href="/login">Log in</a></li>
-                <li><a class="secondary_menu__item" href="/registration">Sign up</a></li>
+                <?php if (!$isLogged): ?>
+                    <li><a class="secondary_menu__item" href="/login">Log in</a></li>
+                    <li><a class="secondary_menu__item" href="/registration">Sign up</a></li>
+
+                <?php else: ?>
+                    <li>
+                        <form action="logout" method="post">
+                            <a class="secondary_menu__item">
+                                <button type="submit">Log out</button>
+                            </a>
+                        </form>
+                    </li>
+
+                <?php endif; ?>
+
+
             </ul>
         </div>
         <div class="header-one-side">
@@ -86,7 +100,16 @@
                 </div>
                 <form class="create-form" action="create.php" method="post">
                     <input type="text" id="title" name="title" placeholder="Title" required>
-                    <input type="text" id="language" name="language" placeholder="Language" required>
+                    <select id="language" name="language" required>
+                        <option value="" disabled selected>Language</option>
+                        <?php foreach ($languages as $language): ?>
+                            <option value="  <?php echo $language->getId() ?>">
+                                <?php echo $language->getLanguage() ?>
+                            </option>
+                        <?php endforeach; ?>
+
+                    </select>
+
                     <input type="text" id="date-of-pub" name="date-of-pub" placeholder="Date of publication" required>
                     <input type="int" id="page-cout" name="page-cout" placeholder="Page count" required>
                     <input type="text" id="isbn-number" name="isbn-number" placeholder="ISBN number" required>
@@ -100,9 +123,12 @@
                     </div>
                     <select id="genre" name="genre" required>
                         <option value="" disabled selected>Genre</option>
-                        <option value="epic">Epic</option>
-                        <option value="liryc">Liryc</option>
-                        <option value="drama">Drama</option>
+                        <?php foreach ($genres as $genre): ?>
+                            <option value="  <?php echo $genre->getId() ?>">
+                                <?php echo $genre->getGenre() ?>
+                            </option>
+                        <?php endforeach; ?>
+
                     </select>
                     <div class="header">
                         Author’s section

@@ -38,8 +38,4 @@ class UserWriteRequest
     {
         return $this->surname;
     }
-
-
-   
-
 }

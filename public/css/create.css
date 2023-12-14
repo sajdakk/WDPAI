@@ -22,18 +22,20 @@ body {
 }
 
 .checkboxContainer {
-    max-height: 200px; /* Ustaw maksymalną wysokość */
-    overflow-y: auto; /* Dodaj pasek przewijania w pionie */
+    max-height: 200px;
+    /* Ustaw maksymalną wysokość */
+    overflow-y: auto;
+    /* Dodaj pasek przewijania w pionie */
     width: 100%;
     box-sizing: border-box;
-  }
+}
 
-  #addAuthorForm {
+#addAuthorForm {
     margin-top: 20px;
     margin-top: 20px;
     display: flex;
     flex-direction: row;
-    align-items: center; 
+    align-items: center;
     justify-content: center
 }
 
@@ -42,7 +44,7 @@ body {
     margin-bottom: 10px;
 }
 
-.add-author{
+.add-author {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -50,7 +52,7 @@ body {
 
 }
 
-.add-author-section{
+.add-author-section {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -71,7 +73,7 @@ body {
     display: flex;
 }
 
-.image-section{
+.image-section {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -111,5 +113,5 @@ input[type="file"] {
     .create-form {
         padding-top: 24px;
     }
-    
+
 }

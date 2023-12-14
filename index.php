@@ -12,7 +12,7 @@ Routing::get('top', 'DefaultController');
 Routing::get('favorites', 'DefaultController');
 Routing::get('registration', 'DefaultController');
 Routing::get('profile', 'DefaultController');
-Routing::get('create', 'DefaultController');
+Routing::get('create', 'AddBookController');
 Routing::get('details', 'DefaultController');
 Routing::post('login', 'SecurityController');
 Routing::post('register', 'SecurityController');

@@ -8,18 +8,22 @@ class User
     private $name;
     private $surname;
 
+    private $avatar;
+
     public function __construct(
         int $id,
         string $email,
         string $password,
         string $name,
-        string $surname
+        string $surname,
+        ?string $avatar
     ) {
         $this->id = $id;
         $this->email = $email;
         $this->password = $password;
         $this->name = $name;
         $this->surname = $surname;
+        $this->avatar = $avatar;
     }
 
     public function getEmail(): string
@@ -47,6 +51,11 @@ class User
         return $this->id;
     }
 
-   
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+
 
 }

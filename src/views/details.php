@@ -14,7 +14,7 @@
 </head>
 
 <body id="body">
-<nav>
+    <nav>
         <div class="menu-hamburger">
             <input id="menu__toggle" type="checkbox" />
             <label class="menu__btn" for="menu__toggle">
@@ -28,8 +28,20 @@
                 <li class="divider"></li>
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
                 <li><a class="secondary_menu__item" href="/favorites">Favorites</a></li>
-                <li><a class="secondary_menu__item" href="/login">Log in</a></li>
-                <li><a class="secondary_menu__item" href="/registration">Sign up</a></li>
+                <?php if (!$isLogged): ?>
+                    <li><a class="secondary_menu__item" href="/login">Log in</a></li>
+                    <li><a class="secondary_menu__item" href="/registration">Sign up</a></li>
+
+                <?php else: ?>
+                    <li>
+                        <form action="logout" method="post">
+                            <a class="secondary_menu__item">
+                                <button type="submit">Log out</button>
+                            </a>
+                        </form>
+                    </li>
+
+                <?php endif; ?>
             </ul>
         </div>
         <div class="header-one-side">
@@ -51,24 +63,24 @@
             </div>
             <div class="header-form">
                 <?php if (!$isLogged): ?>
-                <button class="secondary-button" onclick="routeToLogin()">Log
-                    in</button>
-                <button onclick="routeToRegistration()">Sign up</button>
-                </form>
-                <script>
-                    function routeToLogin() {
-                        window.location.href = '/login';
-                    }
+                    <button class="secondary-button" onclick="routeToLogin()">Log
+                        in</button>
+                    <button onclick="routeToRegistration()">Sign up</button>
+                    </form>
+                    <script>
+                        function routeToLogin() {
+                            window.location.href = '/login';
+                        }
 
-                    function routeToRegistration() {
-                        window.location.href = '/registration';
-                    }
-                </script>
+                        function routeToRegistration() {
+                            window.location.href = '/registration';
+                        }
+                    </script>
 
                 <?php else: ?>
-                <form action="logout" method="post">
-                    <button class="secondary-button" type="submit">Log out</button>
-                </form>
+                    <form action="logout" method="post">
+                        <button class="secondary-button" type="submit">Log out</button>
+                    </form>
                 <?php endif; ?>
             </div>
         </div>

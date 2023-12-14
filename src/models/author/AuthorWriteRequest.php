@@ -1,11 +1,11 @@
 <?php
 
-class Author
+class AuthorWriteRequest
 {
     private string $name;
     private string $surname;
 
-    public function __construct(string $name, string $surname)
+    public function __construct( string $name, string $surname)
     {
         $this->name = $name;
         $this->surname = $surname;
@@ -20,8 +20,6 @@ class Author
     {
         return $this->surname;
     }
-
-
 }
 
 
