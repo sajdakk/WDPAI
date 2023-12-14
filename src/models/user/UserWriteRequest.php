@@ -1,6 +1,6 @@
 <?php
 
-class User
+class UserWriteRequest
 {
     private $email;
     private $password;
@@ -39,23 +39,7 @@ class User
         return $this->surname;
     }
 
-    public function setEmail(string $email)
-    {
-        $this->email = $email;
-    }
 
-    public function setPassword(string $password)
-    {
-        $this->password = $password;
-    }
+   
 
-    public function setName(string $name)
-    {
-        $this->name = $name;
-    }
-
-    public function setSurname(string $surname)
-    {
-        $this->surname = $surname;
-    }
 }

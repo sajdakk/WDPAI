@@ -1,9 +1,5 @@
 <?php
 
-/*
-    Use the static method getInstance to get the object.
-*/
-
 class Session
 {
     const SESSION_STARTED = TRUE;
@@ -20,14 +16,6 @@ class Session
     {
     }
 
-
-    /**
-     *    Returns THE instance of 'Session'.
-     *    The session is automatically initialized if it wasn't.
-     *    
-     *    @return    object
-     **/
-
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
@@ -39,12 +27,6 @@ class Session
         return self::$instance;
     }
 
-
-    /**
-     *    (Re)starts the session.
-     *    
-     *    @return    bool    TRUE if the session has been initialized, else FALSE.
-     **/
 
     public function startSession()
     {
@@ -79,13 +61,6 @@ class Session
     {
         unset($_SESSION[$name]);
     }
-
-
-    /**
-     *    Destroys the current session.
-     *    
-     *    @return    bool    TRUE is session has been deleted, else FALSE.
-     **/
 
     public function destroy()
     {

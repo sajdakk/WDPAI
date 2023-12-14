@@ -1,0 +1,7 @@
+FROM postgres
+
+ENV POSTGRES_DB db
+ENV POSTGRES_USER admin
+ENV POSTGRES_PASSWORD admin123
+
+COPY . /app/database

@@ -1,16 +1,20 @@
 <?php
 
 require_once 'AppController.php';
-require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../models/user/User.php';
+require_once __DIR__ . '/../models/user/UserWriteRequest.php';
 require_once __DIR__ . '/../models/Session.php';
+require_once __DIR__ . '/../repository/UserRepository.php';
 
 class SecurityController extends AppController
 {
-    static private $users = [];
+    private $userRepository;
+
 
     public function __construct()
     {
         parent::__construct();
+        $this->userRepository = new UserRepository();
     }
 
 
@@ -18,40 +22,39 @@ class SecurityController extends AppController
     {
         if (!$this->isPost()) {
             return $this->render('login');
-        }
 
-        $user = new User('jsnow@pk.edu.pl', password_hash('admin', PASSWORD_BCRYPT), 'Johnny', 'Snow');
+        }
 
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $isInDatabase = false;
 
-        if ($user->getEmail() === $email && password_verify($password, $user->getPassword())) {
-            $isInDatabase = true;
-        }
-
-        // foreach (self::$users as $user) {
-        //     if ($user->getEmail() === $email && password_verify( $password,$user->getPassword())) {
-        //         $isInDatabase = true;
-        //     }
-        // }
+        $user = $this->userRepository->getUser($email);
 
 
-        if (!$isInDatabase) {
+
+        if (!$user) {
             return $this->render('login', ['messages' => ['User not found!']]);
         }
+
+        if ($user->getEmail() !== $email) {
+            return $this->render('login', ['messages' => ['User with this email not exist!']]);
+        }
+
+        if (!password_verify($password, $user->getPassword())) {
+            return $this->render('login', ['messages' => ['Wrong password!']]);
+        }
+
 
         $data = Session::getInstance();
         $data->__set('user-email', $user->getEmail());
         $data->__set('user-name', $user->getName());
         $data->__set('user-surname', $user->getSurname());
+        $data->__set('user-id', $user->getId());
         $data->__set('is-logged', true);
 
 
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/");
-        return;
-
     }
 
     public function register()
@@ -70,9 +73,17 @@ class SecurityController extends AppController
             return $this->render('register', ['messages' => ['Please provide proper password']]);
         }
 
-        $user = new User($email, password_hash($password, PASSWORD_BCRYPT), $name, $surname);
-        self::$users[] = $user;
+        $userWriteRequest = new UserWriteRequest($email, password_hash($password, PASSWORD_BCRYPT), $name, $surname);
+        $this->userRepository->addUser($userWriteRequest);
+        $user = $this->userRepository->getUser($email);
 
+
+        $data = Session::getInstance();
+        $data->__set('user-email', $user->getEmail());
+        $data->__set('user-name', $user->getName());
+        $data->__set('user-surname', $user->getSurname());
+        $data->__set('user-id', $user->getId());
+        $data->__set('is-logged', true);
 
 
         $url = "http://$_SERVER[HTTP_HOST]";
@@ -88,4 +99,12 @@ class SecurityController extends AppController
         header("Location: {$url}/");
         return;
     }
+
+
+
+
+
+
+
+
 }
