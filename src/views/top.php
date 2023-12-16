@@ -93,177 +93,72 @@
                 Top of the top
             </div>
             <div class="news">
-                <div class="news-container">
-                    <img class="news-image" src="https://cdn2.thecatapi.com/images/bnr.jpg" alt="News Image 1">
-                    <div class="news-description">
-                        <div class="card-header">
-                            <div class="title">
-                                <div class="inter-semibold-16">
-                                    Harry Potter and the philosopher's stone
-                                </div>
-                                <i class="material-icons">favorite_outline</i>
-                            </div>
-                            <div class="inter-regular-12">
-                                Rowling, J.K.
-                            </div>
+                <?php foreach ($books as $book): ?>
 
-                        </div>
-                        <div class="extra-info">
-                            <div class="score">
-                                <i class="material-icons">star_border</i>
-                                <div class="inter-light-14">
-                                    4.5 / 5
+                    <div class="news-container" onclick="routeToDetails('<?= $book->getId() ?>')">
+                        <img class="news-image" src=<?= 'public/uploads/' . $book->getImage() ?> alt="News Image 1">
+                        <div class="news-description">
+                            <div class="card-header">
+                                <div class="title">
+                                    <div class="inter-semibold-16">
+                                        <?= $book->getTitle() ?>
+
+                                    </div>
+                                    <form action="logout" method="post">
+
+                                        <button type="submit"> <i class="material-icons">
+                                                <?php
+                                                $contains = false;
+                                                foreach ($favorites as $favorite) {
+                                                    if ($favorite->getBookId() == $book->getId()) {
+                                                        $contains = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if ($contains) {
+                                                    echo 'favorite';
+                                                } else {
+                                                    echo 'favorite_outline';
+                                                }
+                                                ?>
+                                            </i></button>
+
+                                    </form>
+
                                 </div>
+                                <div class="inter-regular-12">
+                                    <?php
+
+                                    echo $bookIdToAuthors[$book->getId()];
+                                    ?>
+
+                                </div>
+
                             </div>
-                            <div class="inter-extra-light-14">
-                                104 reviews
+                            <div class="extra-info">
+                                <div class="score">
+                                    <i class="material-icons">star_border</i>
+                                    <div class="inter-light-14">
+                                        4.5 / 5
+                                    </div>
+                                </div>
+                                <div class="inter-extra-light-14">
+                                    104 reviews
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="news-container">
-                    <img class="news-image" src="https://cdn2.thecatapi.com/images/bnr.jpg" alt="News Image 1">
-                    <div class="news-description">
-                        <div class="card-header">
-                            <div class="title">
-                                <div class="inter-semibold-16">
-                                    Harry Potter and the philosopher's stone
-                                </div>
-                                <i class="material-icons">favorite</i>
-                            </div>
-                            <div class="inter-regular-12">
-                                Rowling, J.K.
-                            </div>
+                <?php endforeach; ?>
+                <script>
+                    function routeToDetails(bookId) {
+                        window.location.href = '/details/' + bookId;
+                    }
+                </script>
 
-                        </div>
-                        <div class="extra-info">
-                            <div class="score">
-                                <i class="material-icons">star_border</i>
-                                <div class="inter-light-14">
-                                    4.5 / 5
-                                </div>
-                            </div>
-                            <div class="inter-extra-light-14">
-                                104 reviews
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="news-container">
-                    <img class="news-image" src="https://cdn2.thecatapi.com/images/bnr.jpg" alt="News Image 1">
-                    <div class="news-description">
-                        <div class="card-header">
-                            <div class="title">
-                                <div class="inter-semibold-16">
-                                    Harry Potter and the philosopher's stone
-                                </div>
-                                <i class="material-icons">favorite_outline</i>
-                            </div>
-                            <div class="inter-regular-12">
-                                Rowling, J.K.
-                            </div>
 
-                        </div>
-                        <div class="extra-info">
-                            <div class="score">
-                                <i class="material-icons">star_border</i>
-                                <div class="inter-light-14">
-                                    4.5 / 5
-                                </div>
-                            </div>
-                            <div class="inter-extra-light-14">
-                                104 reviews
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="news-container">
-                    <img class="news-image" src="https://cdn2.thecatapi.com/images/bnr.jpg" alt="News Image 1">
-                    <div class="news-description">
-                        <div class="card-header">
-                            <div class="title">
-                                <div class="inter-semibold-16">
-                                    Harry Potter and the philosopher's stone
-                                </div>
-                                <i class="material-icons">favorite</i>
-                            </div>
-                            <div class="inter-regular-12">
-                                Rowling, J.K.
-                            </div>
 
-                        </div>
-                        <div class="extra-info">
-                            <div class="score">
-                                <i class="material-icons">star_border</i>
-                                <div class="inter-light-14">
-                                    4.5 / 5
-                                </div>
-                            </div>
-                            <div class="inter-extra-light-14">
-                                104 reviews
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="news-container">
-                    <img class="news-image" src="https://cdn2.thecatapi.com/images/bnr.jpg" alt="News Image 1">
-                    <div class="news-description">
-                        <div class="card-header">
-                            <div class="title">
-                                <div class="inter-semibold-16">
-                                    Harry Potter and the philosopher's stone
-                                </div>
-                                <i class="material-icons">favorite_outline</i>
-                            </div>
-                            <div class="inter-regular-12">
-                                Rowling, J.K.
-                            </div>
-
-                        </div>
-                        <div class="extra-info">
-                            <div class="score">
-                                <i class="material-icons">star_border</i>
-                                <div class="inter-light-14">
-                                    4.5 / 5
-                                </div>
-                            </div>
-                            <div class="inter-extra-light-14">
-                                104 reviews
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="news-container">
-                    <img class="news-image" src="https://cdn2.thecatapi.com/images/bnr.jpg" alt="News Image 1">
-                    <div class="news-description">
-                        <div class="card-header">
-                            <div class="title">
-                                <div class="inter-semibold-16">
-                                    Harry Potter and the philosopher's stone
-                                </div>
-                                <i class="material-icons">favorite</i>
-                            </div>
-                            <div class="inter-regular-12">
-                                Rowling, J.K.
-                            </div>
-
-                        </div>
-                        <div class="extra-info">
-                            <div class="score">
-                                <i class="material-icons">star_border</i>
-                                <div class="inter-light-14">
-                                    4.5 / 5
-                                </div>
-                            </div>
-                            <div class="inter-extra-light-14">
-                                104 reviews
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
     </main>
 </body>
 

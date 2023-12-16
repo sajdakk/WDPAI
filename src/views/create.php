@@ -98,7 +98,7 @@
                 <div class="header">
                     Create book
                 </div>
-                <form class="create-form" action="create.php" method="post">
+                <form class="create-form" action="create" method="post"  ENCTYPE="multipart/form-data">
                     <input type="text" id="title" name="title" placeholder="Title" required>
                     <select id="language" name="language" required>
                         <option value="" disabled selected>Language</option>
@@ -110,8 +110,8 @@
 
                     </select>
 
-                    <input type="text" id="date-of-pub" name="date-of-pub" placeholder="Date of publication" required>
-                    <input type="int" id="page-cout" name="page-cout" placeholder="Page count" required>
+                    <input type="date" id="date-of-pub" name="date-of-pub" placeholder="Date of publication" required>
+                    <input type="int" id="page-count" name="page-count" placeholder="Page count" required>
                     <input type="text" id="isbn-number" name="isbn-number" placeholder="ISBN number" required>
                     <input type="text" id="description" name="description" placeholder="Description" required>
                     <div class="image-section">
@@ -124,7 +124,7 @@
                     <select id="genre" name="genre" required>
                         <option value="" disabled selected>Genre</option>
                         <?php foreach ($genres as $genre): ?>
-                            <option value="  <?php echo $genre->getId() ?>">
+                            <option value="<?php echo $genre->getId() ?>">
                                 <?php echo $genre->getGenre() ?>
                             </option>
                         <?php endforeach; ?>
@@ -138,8 +138,8 @@
                     <div class="checkboxContainer">
                         <?php foreach ($authors as $author): ?>
                             <div class="checkbox-input">
-                                <input type="checkbox" value=" <?php echo $author->getName() . " " . $author->getSurname()
-                                    ?>">
+                                <input type="checkbox" name="authors[]"
+                                    value="<?php echo $author->getName() . " " . $author->getSurname() ?>">
                                 <?php echo $author->getName() . " " . $author->getSurname()
                                     ?>
                                 </input>
@@ -147,17 +147,16 @@
                         <?php endforeach; ?>
 
                     </div>
+
                     <div class="subtitle">
                         New authors
                     </div>
                     <div class="add-author-section">
-                        <form id="addAuthorForm">
-                            <div class="add-author">
-                                <input type="text" id="authorName" name="authorName" placeholder="Author name">
-                                <input type="text" id="authorSurname" name="authorSurname" placeholder="Author surname">
-                            </div>
-                            <button type="button" onclick="addAuthor()">Add new author</button>
-                        </form>
+                        <div class="add-author">
+                            <input type="text" id="authorName" name="authorName" placeholder="Author name">
+                            <input type="text" id="authorSurname" name="authorSurname" placeholder="Author surname">
+                        </div>
+                        <button type="button" onclick="addAuthor()">Add new author</button>
                     </div>
 
                     <script>
@@ -169,7 +168,7 @@
                                 var newCheckbox = document.createElement('div');
                                 newCheckbox.className = 'checkbox-input';
 
-                                newCheckbox.innerHTML = '<input type="checkbox" checked value="' + authorName + ' ' + authorSurname + '">' + authorName + ' ' + authorSurname;
+                                newCheckbox.innerHTML = '<input type="checkbox" checked name="authors[]" value="' + authorName + ' ' + authorSurname + '">' + authorName + ' ' + authorSurname;
                                 checkboxContainer.appendChild(newCheckbox);
                                 document.getElementById('authorName').value = '';
                                 document.getElementById('authorSurname').value = '';
@@ -202,10 +201,13 @@
                             }
                         }
                     </script>
-
+                    <div id="validation">
+                        <?php echo $error
+                            ?>
+                    </div>
                     <button type="submit">Send book to review</button>
-
                 </form>
+
 
                 <script>
                     function previewImage() {

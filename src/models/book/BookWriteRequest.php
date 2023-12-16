@@ -6,27 +6,42 @@ class BookWriteRequest
     private string $genre_id;
     private string $language_id;
     private string $date_of_publication;
-    private int $pageCount;
+    private int $page_count;
     private string $image;
     private string $isbn_number;
     private string $description;
     private string $upload_date;
     private ?string $accept_date;
     private int $created_by;
+    private ?string $reject_date;
 
 
-    public function __construct(string $title, string $genre_id, string $language_id, string $date_of_publication, int $pageCount, string $image, string $description, string $upload_date, int $accept_date, int $created_by)
-    {
+    public function __construct(
+        string $title,
+        string $genre_id,
+        string $language_id,
+        string $date_of_publication,
+        int $page_count,
+        string $image,
+        string $isbn_number,
+        string $description,
+        string $upload_date,
+        ?string $accept_date,
+        int $created_by,
+        ?string $reject_date
+    ) {
         $this->title = $title;
-        $this->bookType = $genre_id;
-        $this->language = $language_id;
-        $this->placeOfPublication = $date_of_publication;
-        $this->pageCount = $pageCount;
-        $this->imageUrl = $image;
+        $this->genre_id = $genre_id;
+        $this->language_id = $language_id;
+        $this->date_of_publication = $date_of_publication;
+        $this->page_count = $page_count;
+        $this->image = $image;
+        $this->isbn_number = $isbn_number;
         $this->description = $description;
         $this->upload_date = $upload_date;
         $this->accept_date = $accept_date;
         $this->created_by = $created_by;
+        $this->reject_date = $reject_date;
 
     }
 
@@ -52,7 +67,7 @@ class BookWriteRequest
 
     public function getPageCount()
     {
-        return $this->pageCount;
+        return $this->page_count;
     }
 
     public function getImage()
@@ -78,6 +93,16 @@ class BookWriteRequest
     public function getCreatedBy()
     {
         return $this->created_by;
+    }
+
+    public function getRejectDate()
+    {
+        return $this->reject_date;
+    }
+
+    public function getIsbnNumber()
+    {
+        return $this->isbn_number;
     }
 
 

@@ -19,7 +19,8 @@ class Routing {
   }
 
   public static function run ($url) {
-    $action = explode("/", $url)[0];
+    $parts= explode("/", $url);
+    $action = $parts[0];
     if($action == '') {
         $action = 'dashboard';
     }
@@ -32,6 +33,11 @@ class Routing {
     $controller = self::$routes[$action];
     $object = new $controller;
     $action = $action ?: 'index';
+    if(count($parts) > 1) {
+      $params= $parts[1];
+      $object->$action($params);
+      return;
+    }
 
     $object->$action();
 

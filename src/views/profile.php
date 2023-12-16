@@ -240,7 +240,7 @@
                     </div>
                     <script>
                         function routeToDetails() {
-                            window.location.href = '/book-details';
+                            window.location.href = '/details';
                         }
 
 

@@ -27,4 +27,25 @@ class GenreRepository extends Repository
 
         return $result;
     }
+
+    public function getGenreFromId(string $genreId): ?Genre
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM genres WHERE id = :genre_id
+        ');
+        $stmt->bindParam(':genre_id', $genreId, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $genre = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($genre == false) {
+            return null;
+        }
+
+        return new Genre(
+            $genre['id'],
+            $genre['title']
+
+        );
+    }
 }

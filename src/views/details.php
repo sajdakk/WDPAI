@@ -89,28 +89,28 @@
         <div class="page-content">
             <div class="mobile-page-content">
                 <div class="details">
-                    <img class="book-image" src="https://cdn2.thecatapi.com/images/bnr.jpg" alt="News Image 1">
+                    <img class="book-image" src=       <?='/public/uploads/' .  $book->getImage() ?> alt="News Image 2">
                     <div class="info">
                         <div class="headline-h1-semibold">
-                            Pan Tadeusz
+                        <?=$book->getTitle() ?>
                         </div>
                         <div class="headline-h4-regular">
-                            Author: Adam Mickiewicz
+                            Author: <?=$authorString?>
                         </div>
                         <div class="headline-h4-regular">
-                            Language: polish
+                            Language: <?=$languageString?>
                         </div>
                         <div class="headline-h4-regular">
-                            Date of publication: 20.11.2023 r.
+                            Date of publication:  <?=$book->getDateOfPublication() ?>
                         </div>
                         <div class="headline-h4-regular">
-                            Page count: 400
+                            Page count:  <?=$book->getPageCount() ?>
                         </div>
                         <div class="headline-h4-regular">
-                            ISBN number: 400
+                            ISBN number:  <?=$book->getIsbnNumber() ?>
                         </div>
                         <div class="headline-h4-regular">
-                            Genre: lyric
+                            Genre: <?=$genreString?>
                         </div>
                     </div>
                     <div class="stars">
@@ -122,40 +122,30 @@
                 </div>
                 <div class="mobile-info">
                     <div class="headline-h1-semibold">
-                        Pan Tadeusz
+                    <?=$book->getTitle() ?>
                     </div>
                     <div class="headline-h4-regular">
-                        Author: Adam Mickiewicz
-                    </div>
-                    <div class="headline-h4-regular">
-                        Language: polish
-                    </div>
-                    <div class="headline-h4-regular">
-                        Date of publication: 20.11.2023 r.
-                    </div>
-                    <div class="headline-h4-regular">
-                        Page count: 400
-                    </div>
-                    <div class="headline-h4-regular">
-                        ISBN number: 400
-                    </div>
-                    <div class="headline-h4-regular">
-                        Genre: lyric
-                    </div>
+                            Author:  <?=$authorString?>
+                        </div>
+                        <div class="headline-h4-regular">
+                            Language: <?=$languageString?>
+                        </div>
+                        <div class="headline-h4-regular">
+                            Date of publication:  <?=$book->getDateOfPublication() ?>
+                        </div>
+                        <div class="headline-h4-regular">
+                            Page count:  <?=$book->getPageCount() ?>
+                        </div>
+                        <div class="headline-h4-regular">
+                            ISBN number:  <?=$book->getIsbnNumber() ?>
+                        </div>
+                        <div class="headline-h4-regular">
+                            Genre: <?=$genreString?>
+                        </div>
                 </div>
             </div>
             <div class="description">
-                Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został
-                po
-                raz pierwszy użyty w XV w. przez nieznanego drukarza do wypełnienia tekstem próbnej książki. Pięć
-                wieków
-                później zaczął być używany przemyśle elektronicznym, pozostając praktycznie niezmienionym.
-                Spopularyzował się w latach 60. XX w. wraz z publikacją. Lorem Ipsum jest tekstem stosowanym jako
-                przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w. przez
-                nieznanego
-                drukarza do wypełnienia tekstem próbnej książki. Pięć wieków później zaczął być używany przemyśle
-                elektronicznym, pozostając praktycznie niezmienionym. Spopularyzował się w latach 60. XX w. wraz z
-                publikacją
+            <?=$book->getDescription() ?>
             </div>
             <div class="headline-h1-semibold">
                 Add your review
@@ -164,7 +154,7 @@
                 <img class="imagePreview" src="https://cdn2.thecatapi.com/images/bnr.jpg" alt="News Image 1">
                 <div class="review-content">
                     <div class="inter-semibold-16">
-                        Anita | 10.10.2010 r.
+                    <?=$userName?> | <?=$nowString?>
                     </div>
                     <form class="header-form" action="dashboard.php" method="post">
                         <input type="text" id="review" name="review" placeholder="Type something..." required>

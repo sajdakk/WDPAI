@@ -27,4 +27,25 @@ class LanguageRepository extends Repository
 
         return $result;
     }
+
+    public function getLanguageFromId(string $languageId): ?Language
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM languages WHERE id = :language_id
+        ');
+        $stmt->bindParam(':language_id', $languageId, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $language = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($language == false) {
+            return null;
+        }
+
+        return new Language(
+            $language['id'],
+            $language['language']
+
+        );
+    }
 }
