@@ -27,6 +27,13 @@ input[type="file"] {
     border-radius: 50%;
 }
 
+.avatar-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 #imagePreview img {
     width: 120px;
     height: 120px;
@@ -89,6 +96,7 @@ input[type="file"] {
     text-overflow: ellipsis;
     overflow: hidden;
     height: 120px;
+    width: 100%;
 
 }
 

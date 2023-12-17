@@ -69,7 +69,16 @@ class UserRepository extends Repository
             $userWriteRequest->getEmail(),
             $userWriteRequest->getPassword()
         ]);
+    }
 
+    public function updateAvatarWithUserId($avatar, $id)
+    {
+        $stmt = $this->database->connect()->prepare('
+            UPDATE users SET avatar = :avatar WHERE id = :id
+        ');
 
+        $stmt->bindParam(':avatar', $avatar, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+        $stmt->execute();
     }
 }

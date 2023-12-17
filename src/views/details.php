@@ -89,28 +89,34 @@
         <div class="page-content">
             <div class="mobile-page-content">
                 <div class="details">
-                    <img class="book-image" src=       <?='/public/uploads/' .  $book->getImage() ?> alt="News Image 2">
+                    <img class="book-image" src=<?= '/public/uploads/' . $book->getImage() ?> alt="News Image 2">
                     <div class="info">
                         <div class="headline-h1-semibold">
-                        <?=$book->getTitle() ?>
+                            <?= $book->getTitle() ?>
                         </div>
                         <div class="headline-h4-regular">
-                            Author: <?=$authorString?>
+                            Author:
+                            <?= $authorString ?>
                         </div>
                         <div class="headline-h4-regular">
-                            Language: <?=$languageString?>
+                            Language:
+                            <?= $languageString ?>
                         </div>
                         <div class="headline-h4-regular">
-                            Date of publication:  <?=$book->getDateOfPublication() ?>
+                            Date of publication:
+                            <?= $book->getDateOfPublication() ?>
                         </div>
                         <div class="headline-h4-regular">
-                            Page count:  <?=$book->getPageCount() ?>
+                            Page count:
+                            <?= $book->getPageCount() ?>
                         </div>
                         <div class="headline-h4-regular">
-                            ISBN number:  <?=$book->getIsbnNumber() ?>
+                            ISBN number:
+                            <?= $book->getIsbnNumber() ?>
                         </div>
                         <div class="headline-h4-regular">
-                            Genre: <?=$genreString?>
+                            Genre:
+                            <?= $genreString ?>
                         </div>
                     </div>
                     <div class="stars">
@@ -122,58 +128,96 @@
                 </div>
                 <div class="mobile-info">
                     <div class="headline-h1-semibold">
-                    <?=$book->getTitle() ?>
+                        <?= $book->getTitle() ?>
                     </div>
                     <div class="headline-h4-regular">
-                            Author:  <?=$authorString?>
-                        </div>
-                        <div class="headline-h4-regular">
-                            Language: <?=$languageString?>
-                        </div>
-                        <div class="headline-h4-regular">
-                            Date of publication:  <?=$book->getDateOfPublication() ?>
-                        </div>
-                        <div class="headline-h4-regular">
-                            Page count:  <?=$book->getPageCount() ?>
-                        </div>
-                        <div class="headline-h4-regular">
-                            ISBN number:  <?=$book->getIsbnNumber() ?>
-                        </div>
-                        <div class="headline-h4-regular">
-                            Genre: <?=$genreString?>
-                        </div>
+                        Author:
+                        <?= $authorString ?>
+                    </div>
+                    <div class="headline-h4-regular">
+                        Language:
+                        <?= $languageString ?>
+                    </div>
+                    <div class="headline-h4-regular">
+                        Date of publication:
+                        <?= $book->getDateOfPublication() ?>
+                    </div>
+                    <div class="headline-h4-regular">
+                        Page count:
+                        <?= $book->getPageCount() ?>
+                    </div>
+                    <div class="headline-h4-regular">
+                        ISBN number:
+                        <?= $book->getIsbnNumber() ?>
+                    </div>
+                    <div class="headline-h4-regular">
+                        Genre:
+                        <?= $genreString ?>
+                    </div>
                 </div>
             </div>
             <div class="description">
-            <?=$book->getDescription() ?>
+                <?= $book->getDescription() ?>
             </div>
             <div class="headline-h1-semibold">
                 Add your review
             </div>
             <div class="card">
-                <img class="imagePreview" src="https://cdn2.thecatapi.com/images/bnr.jpg" alt="News Image 1">
+                <img class="imagePreview" src=<?= '/public/uploads/' . $userAvatar ?> alt="News Image 1">
                 <div class="review-content">
                     <div class="inter-semibold-16">
-                    <?=$userName?> | <?=$nowString?>
+                        <?= $userName ?> |
+                        <?= $nowString ?>
                     </div>
-                    <form class="header-form" action="dashboard.php" method="post">
+                    <form class="header-form" id="reviewForm" action="addReview" method="post">
                         <input type="text" id="review" name="review" placeholder="Type something..." required>
-                        <div class="review-mobile-stars">
-                            <i class="material-icons review-icon">star_border</i>
-                            <i class="material-icons review-icon">star_border</i>
-                            <i class="material-icons review-icon">star_border</i>
-                            <i class="material-icons review-icon">star_border</i>
-                            <i class="material-icons review-icon">star_border</i>
+                        <div class="review-mobile-stars" onclick="selectStar(event)">
+                            <i class="material-icons review-icon" onclick="selectStar(1)">star_border</i>
+                            <i class="material-icons review-icon" onclick="selectStar(2)">star_border</i>
+                            <i class="material-icons review-icon" onclick="selectStar(3)">star_border</i>
+                            <i class="material-icons review-icon" onclick="selectStar(4)">star_border</i>
+                            <i class="material-icons review-icon" onclick="selectStar(5)">star_border</i>
                         </div>
-                        <button type="submit">Sent to review</button>
+                        <input type="hidden" name="rate" id="review-rate" value="0" />
+                        <button type="submit" onclick="changeFormAction()">Sent to review</button>
                     </form>
                     <div class="review-stars">
-                        <i class="material-icons review-icon">star_border</i>
-                        <i class="material-icons review-icon">star_border</i>
-                        <i class="material-icons review-icon">star_border</i>
-                        <i class="material-icons review-icon">star_border</i>
-                        <i class="material-icons review-icon">star_border</i>
+                        <i class="material-icons review-icon" onclick="selectStar(1)">star_border</i>
+                        <i class="material-icons review-icon" onclick="selectStar(2)">star_border</i>
+                        <i class="material-icons review-icon" onclick="selectStar(3)">star_border</i>
+                        <i class="material-icons review-icon" onclick="selectStar(4)">star_border</i>
+                        <i class="material-icons review-icon" onclick="selectStar(5)">star_border</i>
                     </div>
+
+                    <script>
+                        function selectStar(value) {
+                            const stars = document.querySelectorAll('.review-stars > i');
+
+                            stars.forEach(star => star.textContent = 'star_border');
+                            for (let i = 0; i < value; i++) {
+                                stars[i].textContent = 'star';
+                            }
+
+                            const reviewRate = document.querySelector('#review-rate');
+                            reviewRate.value = value;
+                        }
+
+                        function changeFormAction() {
+                            // Get the current base URL
+                            const baseURL = window.location.origin;
+
+                            // Replace everything after the base URL with '/addReview'
+                            const newURL = `${baseURL}/addReview`;
+
+
+
+                            // Change the form action attribute
+                            document.getElementById('reviewForm').action = newURL;
+
+                            // Submit the form
+                            document.getElementById('reviewForm').submit();
+                        }
+                    </script>
                 </div>
 
             </div>

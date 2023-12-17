@@ -2,6 +2,7 @@
 
 require_once 'Repository.php';
 require_once __DIR__ . '/../models/book/Book.php';
+require_once __DIR__ . '/../models/book/BookToDisplay.php';
 require_once __DIR__ . '/../models/book/BookWriteRequest.php';
 
 class BookRepository extends Repository
@@ -95,21 +96,21 @@ class BookRepository extends Repository
     ORDER BY
         average_mark DESC
         ');
-    //     $stmt = $this->database->connect()->prepare('
-    //     SELECT
-    //     b.*,
-    //     AVG(r.rate) AS average_mark
-    // FROM
-    //     books b
-    // JOIN
-    //     reviews r ON b.id = r.book_id
-    // WHERE
-    //     r.accept_date IS NOT NULL
-    // GROUP BY
-    //     b.id
-    // ORDER BY
-    //     average_mark DESC
-    //     ');
+        //     $stmt = $this->database->connect()->prepare('
+        //     SELECT
+        //     b.*,
+        //     AVG(r.rate) AS average_mark
+        // FROM
+        //     books b
+        // JOIN
+        //     reviews r ON b.id = r.book_id
+        // WHERE
+        //     r.accept_date IS NOT NULL
+        // GROUP BY
+        //     b.id
+        // ORDER BY
+        //     average_mark DESC
+        //     ');
         $stmt->execute();
         $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
@@ -203,7 +204,54 @@ class BookRepository extends Repository
             $book['reject_date']
         );
     }
-    public function getAuthorStringForBookId(int $bookId): String
+    
+    public function getBooksToDisplayFromUserId(string $userId)
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT
+                b.*,
+                a.author_string
+            FROM books AS b
+            LEFT JOIN (
+                SELECT
+                    ba.book_id,
+                    string_agg(author.name || \' \' || author.surname, \', \') AS author_string
+                FROM authors AS author
+                JOIN author_book AS ba ON author.id = ba.author_id
+                GROUP BY ba.book_id
+            ) AS a ON b.id = a.book_id
+            WHERE b.created_by = :user_id
+        ');
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_STR);
+        $stmt->execute();
+    
+        $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = [];
+    
+        foreach ($books as $book) {
+            $result[] = new BookToDisplay(
+                $book['id'],
+                $book['title'],
+                $book['author_string'],
+                $book['genre_id'],
+                $book['language_id'],
+                $book['date_of_publication'],
+                $book['page_count'],
+                $book['image'],
+                $book['isbn_number'],
+                $book['description'],
+                $book['upload_date'],
+                $book['accept_date'],
+                $book['created_by'],
+                $book['reject_date']
+            );
+        }
+    
+        return $result;
+    }
+    
+    
+    public function getAuthorStringForBookId(int $bookId): string
     {
 
         //Query to get authors for book (name and surname in one string, separated by comma)
@@ -215,10 +263,10 @@ class BookRepository extends Repository
         ');
         $stmt->bindParam(':bookId', $bookId, PDO::PARAM_STR);
         $stmt->execute();
-    
+
         $result = $stmt->fetch(PDO::FETCH_COLUMN);
-    
-        return strval($result) ?: '';  
+
+        return strval($result) ?: '';
     }
 
 
@@ -267,5 +315,41 @@ class BookRepository extends Repository
         ]);
 
         return $success;
+    }
+
+    public function getBookFromUserId(string $userId)
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM books WHERE user_id = :user_id
+        ');
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_STR);
+        $stmt->execute();
+
+
+
+
+
+        $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = [];
+
+        foreach ($books as $book) {
+            $result[] = new Book(
+                $book['id'],
+                $book['title'],
+                $book['genre_id'],
+                $book['language_id'],
+                $book['date_of_publication'],
+                $book['page_count'],
+                $book['image'],
+                $book['isbn_number'],
+                $book['description'],
+                $book['upload_date'],
+                $book['accept_date'],
+                $book['created_by'],
+                $book['reject_date']
+            );
+        }
+
+        return $result;
     }
 }

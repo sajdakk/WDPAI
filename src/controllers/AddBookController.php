@@ -108,7 +108,7 @@ class AddBookController extends AppController
             $image['name'],
             $isbnNumber,
             $description,
-            date('Y-m-d'),
+            date('Y-m-d H:i:s'),
             null,
             $user_id,
             null

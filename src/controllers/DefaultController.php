@@ -5,11 +5,13 @@ require_once __DIR__ . '/../models/book/Book.php';
 require_once __DIR__ . '/../models/favorite/Favorite.php';
 require_once __DIR__ . '/../models/favorite/FavoriteWriteRequest.php';
 require_once __DIR__ . '/../models/author/Author.php';
+require_once __DIR__ . '/../models/review/ReviewToDisplay.php';
 require_once __DIR__ . '/../models/Session.php';
 require_once __DIR__ . '/../repository/BookRepository.php';
 require_once __DIR__ . '/../repository/GenreRepository.php';
 require_once __DIR__ . '/../repository/LanguageRepository.php';
 require_once __DIR__ . '/../repository/FavoriteRepository.php';
+require_once __DIR__ . '/../repository/ReviewRepository.php';
 
 
 class DefaultController extends AppController
@@ -19,6 +21,14 @@ class DefaultController extends AppController
     private $genreRepository;
     private $languageRepository;
     private $favoriteRepository;
+    private $userRepository;
+    private $reviewRepository;
+
+
+    const MAX_FILE_SIZE = 1024 * 1024;
+    const SUPPORTED_TYPES = ['image/png', 'image/jpeg'];
+    const UPLOAD_DIRECTORY = '/../public/uploads/';
+
 
     public function __construct()
     {
@@ -27,20 +37,8 @@ class DefaultController extends AppController
         $this->genreRepository = new GenreRepository();
         $this->languageRepository = new LanguageRepository();
         $this->favoriteRepository = new FavoriteRepository();
-    }
-
-
-    function login()
-    {
-        if ($this->isGet()) {
-            return $this->render('login');
-        }
-
-        if ($this->isPost()) {
-            $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/dashboard");
-            return;
-        }
+        $this->userRepository = new UserRepository();
+        $this->reviewRepository = new ReviewRepository();
     }
 
     public function dashboard()
@@ -55,12 +53,12 @@ class DefaultController extends AppController
             $bookIdToAuthors[$bookId] = $this->bookRepository->getAuthorStringForBookId($bookId);
         }
 
-        
+
 
         $data = Session::getInstance();
         $userId = $data->__get('user-id');
 
-        if(!$userId){
+        if (!$userId) {
             $this->render(
                 'dashboard',
                 [
@@ -152,8 +150,105 @@ class DefaultController extends AppController
         }
 
         $source = $_SERVER["HTTP_REFERER"];
+        header("Location: $source");
+    }
 
-        // $url = "http://$_SERVER[HTTP_HOST]";
+    public function addReview()
+    {
+        if (!$this->isPost()) {
+            return;
+        }
+
+        $data = Session::getInstance();
+        $userId = $data->__get('user-id');
+
+
+        if (!$userId) {
+            return;
+        }
+
+        $source = $_SERVER["HTTP_REFERER"];
+        $parts = explode("/", $source);
+
+        $bookId = end($parts);
+        $content = $_POST['review'];
+        $rate = $_POST['rate'];
+
+
+        $this->reviewRepository->addReview(
+            new ReviewWriteRequest(
+                $bookId,
+                $userId,
+                $content,
+                intval($rate),
+                date('Y-m-d H:i:s'),
+                null,
+                null
+            )
+        );
+
+        $source = $_SERVER["HTTP_REFERER"];
+        header("Location: $source");
+    }
+
+    public function changeAvatar()
+    {
+        if (!$this->isPost()) {
+            return;
+        }
+
+        $data = Session::getInstance();
+        $userId = $data->__get('user-id');
+
+
+        if (!$userId) {
+            return;
+        }
+
+        $image = $_FILES['image'];
+        $avatar = $data->__get('user-avatar');
+
+        if (!is_uploaded_file($image['tmp_name'])) {
+
+
+            return $this->render(
+                'profile',
+                [
+                    'isLogged' => $data->__get('is-logged'),
+                    'avatar' => $avatar,
+                    'error' => 'You have to upload an image'
+
+                ],
+            );
+
+
+        }
+
+
+        $imageValidationError = $this->validateFile($image);
+        if ($imageValidationError) {
+            return $this->render(
+                'profile',
+                [
+                    'error' => $imageValidationError,
+                    'isLogged' => $data->__get('is-logged'),
+                    'avatar' => $avatar,
+                ]
+            );
+        }
+
+        move_uploaded_file(
+            $image['tmp_name'],
+            dirname(__DIR__) . self::UPLOAD_DIRECTORY . $image['name']
+        );
+
+
+        $newAvatar = $image['name'];
+
+        $this->userRepository->updateAvatarWithUserId($newAvatar, $userId);
+
+
+        $source = $_SERVER["HTTP_REFERER"];
         header("Location: $source");
     }
 
@@ -173,7 +268,7 @@ class DefaultController extends AppController
                 ],
             );
         }
-        
+
 
         $favorites = $this->favoriteRepository->getFavoriteFromUserId($userId);
         $books = [];
@@ -198,19 +293,35 @@ class DefaultController extends AppController
         );
     }
 
-    public function registration()
-    {
-        $this->render('registration');
-    }
-
     public function profile()
     {
         $data = Session::getInstance();
+
+        if (!$data->__get('is-logged')) {
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/");
+            return;
+        }
+
+        $email = $data->__get('user-email');
+
+        $user = $this->userRepository->getUser($email);
+
+        $reviews = $this->reviewRepository->getReviewToDisplayFromUserId($user->getId());
+
+        $books = $this->bookRepository->getBooksToDisplayFromUserId($user->getId());
+
+
+
 
         $this->render(
             'profile',
             [
                 'isLogged' => $data->__get('is-logged'),
+                'avatar' => $user->getAvatar(),
+                'username' => $user->getName(),
+                'reviews' => $reviews,
+                'books' => $books
             ],
         );
     }
@@ -234,6 +345,11 @@ class DefaultController extends AppController
         $date = new DateTime();
 
 
+        $email = $data->__get('user-email');
+
+        $user = $this->userRepository->getUser($email);
+
+
 
         $this->render(
             'details',
@@ -245,8 +361,22 @@ class DefaultController extends AppController
                 'languageString' => $language->getLanguage(),
                 'userName' => $data->__get('user-name'),
                 'nowString' => $date->format('d.m.Y') . 'r.',
+                'userAvatar' => $user->getAvatar()
             ],
         );
 
+    }
+
+    private function validateFile(array $file): ?string
+    {
+        if ($file['size'] > self::MAX_FILE_SIZE) {
+            return 'File is too large for destination file system.';
+        }
+
+        if (!isset($file['type']) || !in_array($file['type'], self::SUPPORTED_TYPES)) {
+            return 'File type is not supported.';
+        }
+
+        return null;
     }
 }

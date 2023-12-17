@@ -164,9 +164,7 @@ img {
 }
 
 .mobile-stars {
-    display: flex;
-    flex-direction: row;
-    white-space: nowrap;
+    display: none;
 }
 
 .review-mobile-stars {
@@ -195,6 +193,12 @@ img {
     .book-image {
         width: 140px;
         height: 186px;
+    }
+
+    .mobile-stars {
+        display: flex;
+        flex-direction: row;
+        white-space: nowrap;
     }
 
     .details .info {
