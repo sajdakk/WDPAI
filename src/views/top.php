@@ -104,7 +104,8 @@
                                         <?= $book->getTitle() ?>
 
                                     </div>
-                                    <form action="logout" method="post">
+                                    <form action="toggleFavorite" method="post">
+                                        <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
 
                                         <button type="submit"> <i class="material-icons">
                                                 <?php

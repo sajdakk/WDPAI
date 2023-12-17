@@ -17,6 +17,7 @@ Routing::get('details', 'DefaultController');
 Routing::post('login', 'SecurityController');
 Routing::post('register', 'SecurityController');
 Routing::post('logout', 'SecurityController');
+Routing::post('toggleFavorite', 'DefaultController');
 
 Routing::run($path);
 

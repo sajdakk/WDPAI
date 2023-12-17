@@ -37,10 +37,6 @@ class FavoriteRepository extends Repository
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_STR);
         $stmt->execute();
 
-
-
-
-
         $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
 
@@ -55,16 +51,54 @@ class FavoriteRepository extends Repository
         return $result;
     }
 
+    public function getFavoriteFromUserIdAndBookId(int $userId, int $bookId): ?Favorite
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM favorites WHERE user_id = :user_id AND book_id = :book_id
+        ');
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_STR);
+        $stmt->bindParam(':book_id', $bookId, PDO::PARAM_STR);
+        $stmt->execute();
+
+
+
+
+
+        $favorite = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($favorite == false) {
+            return null;
+        }
+
+
+        return new Favorite(
+            $favorite['id'],
+            $favorite['user_id'],
+            $favorite['book_id'],
+        );
+    }
+
+
     public function addFavorite(FavoriteWriteRequest $request): void
     {
         $stmt = $this->database->connect()->prepare('
-            INSERT INTO favorite (user_id, book_id)
+            INSERT INTO favorites (user_id, book_id)
             VALUES (?, ?)
         ');
 
         $stmt->execute([
             $request->getUserId(),
             $request->getBookId()
+        ]);
+    }
+
+    public function removeFavoriteWithId(string $favoriteId): void
+    {
+        $stmt = $this->database->connect()->prepare('
+        DELETE FROM favorites WHERE id = ?
+        ');
+
+        $stmt->execute([
+            $favoriteId
         ]);
     }
 }

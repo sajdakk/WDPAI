@@ -101,6 +101,7 @@
                 <div class="news">
                     <?php foreach ($books as $book): ?>
 
+
                         <div class="news-container" onclick="routeToDetails('<?= $book->getId() ?>')">
                             <img class="news-image" src=<?= 'public/uploads/' . $book->getImage() ?> alt="News Image 1">
                             <div class="news-description">
@@ -110,7 +111,29 @@
                                             <?= $book->getTitle() ?>
 
                                         </div>
-                                        <i class="material-icons">favorite</i>
+                                        <form action="toggleFavorite" method="post">
+                                            <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
+
+                                            <button type="submit"> <i class="material-icons">
+                                                    <?php
+                                                    $contains = false;
+                                                    foreach ($favorites as $favorite) {
+                                                        if ($favorite->getBookId() == $book->getId()) {
+                                                            $contains = true;
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    if ($contains) {
+                                                        echo 'favorite';
+                                                    } else {
+                                                        echo 'favorite_outline';
+                                                    }
+                                                    ?>
+                                                </i></button>
+
+                                        </form>
+
                                     </div>
                                     <div class="inter-regular-12">
                                         <?php

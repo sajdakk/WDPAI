@@ -2,6 +2,8 @@
 
 require_once 'AppController.php';
 require_once __DIR__ . '/../models/book/Book.php';
+require_once __DIR__ . '/../models/favorite/Favorite.php';
+require_once __DIR__ . '/../models/favorite/FavoriteWriteRequest.php';
 require_once __DIR__ . '/../models/author/Author.php';
 require_once __DIR__ . '/../models/Session.php';
 require_once __DIR__ . '/../repository/BookRepository.php';
@@ -53,14 +55,33 @@ class DefaultController extends AppController
             $bookIdToAuthors[$bookId] = $this->bookRepository->getAuthorStringForBookId($bookId);
         }
 
+        
+
         $data = Session::getInstance();
+        $userId = $data->__get('user-id');
+
+        if(!$userId){
+            $this->render(
+                'dashboard',
+                [
+                    'isLogged' => $data->__get('is-logged'),
+                    'books' => $books,
+                    'bookIdToAuthors' => $bookIdToAuthors
+                ],
+            );
+            return;
+        }
+
+        $favorites = $this->favoriteRepository->getFavoriteFromUserId($userId);
+
 
         $this->render(
             'dashboard',
             [
                 'isLogged' => $data->__get('is-logged'),
                 'books' => $books,
-                'bookIdToAuthors' => $bookIdToAuthors
+                'bookIdToAuthors' => $bookIdToAuthors,
+                'favorites' => $favorites
             ],
         );
     }
@@ -90,10 +111,7 @@ class DefaultController extends AppController
             );
         }
 
-        $favorites = [];
-        if (!$userId) {
-            $favorites = $this->favoriteRepository->getFavoriteFromUserId($userId);
-        }
+        $favorites = $this->favoriteRepository->getFavoriteFromUserId($userId);
 
         $this->render(
             'top',
@@ -104,6 +122,39 @@ class DefaultController extends AppController
                 'favorites' => $favorites
             ],
         );
+    }
+
+    public function toggleFavorite()
+    {
+        if (!$this->isPost()) {
+            return;
+        }
+
+        $data = Session::getInstance();
+        $userId = $data->__get('user-id');
+
+        $bookId = $_POST['book-id'];
+
+        if (!$userId) {
+            return;
+        }
+
+        $existFavorite = $this->favoriteRepository->getFavoriteFromUserIdAndBookId($userId, $bookId);
+        if ($existFavorite == null) {
+            $this->favoriteRepository->addFavorite(
+                new FavoriteWriteRequest(
+                    $userId,
+                    $bookId
+                )
+            );
+        } else {
+            $this->favoriteRepository->removeFavoriteWithId($existFavorite->getId());
+        }
+
+        $source = $_SERVER["HTTP_REFERER"];
+
+        // $url = "http://$_SERVER[HTTP_HOST]";
+        header("Location: $source");
     }
 
     public function favorites()
@@ -122,6 +173,7 @@ class DefaultController extends AppController
                 ],
             );
         }
+        
 
         $favorites = $this->favoriteRepository->getFavoriteFromUserId($userId);
         $books = [];
@@ -140,7 +192,8 @@ class DefaultController extends AppController
             [
                 'isLogged' => $data->__get('is-logged'),
                 'books' => $books,
-                'bookIdToAuthors' => $bookIdToAuthors
+                'bookIdToAuthors' => $bookIdToAuthors,
+                'favorites' => $favorites
             ],
         );
     }

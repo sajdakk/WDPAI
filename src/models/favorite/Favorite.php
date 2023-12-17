@@ -13,6 +13,11 @@ class Favorite
         $this->book_id = $book_id;
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function getUserId()
     {
         return $this->user_id;
