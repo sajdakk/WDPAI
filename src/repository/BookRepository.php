@@ -41,29 +41,52 @@ class BookRepository extends Repository
     {
         $stmt = $this->database->connect()->prepare('
         SELECT
-        b.*,
-        AVG(r.rate) AS average_mark
-    FROM
-        books b
-   LEFT JOIN
-        reviews r ON b.id = r.book_id
-    WHERE
-        r.accept_date IS NOT NULL
-    GROUP BY
-        b.id
-    ORDER BY
-        average_mark DESC
-    LIMIT
-        10;
+            b.*,
+            a.author_string,
+            COALESCE(AVG(r.rate), 0) AS average_mark,
+            COUNT(r.rate) AS rate_count
+        FROM
+            books b
+        LEFT JOIN (
+            SELECT
+                ba.book_id,
+                string_agg(author.name || \' \' || author.surname, \', \') AS author_string
+            FROM
+                authors AS author
+            JOIN
+                author_book AS ba ON author.id = ba.author_id
+            GROUP BY
+                ba.book_id
+        ) AS a ON b.id = a.book_id
+        LEFT JOIN (
+            SELECT
+                book_id,
+                rate
+            FROM
+                reviews
+            WHERE
+                accept_date IS NOT NULL
+        ) r ON b.id = r.book_id
+        WHERE
+            b.accept_date IS NOT NULL
+        GROUP BY
+            b.id, a.author_string
+        ORDER BY
+            average_mark DESC
+        LIMIT
+            3;
         ');
         $stmt->execute();
         $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
 
         foreach ($books as $book) {
-            $result[] = new Book(
+            $result[] = new BookToDisplay(
                 $book['id'],
                 $book['title'],
+                $book['author_string'],
+                $book['average_mark'],
+                $book['rate_count'],
                 $book['genre_id'],
                 $book['language_id'],
                 $book['date_of_publication'],
@@ -84,41 +107,53 @@ class BookRepository extends Repository
     public function getTopBooks(): array
     {
         $stmt = $this->database->connect()->prepare('
-        SELECT
-        b.*,
-        AVG(r.rate) AS average_mark
-    FROM
-        books b
-    LEFT JOIN
-        reviews r ON b.id = r.book_id
-    GROUP BY
-        b.id
-    ORDER BY
-        average_mark DESC
+            SELECT
+                b.*,
+                a.author_string,
+                COALESCE(AVG(r.rate), 0) AS average_mark,
+                COUNT(r.rate) AS rate_count
+            FROM
+                books b
+            LEFT JOIN (
+                SELECT
+                    ba.book_id,
+                    string_agg(author.name || \' \' || author.surname, \', \') AS author_string
+                FROM
+                    authors AS author
+                JOIN
+                    author_book AS ba ON author.id = ba.author_id
+                GROUP BY
+                    ba.book_id
+            ) AS a ON b.id = a.book_id
+            LEFT JOIN (
+                SELECT
+                    book_id,
+                    rate
+                FROM
+                    reviews
+                WHERE
+                    accept_date IS NOT NULL
+            ) r ON b.id = r.book_id
+            WHERE
+                b.accept_date IS NOT NULL
+            GROUP BY
+                b.id, a.author_string
+            ORDER BY
+                average_mark DESC
         ');
-        //     $stmt = $this->database->connect()->prepare('
-        //     SELECT
-        //     b.*,
-        //     AVG(r.rate) AS average_mark
-        // FROM
-        //     books b
-        // JOIN
-        //     reviews r ON b.id = r.book_id
-        // WHERE
-        //     r.accept_date IS NOT NULL
-        // GROUP BY
-        //     b.id
-        // ORDER BY
-        //     average_mark DESC
-        //     ');
+
         $stmt->execute();
+
         $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
 
         foreach ($books as $book) {
-            $result[] = new Book(
+            $result[] = new BookToDisplay(
                 $book['id'],
                 $book['title'],
+                $book['author_string'],
+                $book['average_mark'],
+                $book['rate_count'],
                 $book['genre_id'],
                 $book['language_id'],
                 $book['date_of_publication'],
@@ -136,7 +171,9 @@ class BookRepository extends Repository
 
         return $result;
     }
-    public function getMFilteredBooks(?string $title, ?string $author_name, ?string $author_surname): array
+
+
+    public function getFilteredBooks(?string $title, ?string $author_name, ?string $author_surname): array
     {
         $stmt = $this->database->connect()->prepare('
         SELECT
@@ -156,21 +193,28 @@ class BookRepository extends Repository
 
         $stmt->bindParam(':title', $title, ':author_surname', $author_surname, ':author_name', $author_name, PDO::PARAM_STR);
         $stmt->execute();
-        $books = $stmt->fetchAll(PDO::FETCH_CLASS, Book::class);
-        // $result = [];
+        $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = [];
 
-        // foreach ($books as $book) {
-        //     $result[] = new Book(
-        //         $book['id'],
-        //         $book['email'],
-        //         $book['password'],
-        //         $book['name'],
-        //         $book['surname'],
-        //         $book['avatar'],
-        //     );
-        // }
+        foreach ($books as $book) {
+            $result[] = new Book(
+                $book['id'],
+                $book['title'],
+                $book['genre_id'],
+                $book['language_id'],
+                $book['date_of_publication'],
+                $book['page_count'],
+                $book['image'],
+                $book['isbn_number'],
+                $book['description'],
+                $book['upload_date'],
+                $book['accept_date'],
+                $book['created_by'],
+                $book['reject_date']
+            );
+        }
 
-        return $books;
+        return $result;
     }
 
 
@@ -204,35 +248,56 @@ class BookRepository extends Repository
             $book['reject_date']
         );
     }
-    
+
     public function getBooksToDisplayFromUserId(string $userId)
     {
         $stmt = $this->database->connect()->prepare('
             SELECT
                 b.*,
-                a.author_string
-            FROM books AS b
+                a.author_string,
+                COALESCE(AVG(r.rate), 0) AS average_rate,
+                COUNT(r.rate) AS rate_count
+            FROM
+                books b
             LEFT JOIN (
                 SELECT
                     ba.book_id,
                     string_agg(author.name || \' \' || author.surname, \', \') AS author_string
-                FROM authors AS author
-                JOIN author_book AS ba ON author.id = ba.author_id
-                GROUP BY ba.book_id
+                FROM
+                    authors AS author
+                JOIN
+                    author_book AS ba ON author.id = ba.author_id
+                GROUP BY
+                    ba.book_id
             ) AS a ON b.id = a.book_id
-            WHERE b.created_by = :user_id
+            LEFT JOIN (
+                SELECT
+                    book_id,
+                    rate
+                FROM
+                    reviews
+                WHERE
+                    accept_date IS NOT NULL
+            ) r ON b.id = r.book_id
+            WHERE
+                b.created_by = :user_id
+            GROUP BY
+                b.id, a.author_string
         ');
+
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_STR);
         $stmt->execute();
-    
+
         $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
-    
+
         foreach ($books as $book) {
             $result[] = new BookToDisplay(
                 $book['id'],
                 $book['title'],
                 $book['author_string'],
+                $book['average_rate'],
+                $book['rate_count'],
                 $book['genre_id'],
                 $book['language_id'],
                 $book['date_of_publication'],
@@ -244,13 +309,82 @@ class BookRepository extends Repository
                 $book['accept_date'],
                 $book['created_by'],
                 $book['reject_date']
+
             );
         }
-    
+
         return $result;
     }
-    
-    
+
+
+    public function getBooksToDisplayForAdmin()
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT
+                b.*,
+                a.author_string,
+                COALESCE(AVG(r.rate), 0) AS average_rate,
+                COUNT(r.rate) AS rate_count
+            FROM
+                books AS b
+            LEFT JOIN (
+                SELECT
+                    ba.book_id,
+                    string_agg(author.name || \' \' || author.surname, \', \') AS author_string
+                FROM
+                    authors AS author
+                JOIN
+                    author_book AS ba ON author.id = ba.author_id
+                GROUP BY
+                    ba.book_id
+            ) AS a ON b.id = a.book_id
+            LEFT JOIN (
+                SELECT
+                    book_id,
+                    rate
+                FROM
+                    reviews
+                WHERE
+                    accept_date IS NOT NULL
+            ) r ON b.id = r.book_id
+            WHERE
+                b.accept_date IS NULL AND b.reject_date IS NULL
+            GROUP BY
+                b.id, a.author_string
+        ');
+
+        $stmt->execute();
+
+        $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = [];
+
+        foreach ($books as $book) {
+            $result[] = new BookToDisplay(
+                $book['id'],
+                $book['title'],
+                $book['author_string'],
+                $book['average_rate'],
+                $book['rate_count'],
+                $book['genre_id'],
+                $book['language_id'],
+                $book['date_of_publication'],
+                $book['page_count'],
+                $book['image'],
+                $book['isbn_number'],
+                $book['description'],
+                $book['upload_date'],
+                $book['accept_date'],
+                $book['created_by'],
+                $book['reject_date'],
+
+            );
+        }
+
+        return $result;
+    }
+
+
+
     public function getAuthorStringForBookId(int $bookId): string
     {
 
@@ -316,6 +450,45 @@ class BookRepository extends Repository
 
         return $success;
     }
+
+    public function acceptBookForBookId(string $bookId): bool
+    {
+        $stmt = $this->database->connect()->prepare('
+        UPDATE books
+        SET accept_date = CURRENT_TIMESTAMP
+        WHERE id = :book_id
+    ');
+
+        $stmt->bindParam(':book_id', $bookId, PDO::PARAM_STR);
+
+        try {
+            $stmt->execute();
+            return true; // Successful update
+        } catch (PDOException $e) {
+            // Handle the exception or log the error
+            return false; // Update failed
+        }
+    }
+
+    public function rejectBookForBookId(string $bookId): bool
+    {
+        $stmt = $this->database->connect()->prepare('
+        UPDATE books
+        SET reject_date = CURRENT_TIMESTAMP
+        WHERE id = :book_id
+    ');
+
+        $stmt->bindParam(':book_id', $bookId, PDO::PARAM_STR);
+
+        try {
+            $stmt->execute();
+            return true; // Successful update
+        } catch (PDOException $e) {
+            // Handle the exception or log the error
+            return false; // Update failed
+        }
+    }
+
 
     public function getBookFromUserId(string $userId)
     {

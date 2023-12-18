@@ -25,6 +25,7 @@
                 <li><a class="menu__item" href="/">Home</a></li>
                 <li><a class="menu__item" href="/top">Top</a></li>
                 <li><a class="menu__item" href="/profile">Profile</a></li>
+                <li><a class="menu__item" href="/admin">Admin</a></li>
                 <li class="divider"></li>
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
                 <li><a class="secondary_menu__item" href="/favorites">Favorites</a></li>
@@ -50,6 +51,7 @@
                 <li><a class="selected" href="/">Home</a></li>
                 <li><a href="/top">Top</a></li>
                 <li><a href="/profile">Profile</a></li>
+                <li><a href="/admin">Admin</a></li>
             </ul>
         </div>
         <div class="header-one-side">
@@ -122,7 +124,7 @@
                     <div class="stars">
                         <i class="material-icons custom-icon">star_border</i>
                         <div class="inter-light-24">
-                            4.5/5
+                            <?=$average ?>/5
                         </div>
                     </div>
                 </div>
@@ -224,64 +226,42 @@
             <div class="headline-h1-semibold">
                 What people are saying?
             </div>
-            <div class="card">
-                <div class="mobile-left-side-card">
-                    <img class="imagePreview" src="https://cdn2.thecatapi.com/images/bnr.jpg" alt="News Image 1">
-                    <div class="mobile-stars">
-                        <i class="material-icons custom-icon">star_border</i>
-                        <div class="inter-light-24">
-                            4.5/5
+            <?php if ($reviews == null): ?>
+                <div class="inter-semibold-16">
+                    No reviews yet
+                </div>
+            <?php else: ?>
+                <?php foreach ($reviews as $review): ?>
+                    <div class="card">
+                        <div class="mobile-left-side-card">
+                            <img class="imagePreview" src=<?= '/public/uploads/' . $review->getUserAvatar() ?>
+                                alt="News Image 1">
+                            <div class="mobile-stars">
+                                <i class="material-icons custom-icon">star_border</i>
+                                <div class="inter-light-24">
+                                    <?= $review->getRate() ?>/5
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="inter-semibold-16">
+                                <?= $review->getUserName() ?> |
+                                <?= $review->getUploadDate() ?>
+                            </div>
+                            <div class="dmsans-regular-14">
+                                <?= $review->getContent() ?>
+                            </div>
+                        </div>
+                        <div class="stars">
+                            <i class="material-icons custom-icon">star_border</i>
+                            <div class="inter-light-24">
+                                <?= $review->getRate() ?>/5
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-content">
-                    <div class="inter-semibold-16">
-                        Anna | 10.10.2010 r.
-                    </div>
-                    <div class="dmsans-regular-14">
-                        Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                        poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem stosowanym
-                        jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w
-                        XV w. Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                        poligraficznym. Został po raz pierwszy użyty w XV w..
-                    </div>
-                </div>
-                <div class="stars">
-                    <i class="material-icons custom-icon">star_border</i>
-                    <div class="inter-light-24">
-                        4.5/5
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="mobile-left-side-card">
-                    <img class="imagePreview" src="https://cdn2.thecatapi.com/images/bnr.jpg" alt="News Image 1">
-                    <div class="mobile-stars">
-                        <i class="material-icons custom-icon">star_border</i>
-                        <div class="inter-light-24">
-                            4.5/5
-                        </div>
-                    </div>
-                </div>
-                <div class="card-content">
-                    <div class="inter-semibold-16">
-                        Anna | 10.10.2010 r.
-                    </div>
-                    <div class="dmsans-regular-14">
-                        Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                        poligraficznym. Został po raz pierwszy użyty w XV w. Lorem Ipsum jest tekstem stosowanym
-                        jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w
-                        XV w. Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                        poligraficznym. Został po raz pierwszy użyty w XV w..
-                    </div>
-                </div>
-                <div class="stars">
-                    <i class="material-icons custom-icon">star_border</i>
-                    <div class="inter-light-24">
-                        4.5/5
-                    </div>
-                </div>
-            </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
     </main>
 </body>
 

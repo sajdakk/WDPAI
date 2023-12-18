@@ -26,6 +26,8 @@
                 <li><a class="menu__item" href="/">Home</a></li>
                 <li><a class="menu__item" href="/top">Top</a></li>
                 <li><a class="menu__item" href="/profile">Profile</a></li>
+                <li><a class="menu__item" href="/admin">Admin</a></li>
+
                 <li class="divider"></li>
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
                 <li><a class="secondary_menu__item" href="/favorites">Favorites</a></li>
@@ -51,6 +53,7 @@
                 <li><a class="selected" href="/">Home</a></li>
                 <li><a href="/top">Top</a></li>
                 <li><a href="/profile">Profile</a></li>
+                <li><a href="/admin">Admin</a></li>
             </ul>
         </div>
         <div class="header-one-side">
@@ -93,76 +96,77 @@
                 What can I find for you?
 
             </div>
-            <form class="header-form" action="dashboard.php" method="post">
+            <form class="header-form" action="search" method="post">
                 <input type="text" id="title" name="title" placeholder="Title" required>
                 <input type="text" id="author_name" name="author_name" placeholder="Author's name" required>
                 <input type="text" id="author_surname" name="author_surname" placeholder="Author's surname" required>
                 <button type="submit">Search</button>
             </form>
             <div class="dashboard-content">
+                <?php if ($mayInterestYou): ?>
+
+                    <div class="header">
+                        May interest you
+                    </div>
+                <?php endif; ?>
                 <div class="news">
-                    <?php foreach ($books as $book): ?>
+                    <?php foreach ($mayInterestYou as $book): ?>
+                        <div class="news-container" onclick="routeToDetails('<?= $book->getId() ?>')">
+                            <img class="news-image" src=<?= 'public/uploads/' . $book->getImage() ?> alt="News Image 1">
+                            <div class="news-description">
+                                <div class="card-header">
+                                    <div class="title">
+                                        <div class="inter-semibold-16">
+                                            <?= $book->getTitle() ?>
 
-                       
-                    <div class="news-container" onclick="routeToDetails('<?= $book->getId() ?>')">
-                        <img class="news-image" src=<?= 'public/uploads/' . $book->getImage() ?> alt="News Image 1">
-                        <div class="news-description">
-                            <div class="card-header">
-                                <div class="title">
-                                    <div class="inter-semibold-16">
-                                        <?= $book->getTitle() ?>
+                                        </div>
+                                        <form action="toggleFavorite" method="post">
+                                            <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
 
-                                    </div>
-                                    <form action="toggleFavorite" method="post">
-                                        <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
-
-                                        <button type="submit"> <i class="material-icons">
-                                                <?php
-                                                $contains = false;
-                                                foreach ($favorites as $favorite) {
-                                                    if ($favorite->getBookId() == $book->getId()) {
-                                                        $contains = true;
-                                                        break;
+                                            <button type="submit"> <i class="material-icons">
+                                                    <?php
+                                                    $contains = false;
+                                                    foreach ($favorites as $favorite) {
+                                                        if ($favorite->getBookId() == $book->getId()) {
+                                                            $contains = true;
+                                                            break;
+                                                        }
                                                     }
-                                                }
 
-                                                if ($contains) {
-                                                    echo 'favorite';
-                                                } else {
-                                                    echo 'favorite_outline';
-                                                }
-                                                ?>
-                                            </i></button>
+                                                    if ($contains) {
+                                                        echo 'favorite';
+                                                    } else {
+                                                        echo 'favorite_outline';
+                                                    }
+                                                    ?>
+                                                </i></button>
 
-                                    </form>
+                                        </form>
 
-                                </div>
-                                <div class="inter-regular-12">
-                                    <?php
-
-                                    echo $bookIdToAuthors[$book->getId()];
-                                    ?>
-
-                                </div>
-
-                            </div>
-                            <div class="extra-info">
-                                <div class="score">
-                                    <i class="material-icons">star_border</i>
-                                    <div class="inter-light-14">
-                                        4.5 / 5
                                     </div>
+                                    <div class="inter-regular-12">
+                                        <?= $book->getAuthorsString() ?>
+
+                                    </div>
+
                                 </div>
-                                <div class="inter-extra-light-14">
-                                    104 reviews
+                                <div class="extra-info">
+                                    <div class="score">
+                                        <i class="material-icons">star_border</i>
+                                        <div class="inter-light-14">
+                                            <?= $book->getAverageRate()?>/5
+                                        </div>
+                                    </div>
+                                    <div class="inter-extra-light-14">
+                                        <?= $book->getRateCount() ?> reviews
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     <?php endforeach; ?>
                     <script>
                         function routeToDetails(bookId) {
-                            window.location.href = '/details/'+ bookId;
+                            window.location.href = '/details/' + bookId;
                         }
 
 

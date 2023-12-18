@@ -5,6 +5,8 @@ class BookToDisplay
     private string $id;
     private string $title;
     private string $authorsString;
+    private string $average_rate;
+    private string $rate_count;
     private string $genre_id;
     private string $language_id;
     private string $date_of_publication;
@@ -21,6 +23,8 @@ class BookToDisplay
         string $id,
         string $title,
         string $authorsString,
+        string $average_rate,
+        string $rate_count,
         string $genre_id,
         string $language_id,
         string $date_of_publication,
@@ -36,6 +40,8 @@ class BookToDisplay
         $this->id = $id;
         $this->title = $title;
         $this->authorsString = $authorsString;
+        $this->average_rate = $average_rate;
+        $this->rate_count = $rate_count;
         $this->genre_id = $genre_id;
         $this->language_id = $language_id;
         $this->date_of_publication = $date_of_publication;
@@ -63,6 +69,18 @@ class BookToDisplay
     {
         return $this->authorsString;
     }
+
+    public function getAverageRate()
+    {
+        $value = floatval($this->average_rate);
+        return round($value, 1, null) ;
+    }
+
+    public function getRateCount()
+    {
+        return $this->rate_count;
+    }
+
 
     public function getGenreId()
     {

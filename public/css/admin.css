@@ -1,0 +1,23 @@
+.secondary-button{
+    align-self: center;
+}
+
+.profile-card-right-side{
+    gap:12px;
+}
+
+.secondary_menu__item{
+    padding: 0px;
+}
+
+.empty-header-container{
+    display: flex;
+    flex-direction: stretch;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.inter-semibold-16{
+    justify-content: center;
+}

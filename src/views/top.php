@@ -27,6 +27,7 @@
                 <li><a class="menu__item" href="/">Home</a></li>
                 <li><a class="menu__item" href="/top">Top</a></li>
                 <li><a class="menu__item" href="/profile">Profile</a></li>
+                <li><a class="menu__item" href="/admin">Admin</a></li>
                 <li class="divider"></li>
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
                 <li><a class="secondary_menu__item" href="/favorites">Favorites</a></li>
@@ -52,6 +53,7 @@
                 <li><a href="/">Home</a></li>
                 <li><a class="selected" href="/top">Top</a></li>
                 <li><a href="/profile">Profile</a></li>
+                <li><a href="/admin">Admin</a></li>
             </ul>
         </div>
         <div class="header-one-side">
@@ -129,11 +131,7 @@
 
                                 </div>
                                 <div class="inter-regular-12">
-                                    <?php
-
-                                    echo $bookIdToAuthors[$book->getId()];
-                                    ?>
-
+                                    <?= $book->getAuthorsString() ?>
                                 </div>
 
                             </div>
@@ -141,11 +139,11 @@
                                 <div class="score">
                                     <i class="material-icons">star_border</i>
                                     <div class="inter-light-14">
-                                        4.5 / 5
+                                        <?= $book->getAverageRate() ?> / 5
                                     </div>
                                 </div>
                                 <div class="inter-extra-light-14">
-                                    104 reviews
+                                    <?= $book->getRateCount() ?> reviews
                                 </div>
                             </div>
                         </div>

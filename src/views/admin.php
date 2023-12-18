@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/public/css/global.css">
     <link rel="stylesheet" type="text/css" href="/public/css/profile.css">
+    <link rel="stylesheet" type="text/css" href="/public/css/admin.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=DM Sans' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
 
-    <title>Profile</title>
+    <title>Admin</title>
 </head>
 
 <body>
@@ -51,8 +52,8 @@
             <ul class="menu">
                 <li><a href="/">Home</a></li>
                 <li><a href="/top">Top</a></li>
-                <li><a class="selected" href="/profile">Profile</a></li>
-                <li><a href="/admin">Admin</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a class="selected" href="/admin">Admin</a></li>
             </ul>
         </div>
         <div class="header-one-side">
@@ -95,54 +96,13 @@
                     You need to be logged in to see your profile.
                 </div>
             <?php else: ?>
-                <div class="image-section">
-                    <div id="imagePreview">
-                        <?php if ($avatar == null): ?>
-                            <div class="placeholder-image">
-                            </div>
-                        <?php else: ?>
-                            <img class="avatar-image" src=<?= 'public/uploads/' . $avatar ?> alt="News Image 1">
-                        <?php endif; ?>
-                    </div>
-                    <label for="imageUpload">
-                        <i class="material-icons">edit</i>
-                    </label>
-
-                    <form id="avatarForm" action="changeAvatar" method="post" enctype="multipart/form-data">
-                        <input type="file" id="imageUpload" name="image" accept="image/*" onchange="previewImage()">
-                    </form>
-
-
-                </div>
-                <div class="headline-h1-semibold">
-                    Hello,
-                    <?= $username ?>!
-                </div>
-
-                <script>
-                    function previewImage() {
-                        const imageUpload = document.getElementById('imageUpload');
-                        const imagePreview = document.getElementById('imagePreview');
-                        const avatarForm = document.getElementById('avatarForm');
-
-                        if (imageUpload.files.length > 0) {
-                            const selectedImage = URL.createObjectURL(imageUpload.files[0]);
-                            imagePreview.innerHTML = `<img src="${selectedImage}" alt="Selected Image">`;
-
-                            // Trigger form submission when an image is selected
-                            avatarForm.submit();
-                        } else {
-                            imagePreview.innerHTML = `<div class="placeholder-image"></div>`;
-                        }
-                    }
-                </script>
                 <div class="profile-menu">
                     <div class="profile-menu-item selected-profile-menu-item" onclick="toggleMenuItem(this, 'reviews')">
                         <div class="icon-background">
                             <i class="material-icons custom-icon">menu_book</i>
                         </div>
                         <div class="inter-semibold-16">
-                            Your Reviews
+                            Waiting Reviews
                         </div>
                     </div>
                     <div class="profile-menu-item not-selected-profile-menu-item" onclick="toggleMenuItem(this, 'books')">
@@ -150,11 +110,18 @@
                             <i class="material-icons custom-icon">menu_book</i>
                         </div>
                         <div class="inter-semibold-16">
-                            Your Books
+                            Waiting Books
                         </div>
                     </div>
                 </div>
                 <div class="list" id="reviewsList">
+                    <? if (empty($reviews)): ?>
+                        <div class="empty-header-container">
+                            <div class="inter-semibold-16">
+                                No reviews to accept or reject
+                            </div>
+                        </div>
+                    <?php endif; ?>
                     <?php foreach ($reviews as $review): ?>
                         <div class="card" onclick="routeToDetails('<?= $review->getBookId() ?>')">
                             <div class="card-content">
@@ -172,29 +139,33 @@
                                 </div>
                             </div>
                             <div class="profile-card-right-side">
-                                <div class="stars">
-                                    <i class="material-icons">star_border</i>
-                                    <div class="inter-light-14">
-                                        <?= $review->getRate() ?>/5
-                                    </div>
-                                </div>
-                                <?php
-                                // Determine the status based on accept_date and reject_date
-                                if ($review->getAcceptDate() !== null) {
-                                    echo '<div class="status-accepted">Accepted</div>';
-                                } elseif ($review->getRejectDate() !== null) {
-                                    echo '<div class="status-rejected">Rejected</div>';
-                                } else {
-                                    echo '<div class="status-awaiting">Awaiting</div>';
-                                }
-                                ?>
+                                <form action="/toggleReviewStatus" method="post">
+                                    <input type="hidden" name="review-id" value="<?= $review->getId() ?>">
+                                    <input type="hidden" name="action" value="accept">
+                                    <a class="secondary_menu__item">
+                                        <button type="submit">Accept</button>
+                                    </a>
+                                </form>
 
+                                <form action="/toggleReviewStatus" method="post">
+                                    <input type="hidden" name="review-id" value="<?= $review->getId() ?>">
+                                    <input type="hidden" name="action" value="reject">
+                                    <button class="secondary-button" type="submit">Reject</button>
+                                </form>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
 
                 <div class="list" id="booksList" style="display: none;">
+                <? if (empty($books)): ?>
+                        <div class="empty-header-container">
+                            <div class="inter-semibold-16">
+                                No books to accept or reject
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
                     <?php foreach ($books as $book): ?>
                         <div class="card" onclick="routeToDetails('<?= $book->getId() ?>')">
                             <div class="card-content">
@@ -225,27 +196,20 @@
                                 </div>
                             </div>
                             <div class="profile-card-right-side">
-                                <?php
-                                if ($book->getAcceptDate() !== null) {
-                                    echo ' <div class="stars">
-                                    <i class="material-icons">star_border</i>
-                                    <div class="inter-light-14">
-                                        ' . $book->getAverageRate() . '/5
-                                    </div>
-                                </div>';
-                                }
-                                ?>
 
-                                <?php
-                                // Determine the status based on accept_date and reject_date
-                                if ($book->getAcceptDate() !== null) {
-                                    echo '<div class="status-accepted">Accepted</div>';
-                                } elseif ($book->getRejectDate() !== null) {
-                                    echo '<div class="status-rejected">Rejected</div>';
-                                } else {
-                                    echo '<div class="status-awaiting">Awaiting</div>';
-                                }
-                                ?>
+                                <form action="/toggleBookStatus" method="post">
+                                    <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
+                                    <input type="hidden" name="action" value="accept">
+                                    <a class="secondary_menu__item">
+                                        <button type="submit">Accept</button>
+                                    </a>
+                                </form>
+
+                                <form action="/toggleBookStatus" method="post">
+                                    <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
+                                    <input type="hidden" name="action" value="reject">
+                                    <button class="secondary-button" type="submit">Reject</button>
+                                </form>
                             </div>
                         </div>
                     <?php endforeach; ?>

@@ -47,8 +47,6 @@ class SecurityController extends AppController
 
         $data = Session::getInstance();
         $data->__set('user-email', $user->getEmail());
-        $data->__set('user-name', $user->getName());
-        $data->__set('user-surname', $user->getSurname());
         $data->__set('user-id', $user->getId());
         $data->__set('is-logged', true);
 
@@ -80,8 +78,6 @@ class SecurityController extends AppController
 
         $data = Session::getInstance();
         $data->__set('user-email', $user->getEmail());
-        $data->__set('user-name', $user->getName());
-        $data->__set('user-surname', $user->getSurname());
         $data->__set('user-id', $user->getId());
         $data->__set('is-logged', true);
 

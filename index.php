@@ -12,6 +12,7 @@ Routing::get('top', 'DefaultController');
 Routing::get('favorites', 'DefaultController');
 Routing::get('registration', 'DefaultController');
 Routing::get('profile', 'DefaultController');
+Routing::get('admin', 'DefaultController');
 Routing::get('create', 'AddBookController');
 Routing::get('details', 'DefaultController');
 Routing::post('login', 'SecurityController');
@@ -20,6 +21,9 @@ Routing::post('logout', 'SecurityController');
 Routing::post('toggleFavorite', 'DefaultController');
 Routing::post('changeAvatar', 'DefaultController');
 Routing::post('addReview', 'DefaultController');
+Routing::post('toggleReviewStatus', 'DefaultController');
+Routing::post('toggleBookStatus', 'DefaultController');
+Routing::post('search', 'DefaultController');
 
 Routing::run($path);
 

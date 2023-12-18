@@ -6,6 +6,7 @@ require_once __DIR__ . '/../models/favorite/Favorite.php';
 require_once __DIR__ . '/../models/favorite/FavoriteWriteRequest.php';
 require_once __DIR__ . '/../models/author/Author.php';
 require_once __DIR__ . '/../models/review/ReviewToDisplay.php';
+require_once __DIR__ . '/../models/review/ReviewToCreatedByDisplay.php';
 require_once __DIR__ . '/../models/Session.php';
 require_once __DIR__ . '/../repository/BookRepository.php';
 require_once __DIR__ . '/../repository/GenreRepository.php';
@@ -45,13 +46,9 @@ class DefaultController extends AppController
     {
 
 
-        $books = $this->bookRepository->getMayInterestYouBooks();
-        $bookIdToAuthors = array();
+        $mayInterestYou = $this->bookRepository->getMayInterestYouBooks();
 
-        foreach ($books as $book) {
-            $bookId = $book->getId();
-            $bookIdToAuthors[$bookId] = $this->bookRepository->getAuthorStringForBookId($bookId);
-        }
+
 
 
 
@@ -63,8 +60,7 @@ class DefaultController extends AppController
                 'dashboard',
                 [
                     'isLogged' => $data->__get('is-logged'),
-                    'books' => $books,
-                    'bookIdToAuthors' => $bookIdToAuthors
+                    'mayInterestYou' => $mayInterestYou,
                 ],
             );
             return;
@@ -77,8 +73,7 @@ class DefaultController extends AppController
             'dashboard',
             [
                 'isLogged' => $data->__get('is-logged'),
-                'books' => $books,
-                'bookIdToAuthors' => $bookIdToAuthors,
+                'mayInterestYou' => $mayInterestYou,
                 'favorites' => $favorites
             ],
         );
@@ -86,12 +81,7 @@ class DefaultController extends AppController
     public function top()
     {
         $books = $this->bookRepository->getTopBooks();
-        $bookIdToAuthors = array();
 
-        foreach ($books as $book) {
-            $bookId = $book->getId();
-            $bookIdToAuthors[$bookId] = $this->bookRepository->getAuthorStringForBookId($bookId);
-        }
 
         $data = Session::getInstance();
         $userId = $data->__get('user-id');
@@ -103,7 +93,6 @@ class DefaultController extends AppController
                 [
                     'isLogged' => $data->__get('is-logged'),
                     'books' => $books,
-                    'bookIdToAuthors' => $bookIdToAuthors,
                     'favorites' => []
                 ],
             );
@@ -116,7 +105,6 @@ class DefaultController extends AppController
             [
                 'isLogged' => $data->__get('is-logged'),
                 'books' => $books,
-                'bookIdToAuthors' => $bookIdToAuthors,
                 'favorites' => $favorites
             ],
         );
@@ -147,6 +135,42 @@ class DefaultController extends AppController
             );
         } else {
             $this->favoriteRepository->removeFavoriteWithId($existFavorite->getId());
+        }
+
+        $source = $_SERVER["HTTP_REFERER"];
+        header("Location: $source");
+    }
+    public function toggleReviewStatus()
+    {
+        if (!$this->isPost()) {
+            return;
+        }
+
+        $reviewId = $_POST['review-id'];
+        $action = $_POST['action'];
+
+        if ($action == 'accept') {
+            $this->reviewRepository->acceptReviewForReviewId($reviewId);
+        } else if ($action == 'reject') {
+            $this->reviewRepository->rejectReviewForReviewId($reviewId);
+        }
+
+        $source = $_SERVER["HTTP_REFERER"];
+        header("Location: $source");
+    }
+    public function toggleBookStatus()
+    {
+        if (!$this->isPost()) {
+            return;
+        }
+
+        $bookId = $_POST['book-id'];
+        $action = $_POST['action'];
+
+        if ($action == 'accept') {
+            $this->bookRepository->acceptBookForBookId($bookId);
+        } else if ($action == 'reject') {
+            $this->bookRepository->rejectBookForBookId($bookId);
         }
 
         $source = $_SERVER["HTTP_REFERER"];
@@ -326,6 +350,32 @@ class DefaultController extends AppController
         );
     }
 
+    public function admin()
+    {
+        $data = Session::getInstance();
+
+        if (!$data->__get('is-logged')) {
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/");
+            return;
+        }
+
+
+        $reviews = $this->reviewRepository->getReviewToDisplayForAdmin();
+
+        $books = $this->bookRepository->getBooksToDisplayForAdmin();
+
+
+        $this->render(
+            'admin',
+            [
+                'isLogged' => $data->__get('is-logged'),
+                'reviews' => $reviews,
+                'books' => $books
+            ],
+        );
+    }
+
     public function details(string $params)
     {
         $data = Session::getInstance();
@@ -337,6 +387,17 @@ class DefaultController extends AppController
         }
 
         $book = $this->bookRepository->getBookFromId($params);
+        $reviews = $this->reviewRepository->getReviewToDisplayForBookId($params);
+        $average = 0;
+        foreach ($reviews as $review) {
+            $average += $review->getRate();
+        }
+
+        if (count($reviews) > 0) {
+            $average = $average / count($reviews);
+        }
+
+
 
         $authorString = $this->bookRepository->getAuthorStringForBookId($book->getId());
         $genre = $this->genreRepository->getGenreFromId($book->getGenreId());
@@ -359,9 +420,12 @@ class DefaultController extends AppController
                 'authorString' => $authorString,
                 'genreString' => $genre->getGenre(),
                 'languageString' => $language->getLanguage(),
-                'userName' => $data->__get('user-name'),
+                'userName' => $user->getName(),
                 'nowString' => $date->format('d.m.Y') . 'r.',
-                'userAvatar' => $user->getAvatar()
+                'userAvatar' => $user->getAvatar(),
+                'reviews' => $reviews,
+                'average' => $average,
+
             ],
         );
 
