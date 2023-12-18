@@ -45,36 +45,66 @@ class DefaultController extends AppController
     public function dashboard()
     {
 
+        $data = Session::getInstance();
+        $title = $_POST['title'];
+        $name = $_POST['name'];
+        $surname = $_POST['surname'];
+
+        $isEmpty = empty($title) && empty($name) && empty($surname);
+
+        $userId = $data->__get('user-id');
+        $favorites = $userId ? $this->favoriteRepository->getFavoriteFromUserId($userId) : [];
+
+
+        if ($this->isPost() && !$isEmpty) {
+            $filtered = $this->bookRepository->getFilteredBooks($title, $name, $surname);
+
+            $this->render(
+                'dashboard',
+                [
+                    'isLogged' => $data->__get('is-logged'),
+                    'filtered' => $filtered,
+                    'mayInterestYou' => false,
+                    'books' => $filtered,
+                    'favorites' => $favorites,
+                    'initialTitle' => $title,
+                    'initialName' => $name,
+                    'initialSurname' => $surname
+
+                ],
+            );
+            return;
+        }
 
         $mayInterestYou = $this->bookRepository->getMayInterestYouBooks();
 
-
-
-
-
-        $data = Session::getInstance();
-        $userId = $data->__get('user-id');
 
         if (!$userId) {
             $this->render(
                 'dashboard',
                 [
                     'isLogged' => $data->__get('is-logged'),
-                    'mayInterestYou' => $mayInterestYou,
+                    'mayInterestYou' => !empty($mayInterestYou),
+                    'books' => $mayInterestYou,
+                    'favorites' => [],
+                    'initialTitle' => $title,
+                    'initialName' => $name,
+                    'initialSurname' => $surname
                 ],
             );
             return;
         }
 
-        $favorites = $this->favoriteRepository->getFavoriteFromUserId($userId);
-
-
         $this->render(
             'dashboard',
             [
                 'isLogged' => $data->__get('is-logged'),
-                'mayInterestYou' => $mayInterestYou,
-                'favorites' => $favorites
+                'mayInterestYou' => !empty($mayInterestYou),
+                'books' => $mayInterestYou,
+                'favorites' => $favorites,
+                'initialTitle' => $title,
+                'initialName' => $name,
+                'initialSurname' => $surname
             ],
         );
     }

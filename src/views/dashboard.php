@@ -96,10 +96,10 @@
                 What can I find for you?
 
             </div>
-            <form class="header-form" action="search" method="post">
-                <input type="text" id="title" name="title" placeholder="Title" required>
-                <input type="text" id="author_name" name="author_name" placeholder="Author's name" required>
-                <input type="text" id="author_surname" name="author_surname" placeholder="Author's surname" required>
+            <form class="header-form" action="dashboard" method="post">
+                <input type="text" id="title" name="title" value="<?=$initialTitle?>" placeholder="Title">
+                <input type="text" id="author_name" name="name" value="<?=$initialName?>" placeholder="Author's name">
+                <input type="text" id="author_surname" name="surname" value="<?=$initialSurname?>" placeholder="Author's surname">
                 <button type="submit">Search</button>
             </form>
             <div class="dashboard-content">
@@ -110,9 +110,9 @@
                     </div>
                 <?php endif; ?>
                 <div class="news">
-                    <?php foreach ($mayInterestYou as $book): ?>
+                    <?php foreach ($books as $book): ?>
                         <div class="news-container" onclick="routeToDetails('<?= $book->getId() ?>')">
-                            <img class="news-image" src=<?= 'public/uploads/' . $book->getImage() ?> alt="News Image 1">
+                            <img class="news-image" src=<?= '/public/uploads/' . $book->getImage() ?> alt="News Image 1">
                             <div class="news-description">
                                 <div class="card-header">
                                     <div class="title">

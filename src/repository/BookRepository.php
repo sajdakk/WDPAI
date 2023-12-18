@@ -175,31 +175,62 @@ class BookRepository extends Repository
 
     public function getFilteredBooks(?string $title, ?string $author_name, ?string $author_surname): array
     {
-        $stmt = $this->database->connect()->prepare('
+        $query = '
         SELECT
-        b.*
+        b.*,
+        COALESCE(author_names.author_string, \'\') AS author_string,
+        COALESCE(AVG(r.rate), 0) AS average_rate,
+        COUNT(r.id) AS rate_count
     FROM
         books b
-    JOIN
-        author_book ab ON b.book_id = ab.book_id
-    JOIN
-        author a ON ab.author_id = a.id
+    JOIN (
+        SELECT
+            ab.book_id,
+            string_agg(a.name || \' \' || a.surname, \', \') AS author_string
+        FROM
+            author_book ab
+        JOIN
+            authors a ON ab.author_id = a.id
+        GROUP BY
+            ab.book_id
+    ) author_names ON b.id = author_names.book_id
+    LEFT JOIN
+        reviews r ON b.id = r.book_id
     WHERE
-        (:author_name IS NULL OR a.name = :author_name)
-        AND (:author_surname IS NULL OR a.surname = :author_surname)
-        AND (:title IS NULL OR b.title = :title);
-    
-        ');
+        (COALESCE(:title, \'\') = \'\' OR b.title LIKE :titleWildcard)
+        AND (COALESCE(:author_name, \'\') = \'\' OR author_names.author_string LIKE :authorNameWildcard)
+        AND (COALESCE(:author_surname, \'\') = \'\' OR author_names.author_string LIKE :authorSurnameWildcard)
+    GROUP BY
+        b.id, author_names.author_string;
+        ';
 
-        $stmt->bindParam(':title', $title, ':author_surname', $author_surname, ':author_name', $author_name, PDO::PARAM_STR);
+
+
+        $stmt = $this->database->connect()->prepare($query);
+
+        // Bind parameters
+        $stmt->bindParam(':title', $title, PDO::PARAM_STR);
+        $stmt->bindValue(':titleWildcard', '%' . $title . '%', PDO::PARAM_STR); // Use wildcard for partial matching
+        $stmt->bindParam(':author_name', $author_name, PDO::PARAM_STR);
+        $stmt->bindValue(':authorNameWildcard', '%' . $author_name . '%', PDO::PARAM_STR); // Use wildcard for partial matching
+        $stmt->bindParam(':author_surname', $author_surname, PDO::PARAM_STR);
+        $stmt->bindValue(':authorSurnameWildcard', '%' . $author_surname . '%', PDO::PARAM_STR); // Use wildcard for partial matching
+
+        // Execute the query
         $stmt->execute();
+
+        // Fetch the results
         $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
 
+        // Process the results
         foreach ($books as $book) {
-            $result[] = new Book(
+            $result[] = new BookToDisplay(
                 $book['id'],
                 $book['title'],
+                $book['author_string'],
+                $book['average_rate'],
+                $book['rate_count'],
                 $book['genre_id'],
                 $book['language_id'],
                 $book['date_of_publication'],
@@ -211,11 +242,16 @@ class BookRepository extends Repository
                 $book['accept_date'],
                 $book['created_by'],
                 $book['reject_date']
+
             );
         }
 
         return $result;
     }
+
+
+
+
 
 
     public function getBookFromId(string $bookId): ?Book

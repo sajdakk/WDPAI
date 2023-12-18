@@ -8,6 +8,7 @@ $path = parse_url($path, PHP_URL_PATH);
 
 Routing::get('login', 'DefaultController');
 Routing::get('dashboard', 'DefaultController');
+Routing::get('', 'DefaultController');
 Routing::get('top', 'DefaultController');
 Routing::get('favorites', 'DefaultController');
 Routing::get('registration', 'DefaultController');
@@ -23,7 +24,7 @@ Routing::post('changeAvatar', 'DefaultController');
 Routing::post('addReview', 'DefaultController');
 Routing::post('toggleReviewStatus', 'DefaultController');
 Routing::post('toggleBookStatus', 'DefaultController');
-Routing::post('search', 'DefaultController');
+Routing::post('dashboard', 'DefaultController');
 
 Routing::run($path);
 
