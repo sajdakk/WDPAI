@@ -113,7 +113,16 @@
                             Waiting Books
                         </div>
                     </div>
+                    <div class="profile-menu-item not-selected-profile-menu-item" onclick="toggleMenuItem(this, 'users')">
+                        <div class="icon-background">
+                            <i class="material-icons custom-icon">groups</i>
+                        </div>
+                        <div class="inter-semibold-16">
+                            All Users
+                        </div>
+                    </div>
                 </div>
+
                 <div class="list" id="reviewsList">
                     <? if (empty($reviews)): ?>
                         <div class="empty-header-container">
@@ -158,7 +167,7 @@
                 </div>
 
                 <div class="list" id="booksList" style="display: none;">
-                <? if (empty($books)): ?>
+                    <? if (empty($books)): ?>
                         <div class="empty-header-container">
                             <div class="inter-semibold-16">
                                 No books to accept or reject
@@ -215,6 +224,60 @@
                     <?php endforeach; ?>
                 </div>
 
+                <div class="list" id="usersList" style="display: none;">
+                    <? if (empty($users)): ?>
+                        <div class="empty-header-container">
+                            <div class="inter-semibold-16">
+                                No users to accept or reject
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <?php foreach ($users as $user): ?>
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <div class="inter-semibold-16">
+                                        <?= $user->getName() . ' ' . $user->getSurname() ?>
+                                    </div>
+                                    <div class="dmsans-regular-14">
+                                        E-mail:
+                                        <?= $user->getEmail() ?>
+                                    </div>
+                                    <div class="inter-regular-12">
+                                        Role:
+                                        <?= $user->getRole() ?>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="profile-card-right-side">
+                                <form action="/toggleUserStatus" method="post">
+                                    <input type="hidden" name="user-id" value="<?= $user->getId() ?>">
+                                    <input type="hidden" name="action"
+                                        value="<?php echo trim(($user->getRole() == 'admin') ? 'removeAdmin' : 'addAdmin'); ?>">
+                                    <a class="secondary_menu__item">
+                                        <button type="submit">
+                                            <?php if ($user->getRole() == 'admin') {
+                                                echo 'Remove admin';
+                                            } else {
+                                                echo 'Add admin';
+                                            } ?>
+
+                                        </button>
+                                    </a>
+                                </form>
+
+                                <form action="/toggleUserStatus" method="post">
+                                    <input type="hidden" name="user-id" value="<?= $user->getId() ?>">
+                                    <input type="hidden" name="action" value="removeUser">
+                                    <button class="secondary-button" type="submit">Delete account</button>
+                                </form>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
                 <div class="list">
 
                     <script>
@@ -239,13 +302,21 @@
                             // Show/hide the corresponding list based on the selected menu item
                             const reviewsList = document.getElementById('reviewsList');
                             const booksList = document.getElementById('booksList');
+                            const usersList = document.getElementById('usersList');
 
                             if (listType === 'reviews') {
                                 reviewsList.style.display = 'flex';
                                 booksList.style.display = 'none';
-                            } else {
+                                usersList.style.display = 'none';
+                            } else if (listType === 'books') {
                                 reviewsList.style.display = 'none';
                                 booksList.style.display = 'flex';
+                                usersList.style.display = 'none';
+                            }
+                            else if (listType === 'users') {
+                                reviewsList.style.display = 'none';
+                                booksList.style.display = 'none';
+                                usersList.style.display = 'flex';
                             }
                         }
 

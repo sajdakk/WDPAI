@@ -27,6 +27,8 @@
                 <li><a class="menu__item" href="/top">Top</a></li>
                 <?php if ($isLogged): ?>
                     <li><a class="menu__item" href="/profile">Profile</a></li>
+                <?php endif; ?>
+                <?php if ($isAdmin): ?>
                     <li><a class="menu__item" href="/admin">Admin</a></li>
                 <?php endif; ?>
                 <li class="divider"></li>
@@ -44,6 +46,8 @@
                 <li><a href="/top">Top</a></li>
                 <?php if ($isLogged): ?>
                     <li><a href="/profile">Profile</a></li>
+                <?php endif; ?>
+                <?php if ($isAdmin): ?>
                     <li><a href="/admin">Admin</a></li>
                 <?php endif; ?>
             </ul>
@@ -88,16 +92,27 @@
                         <div class="toggle-button" onclick="togglePassword()"><i class="material-icons"
                                 id="visibilityIcon">visibility</i></div>
                     </div>
-                    <div id="validation">
-                        <?php if (isset($messages)) {
+                    <?php if (isset($messages) && !empty($messages)): ?>
+                        <div id="validation">
+                            <?php
                             foreach ($messages as $message) {
                                 echo $message;
                             }
-                        } ?>
-                    </div>
+                            ?>
+                        </div>
+                    <?php else: ?>
+                        <div id="validation" style="display: none;"></div>
+                    <?php endif; ?>
                     <button type="submit">Sign in</button>
 
                 </form>
+
+                <div id="have-account-row">
+                    <div id="have-account">
+                        You don't have an account?</div>
+                    <div id="have-account-answer" onclick="routeToRegistration()">
+                        Sign Up</div>
+                </div>
                 <script>
                     function togglePassword() {
                         const passwordInput = document.getElementById('password');
@@ -111,13 +126,11 @@
                             visibilityIcon.textContent = 'visibility';
                         }
                     }
+
+                    function routeToRegistration() {
+                        window.location.href = '/registration';
+                    }
                 </script>
-                <div id="have-account-row">
-                    <div id="have-account">
-                        You don't have an account?</div>
-                    <div id="have-account-answer">
-                        Sign Up</div>
-                </div>
             </div>
         </div>
     </main>

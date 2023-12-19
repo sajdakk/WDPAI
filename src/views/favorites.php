@@ -27,8 +27,10 @@
                 <li><a class="menu__item" href="/">Home</a></li>
                 <li><a class="menu__item" href="/top">Top</a></li>
                 <?php if ($isLogged): ?>
-                <li><a class="menu__item" href="/profile">Profile</a></li>
-                <li><a class="menu__item" href="/admin">Admin</a></li>
+                    <li><a class="menu__item" href="/profile">Profile</a></li>
+                <?php endif; ?>
+                <?php if ($isAdmin): ?>
+                    <li><a class="menu__item" href="/admin">Admin</a></li>
                 <?php endif; ?>
                 <li class="divider"></li>
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
@@ -55,8 +57,10 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/top">Top</a></li>
                 <?php if ($isLogged): ?>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/admin">Admin</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                <?php endif; ?>
+                <?php if ($isAdmin): ?>
+                    <li><a href="/admin">Admin</a></li>
                 <?php endif; ?>
             </ul>
         </div>

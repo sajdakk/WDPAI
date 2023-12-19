@@ -648,7 +648,6 @@ ul {
     line-height: 18px;
     text-overflow: ellipsis;
     box-sizing: border-box;
-    flex: 1;
     min-height: 0;
 }
 

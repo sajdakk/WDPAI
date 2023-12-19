@@ -41,3 +41,13 @@ form {
     word-wrap: break-word;
 
 }
+
+@media screen and (max-width: 780px) {
+    .dashboard-content{
+        padding-top: 0;
+        gap:24px;
+    }
+
+
+
+}

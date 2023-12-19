@@ -27,6 +27,8 @@
                 <li><a class="menu__item" href="/top">Top</a></li>
                 <?php if ($isLogged): ?>
                     <li><a class="menu__item" href="/profile">Profile</a></li>
+                <?php endif; ?>
+                <?php if ($isAdmin): ?>
                     <li><a class="menu__item" href="/admin">Admin</a></li>
                 <?php endif; ?>
 
@@ -56,6 +58,8 @@
                 <li><a href="/top">Top</a></li>
                 <?php if ($isLogged): ?>
                     <li><a href="/profile">Profile</a></li>
+                <?php endif; ?>
+                <?php if ($isAdmin): ?>
                     <li><a href="/admin">Admin</a></li>
                 <?php endif; ?>
             </ul>

@@ -24,6 +24,7 @@ Routing::post('changeAvatar', 'DefaultController');
 Routing::post('addReview', 'DefaultController');
 Routing::post('toggleReviewStatus', 'DefaultController');
 Routing::post('toggleBookStatus', 'DefaultController');
+Routing::post('toggleUserStatus', 'DefaultController');
 Routing::post('dashboard', 'DefaultController');
 
 Routing::run($path);

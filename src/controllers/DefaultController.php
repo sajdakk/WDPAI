@@ -13,6 +13,7 @@ require_once __DIR__ . '/../repository/GenreRepository.php';
 require_once __DIR__ . '/../repository/LanguageRepository.php';
 require_once __DIR__ . '/../repository/FavoriteRepository.php';
 require_once __DIR__ . '/../repository/ReviewRepository.php';
+require_once __DIR__ . '/SecurityController.php';
 
 
 class DefaultController extends AppController
@@ -24,6 +25,7 @@ class DefaultController extends AppController
     private $favoriteRepository;
     private $userRepository;
     private $reviewRepository;
+    private $securityController;
 
 
     const MAX_FILE_SIZE = 1024 * 1024;
@@ -40,6 +42,7 @@ class DefaultController extends AppController
         $this->favoriteRepository = new FavoriteRepository();
         $this->userRepository = new UserRepository();
         $this->reviewRepository = new ReviewRepository();
+        $this->securityController = new SecurityController();
     }
 
     public function dashboard()
@@ -54,6 +57,7 @@ class DefaultController extends AppController
 
         $userId = $data->__get('user-id');
         $favorites = $userId ? $this->favoriteRepository->getFavoriteFromUserId($userId) : [];
+
 
 
         if ($this->isPost() && !$isEmpty) {
@@ -95,6 +99,26 @@ class DefaultController extends AppController
             return;
         }
 
+
+        $user = $this->userRepository->getUserWithId($userId);
+
+        if ($user == null) {
+            $this->render(
+                'dashboard',
+                [
+                    'isLogged' => $data->__get('is-logged'),
+                    'mayInterestYou' => !empty($mayInterestYou),
+                    'books' => $mayInterestYou,
+                    'favorites' => [],
+                    'initialTitle' => $title,
+                    'initialName' => $name,
+                    'initialSurname' => $surname
+                ],
+            );
+            return;
+        }
+
+
         $this->render(
             'dashboard',
             [
@@ -104,7 +128,8 @@ class DefaultController extends AppController
                 'favorites' => $favorites,
                 'initialTitle' => $title,
                 'initialName' => $name,
-                'initialSurname' => $surname
+                'initialSurname' => $surname,
+                'isAdmin' => $user->getRole() == 'admin'
             ],
         );
     }
@@ -131,13 +156,17 @@ class DefaultController extends AppController
         }
 
         $favorites = $this->favoriteRepository->getFavoriteFromUserId($userId);
+        $user = $this->userRepository->getUserWithId($userId);
+
 
         $this->render(
             'top',
             [
                 'isLogged' => $data->__get('is-logged'),
                 'books' => $books,
-                'favorites' => $favorites
+                'favorites' => $favorites,
+                'isAdmin' => $user->getRole() == 'admin'
+
             ],
         );
     }
@@ -204,6 +233,38 @@ class DefaultController extends AppController
         } else if ($action == 'reject') {
             $this->bookRepository->rejectBookForBookId($bookId);
         }
+
+        $source = $_SERVER["HTTP_REFERER"];
+        header("Location: $source");
+    }
+
+    public function toggleUserStatus()
+    {
+        if (!$this->isPost()) {
+            return;
+        }
+
+        $userId = trim($_POST['user-id']);
+        $action = trim($_POST['action']);
+
+
+        if ($action == 'removeAdmin') {
+            $this->userRepository->removeAdminToUserId($userId);
+        } else if ($action == 'addAdmin') {
+            $this->userRepository->addAdminToUserId($userId);
+        } else if ($action == 'removeUser') {
+            $data = Session::getInstance();
+            $currentUserId = $data->__get('user-id');
+
+            $this->userRepository->removeUserWithId($userId);
+
+            if ($currentUserId == $userId) {
+                $this->securityController->logout();
+                return;
+            }
+        }
+
+
 
         $source = $_SERVER["HTTP_REFERER"];
         header("Location: $source");
@@ -323,6 +384,8 @@ class DefaultController extends AppController
                     'bookIdToAuthors' => []
                 ],
             );
+
+            return;
         }
 
 
@@ -338,13 +401,17 @@ class DefaultController extends AppController
             $bookIdToAuthors[$bookId] = $this->bookRepository->getAuthorStringForBookId($bookId);
         }
 
+        $user = $this->userRepository->getUserWithId($userId);
+
+
         $this->render(
             'favorites',
             [
                 'isLogged' => $data->__get('is-logged'),
                 'books' => $books,
                 'bookIdToAuthors' => $bookIdToAuthors,
-                'favorites' => $favorites
+                'favorites' => $favorites,
+                'isAdmin' => $user->getRole() == 'admin'
             ],
         );
     }
@@ -368,8 +435,6 @@ class DefaultController extends AppController
         $books = $this->bookRepository->getBooksToDisplayFromUserId($user->getId());
 
 
-
-
         $this->render(
             'profile',
             [
@@ -377,7 +442,8 @@ class DefaultController extends AppController
                 'avatar' => $user->getAvatar(),
                 'username' => $user->getName(),
                 'reviews' => $reviews,
-                'books' => $books
+                'books' => $books,
+                'isAdmin' => $user->getRole() == 'admin'
             ],
         );
     }
@@ -389,11 +455,25 @@ class DefaultController extends AppController
 
     public function admin()
     {
+
+        $data = Session::getInstance();
+        $userId = $data->__get('user-id');
+        $user = $this->userRepository->getUserWithId($userId);
+
+        if (!$user || $user->getRole() != 'admin') {
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/");
+            return;
+        }
+
+
         $data = Session::getInstance();
 
         $reviews = $this->reviewRepository->getReviewToDisplayForAdmin();
 
         $books = $this->bookRepository->getBooksToDisplayForAdmin();
+
+        $users = $this->userRepository->getUsers();
 
 
         $this->render(
@@ -401,7 +481,8 @@ class DefaultController extends AppController
             [
                 'isLogged' => $data->__get('is-logged'),
                 'reviews' => $reviews,
-                'books' => $books
+                'books' => $books,
+                'users' => $users
             ],
         );
     }
@@ -477,6 +558,7 @@ class DefaultController extends AppController
                 'userAvatar' => $user->getAvatar(),
                 'reviews' => $reviews,
                 'average' => $average,
+                'isAdmin' => $user->getRole() == 'admin'
 
             ],
         );

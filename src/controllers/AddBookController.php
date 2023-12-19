@@ -8,6 +8,7 @@ require_once __DIR__ . '/../repository/BookRepository.php';
 require_once __DIR__ . '/../repository/GenreRepository.php';
 require_once __DIR__ . '/../repository/LanguageRepository.php';
 require_once __DIR__ . '/../repository/AuthorRepository.php';
+require_once __DIR__ . '/../repository/UserRepository.php';
 
 
 class AddBookController extends AppController
@@ -21,6 +22,7 @@ class AddBookController extends AppController
     private $genreRepository;
     private $languageRepository;
     private $authorRepository;
+    private $userRepository;
 
     public function __construct()
     {
@@ -29,6 +31,7 @@ class AddBookController extends AppController
         $this->genreRepository = new GenreRepository();
         $this->languageRepository = new LanguageRepository();
         $this->authorRepository = new AuthorRepository();
+        $this->userRepository = new UserRepository();
     }
 
     public function create()
@@ -38,17 +41,41 @@ class AddBookController extends AppController
         $authors = $this->authorRepository->getAuthors();
         $data = Session::getInstance();
 
+        $userId = $data->__get('user-id');
+
+
+
+
         if (!$this->isPost()) {
 
-            $this->render(
-                'create',
-                [
-                    'isLogged' => $data->__get('is-logged'),
-                    'authors' => $authors,
-                    'languages' => $languages,
-                    'genres' => $genres
-                ],
-            );
+            if (!$userId) {
+                $this->render(
+                    'create',
+                    [
+                        'isLogged' => $data->__get('is-logged'),
+                        'authors' => $authors,
+                        'languages' => $languages,
+                        'genres' => $genres
+                    ],
+                );
+            } else {
+                $user = $this->userRepository->getUserWithId($userId);
+
+
+                $this->render(
+                    'create',
+                    [
+                        'isLogged' => $data->__get('is-logged'),
+                        'authors' => $authors,
+                        'languages' => $languages,
+                        'genres' => $genres,
+                        'isAdmin' => $user->getRole() === 'admin'
+
+                    ],
+                );
+            }
+
+
 
             return;
         }

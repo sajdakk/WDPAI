@@ -25,8 +25,10 @@
                 <li><a class="menu__item" href="/">Home</a></li>
                 <li><a class="menu__item" href="/top">Top</a></li>
                 <?php if ($isLogged): ?>
-                <li><a class="menu__item" href="/profile">Profile</a></li>
-                <li><a class="menu__item" href="/admin">Admin</a></li>
+                    <li><a class="menu__item" href="/profile">Profile</a></li>
+                <?php endif; ?>
+                <?php if ($isAdmin): ?>
+                    <li><a class="menu__item" href="/admin">Admin</a></li>
                 <?php endif; ?>
                 <li class="divider"></li>
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
@@ -50,11 +52,13 @@
         <div class="header-one-side">
             <div id="small-logo">Flipbook</div>
             <ul class="menu">
-                <li><a class="selected" href="/">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="/top">Top</a></li>
                 <?php if ($isLogged): ?>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/admin">Admin</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                <?php endif; ?>
+                <?php if ($isAdmin): ?>
+                    <li><a href="/admin">Admin</a></li>
                 <?php endif; ?>
             </ul>
         </div>
@@ -128,7 +132,7 @@
                     <div class="stars">
                         <i class="material-icons custom-icon">star_border</i>
                         <div class="inter-light-24">
-                            <?=$average ?>/5
+                            <?= $average ?>/5
                         </div>
                     </div>
                 </div>
@@ -174,65 +178,65 @@
                 </div>
             <?php else: ?>
 
-            <div class="card">
-                <img class="imagePreview" src=<?= '/public/uploads/' . $userAvatar ?> alt="News Image 1">
-                <div class="review-content">
-                    <div class="inter-semibold-16">
-                        <?= $userName ?> |
-                        <?= $nowString ?>
-                    </div>
-                    <form class="header-form" id="reviewForm" action="addReview" method="post">
-                        <input type="text" id="review" name="review" placeholder="Type something..." required>
-                        <div class="review-mobile-stars" onclick="selectStar(event)">
+                <div class="card">
+                    <img class="imagePreview" src=<?= '/public/uploads/' . $userAvatar ?> alt="News Image 1">
+                    <div class="review-content">
+                        <div class="inter-semibold-16">
+                            <?= $userName ?> |
+                            <?= $nowString ?>
+                        </div>
+                        <form class="header-form" id="reviewForm" action="addReview" method="post">
+                            <input type="text" id="review" name="review" placeholder="Type something..." required>
+                            <div class="review-mobile-stars" onclick="selectStar(event)">
+                                <i class="material-icons review-icon" onclick="selectStar(1)">star_border</i>
+                                <i class="material-icons review-icon" onclick="selectStar(2)">star_border</i>
+                                <i class="material-icons review-icon" onclick="selectStar(3)">star_border</i>
+                                <i class="material-icons review-icon" onclick="selectStar(4)">star_border</i>
+                                <i class="material-icons review-icon" onclick="selectStar(5)">star_border</i>
+                            </div>
+                            <input type="hidden" name="rate" id="review-rate" value="0" />
+                            <button type="submit" onclick="changeFormAction()">Sent to review</button>
+                        </form>
+                        <div class="review-stars">
                             <i class="material-icons review-icon" onclick="selectStar(1)">star_border</i>
                             <i class="material-icons review-icon" onclick="selectStar(2)">star_border</i>
                             <i class="material-icons review-icon" onclick="selectStar(3)">star_border</i>
                             <i class="material-icons review-icon" onclick="selectStar(4)">star_border</i>
                             <i class="material-icons review-icon" onclick="selectStar(5)">star_border</i>
                         </div>
-                        <input type="hidden" name="rate" id="review-rate" value="0" />
-                        <button type="submit" onclick="changeFormAction()">Sent to review</button>
-                    </form>
-                    <div class="review-stars">
-                        <i class="material-icons review-icon" onclick="selectStar(1)">star_border</i>
-                        <i class="material-icons review-icon" onclick="selectStar(2)">star_border</i>
-                        <i class="material-icons review-icon" onclick="selectStar(3)">star_border</i>
-                        <i class="material-icons review-icon" onclick="selectStar(4)">star_border</i>
-                        <i class="material-icons review-icon" onclick="selectStar(5)">star_border</i>
-                    </div>
 
-                    <script>
-                        function selectStar(value) {
-                            const stars = document.querySelectorAll('.review-stars > i');
+                        <script>
+                            function selectStar(value) {
+                                const stars = document.querySelectorAll('.review-stars > i');
 
-                            stars.forEach(star => star.textContent = 'star_border');
-                            for (let i = 0; i < value; i++) {
-                                stars[i].textContent = 'star';
+                                stars.forEach(star => star.textContent = 'star_border');
+                                for (let i = 0; i < value; i++) {
+                                    stars[i].textContent = 'star';
+                                }
+
+                                const reviewRate = document.querySelector('#review-rate');
+                                reviewRate.value = value;
                             }
 
-                            const reviewRate = document.querySelector('#review-rate');
-                            reviewRate.value = value;
-                        }
+                            function changeFormAction() {
+                                // Get the current base URL
+                                const baseURL = window.location.origin;
 
-                        function changeFormAction() {
-                            // Get the current base URL
-                            const baseURL = window.location.origin;
-
-                            // Replace everything after the base URL with '/addReview'
-                            const newURL = `${baseURL}/addReview`;
+                                // Replace everything after the base URL with '/addReview'
+                                const newURL = `${baseURL}/addReview`;
 
 
 
-                            // Change the form action attribute
-                            document.getElementById('reviewForm').action = newURL;
+                                // Change the form action attribute
+                                document.getElementById('reviewForm').action = newURL;
 
-                            // Submit the form
-                            document.getElementById('reviewForm').submit();
-                        }
-                    </script>
+                                // Submit the form
+                                document.getElementById('reviewForm').submit();
+                            }
+                        </script>
+                    </div>
+
                 </div>
-
-            </div>
             <?php endif; ?>
             <div class="headline-h1-semibold">
                 What people are saying?

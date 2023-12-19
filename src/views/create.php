@@ -26,8 +26,11 @@
                 <li><a class="menu__item" href="/">Home</a></li>
                 <li><a class="menu__item" href="/top">Top</a></li>
                 <?php if ($isLogged): ?>
-                <li><a class="menu__item" href="/profile">Profile</a></li>
-                <li><a class="menu__item" href="/admin">Admin</a></li>
+                    <li><a class="menu__item" href="/profile">Profile</a></li>
+                <?php endif; ?>
+
+                <?php if ($isAdmin): ?>
+                    <li><a class="menu__item" href="/admin">Admin</a></li>
                 <?php endif; ?>
 
                 <li class="divider"></li>
@@ -57,8 +60,11 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/top">Top</a></li>
                 <?php if ($isLogged): ?>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/admin">Admin</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                <?php endif; ?>
+
+                <?php if ($isAdmin): ?>
+                    <li><a href="/admin">Admin</a></li>
                 <?php endif; ?>
             </ul>
         </div>
@@ -105,7 +111,7 @@
                 <div class="header">
                     Create book
                 </div>
-                <form class="create-form" action="create" method="post"  ENCTYPE="multipart/form-data">
+                <form class="create-form" action="create" method="post" ENCTYPE="multipart/form-data">
                     <input type="text" id="title" name="title" placeholder="Title" required>
                     <select id="language" name="language" required>
                         <option value="" disabled selected>Language</option>
