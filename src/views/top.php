@@ -26,8 +26,10 @@
             <ul class="menu__box">
                 <li><a class="menu__item" href="/">Home</a></li>
                 <li><a class="menu__item" href="/top">Top</a></li>
+                <?php if ($isLogged): ?>
                 <li><a class="menu__item" href="/profile">Profile</a></li>
                 <li><a class="menu__item" href="/admin">Admin</a></li>
+                <?php endif; ?>
                 <li class="divider"></li>
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
                 <li><a class="secondary_menu__item" href="/favorites">Favorites</a></li>
@@ -52,8 +54,10 @@
             <ul class="menu">
                 <li><a href="/">Home</a></li>
                 <li><a class="selected" href="/top">Top</a></li>
+                <?php if ($isLogged): ?>
                 <li><a href="/profile">Profile</a></li>
                 <li><a href="/admin">Admin</a></li>
+                <?php endif; ?>
             </ul>
         </div>
         <div class="header-one-side">
@@ -109,23 +113,28 @@
                                     <form action="toggleFavorite" method="post">
                                         <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
 
-                                        <button type="submit"> <i class="material-icons">
-                                                <?php
-                                                $contains = false;
-                                                foreach ($favorites as $favorite) {
-                                                    if ($favorite->getBookId() == $book->getId()) {
-                                                        $contains = true;
-                                                        break;
+                                        <?php if ($isLogged): ?>
+                                            <button type="submit">
+                                                <i class="material-icons">
+                                                    <?php
+                                                    $contains = false;
+                                                    foreach ($favorites as $favorite) {
+                                                        if ($favorite->getBookId() == $book->getId()) {
+                                                            $contains = true;
+                                                            break;
+                                                        }
                                                     }
-                                                }
 
-                                                if ($contains) {
-                                                    echo 'favorite';
-                                                } else {
-                                                    echo 'favorite_outline';
-                                                }
-                                                ?>
-                                            </i></button>
+                                                    echo $contains ? 'favorite' : 'favorite_outline';
+                                                    ?>
+                                                </i>
+                                            </button>
+                                        <?php else: ?>
+                                            <button type="button" onclick="showToast(event)">
+                                                <!-- Use type="button" to prevent form submission -->
+                                                <i class="material-icons">favorite_outline</i>
+                                            </button>
+                                        <?php endif; ?>
 
                                     </form>
 
@@ -150,6 +159,15 @@
                     </div>
                 <?php endforeach; ?>
                 <script>
+                    function showToast(event) {
+                        // Use your preferred method to show a toast message
+                        // Example using a simple alert:
+                        alert("You have to log in");
+
+                        // Stop the event propagation to prevent the parent form's onclick from being triggered
+                        event.stopPropagation();
+                    }
+
                     function routeToDetails(bookId) {
                         window.location.href = '/details/' + bookId;
                     }

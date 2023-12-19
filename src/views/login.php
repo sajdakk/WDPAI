@@ -25,8 +25,10 @@
             <ul class="menu__box">
                 <li><a class="menu__item" href="/">Home</a></li>
                 <li><a class="menu__item" href="/top">Top</a></li>
-                <li><a class="menu__item" href="/profile">Profile</a></li>
-                <li><a class="menu__item" href="/admin">Admin</a></li>
+                <?php if ($isLogged): ?>
+                    <li><a class="menu__item" href="/profile">Profile</a></li>
+                    <li><a class="menu__item" href="/admin">Admin</a></li>
+                <?php endif; ?>
                 <li class="divider"></li>
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
                 <li><a class="secondary_menu__item" href="/favorites">Favorites</a></li>
@@ -40,8 +42,10 @@
             <ul class="menu">
                 <li><a href="/">Home</a></li>
                 <li><a href="/top">Top</a></li>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/admin">Admin</a></li>
+                <?php if ($isLogged): ?>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/admin">Admin</a></li>
+                <?php endif; ?>
             </ul>
         </div>
         <div class="header-one-side">
@@ -81,7 +85,8 @@
                     <input type="text" id="username" name="email" placeholder="E-mail" required>
                     <div class="password-toggle">
                         <input type="password" name="password" id="password" placeholder="Password">
-                        <div class="toggle-button" onclick="togglePassword()">👁️</div>
+                        <div class="toggle-button" onclick="togglePassword()"><i class="material-icons"
+                                id="visibilityIcon">visibility</i></div>
                     </div>
                     <div id="validation">
                         <?php if (isset($messages)) {
@@ -96,10 +101,14 @@
                 <script>
                     function togglePassword() {
                         const passwordInput = document.getElementById('password');
+                        const visibilityIcon = document.getElementById('visibilityIcon');
+
                         if (passwordInput.type === 'password') {
                             passwordInput.type = 'text';
+                            visibilityIcon.textContent = 'visibility_off';
                         } else {
                             passwordInput.type = 'password';
+                            visibilityIcon.textContent = 'visibility';
                         }
                     }
                 </script>

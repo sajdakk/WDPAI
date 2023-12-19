@@ -117,7 +117,7 @@ class DefaultController extends AppController
         $userId = $data->__get('user-id');
 
 
-        if (!$userId) {
+        if (empty($userId)) {
             $this->render(
                 'top',
                 [
@@ -126,6 +126,8 @@ class DefaultController extends AppController
                     'favorites' => []
                 ],
             );
+
+            return;
         }
 
         $favorites = $this->favoriteRepository->getFavoriteFromUserId($userId);
@@ -380,16 +382,14 @@ class DefaultController extends AppController
         );
     }
 
+    public function registration()
+    {
+        $this->render('registration');
+    }
+
     public function admin()
     {
         $data = Session::getInstance();
-
-        if (!$data->__get('is-logged')) {
-            $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/");
-            return;
-        }
-
 
         $reviews = $this->reviewRepository->getReviewToDisplayForAdmin();
 
@@ -434,6 +434,28 @@ class DefaultController extends AppController
         $language = $this->languageRepository->getLanguageFromId($book->getLanguageId());
 
         $date = new DateTime();
+        $isLogged = $data->__get('is-logged');
+
+        if (!$isLogged) {
+            $this->render(
+                'details',
+                [
+                    'isLogged' => $$isLogged,
+                    'book' => $book,
+                    'authorString' => $authorString,
+                    'genreString' => $genre->getGenre(),
+                    'languageString' => $language->getLanguage(),
+                    'userName' => '',
+                    'nowString' => $date->format('d.m.Y') . 'r.',
+                    'userAvatar' => '',
+                    'reviews' => $reviews,
+                    'average' => $average,
+
+                ],
+            );
+            return;
+        }
+
 
 
         $email = $data->__get('user-email');

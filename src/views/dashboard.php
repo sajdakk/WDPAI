@@ -25,8 +25,10 @@
             <ul class="menu__box">
                 <li><a class="menu__item" href="/">Home</a></li>
                 <li><a class="menu__item" href="/top">Top</a></li>
-                <li><a class="menu__item" href="/profile">Profile</a></li>
-                <li><a class="menu__item" href="/admin">Admin</a></li>
+                <?php if ($isLogged): ?>
+                    <li><a class="menu__item" href="/profile">Profile</a></li>
+                    <li><a class="menu__item" href="/admin">Admin</a></li>
+                <?php endif; ?>
 
                 <li class="divider"></li>
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
@@ -52,8 +54,10 @@
             <ul class="menu">
                 <li><a class="selected" href="/">Home</a></li>
                 <li><a href="/top">Top</a></li>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/admin">Admin</a></li>
+                <?php if ($isLogged): ?>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/admin">Admin</a></li>
+                <?php endif; ?>
             </ul>
         </div>
         <div class="header-one-side">
@@ -97,9 +101,10 @@
 
             </div>
             <form class="header-form" action="dashboard" method="post">
-                <input type="text" id="title" name="title" value="<?=$initialTitle?>" placeholder="Title">
-                <input type="text" id="author_name" name="name" value="<?=$initialName?>" placeholder="Author's name">
-                <input type="text" id="author_surname" name="surname" value="<?=$initialSurname?>" placeholder="Author's surname">
+                <input type="text" id="title" name="title" value="<?= $initialTitle ?>" placeholder="Title">
+                <input type="text" id="author_name" name="name" value="<?= $initialName ?>" placeholder="Author's name">
+                <input type="text" id="author_surname" name="surname" value="<?= $initialSurname ?>"
+                    placeholder="Author's surname">
                 <button type="submit">Search</button>
             </form>
             <div class="dashboard-content">
@@ -121,25 +126,28 @@
 
                                         </div>
                                         <form action="toggleFavorite" method="post">
-                                            <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
-
-                                            <button type="submit"> <i class="material-icons">
-                                                    <?php
-                                                    $contains = false;
-                                                    foreach ($favorites as $favorite) {
-                                                        if ($favorite->getBookId() == $book->getId()) {
-                                                            $contains = true;
-                                                            break;
+                                            <?php if ($isLogged): ?>
+                                                <button type="submit">
+                                                    <i class="material-icons">
+                                                        <?php
+                                                        $contains = false;
+                                                        foreach ($favorites as $favorite) {
+                                                            if ($favorite->getBookId() == $book->getId()) {
+                                                                $contains = true;
+                                                                break;
+                                                            }
                                                         }
-                                                    }
 
-                                                    if ($contains) {
-                                                        echo 'favorite';
-                                                    } else {
-                                                        echo 'favorite_outline';
-                                                    }
-                                                    ?>
-                                                </i></button>
+                                                        echo $contains ? 'favorite' : 'favorite_outline';
+                                                        ?>
+                                                    </i>
+                                                </button>
+                                            <?php else: ?>
+                                                <button type="button" onclick="showToast(event)">
+                                                    <!-- Use type="button" to prevent form submission -->
+                                                    <i class="material-icons">favorite_outline</i>
+                                                </button>
+                                            <?php endif; ?>
 
                                         </form>
 
@@ -154,7 +162,7 @@
                                     <div class="score">
                                         <i class="material-icons">star_border</i>
                                         <div class="inter-light-14">
-                                            <?= $book->getAverageRate()?>/5
+                                            <?= $book->getAverageRate() ?>/5
                                         </div>
                                     </div>
                                     <div class="inter-extra-light-14">
@@ -165,6 +173,15 @@
                         </div>
                     <?php endforeach; ?>
                     <script>
+                        function showToast(event) {
+                            // Use your preferred method to show a toast message
+                            // Example using a simple alert:
+                            alert("You have to log in");
+
+                            // Stop the event propagation to prevent the parent form's onclick from being triggered
+                            event.stopPropagation();
+                        }
+
                         function routeToDetails(bookId) {
                             window.location.href = '/details/' + bookId;
                         }

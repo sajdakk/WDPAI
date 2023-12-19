@@ -24,8 +24,10 @@
             <ul class="menu__box">
                 <li><a class="menu__item" href="/">Home</a></li>
                 <li><a class="menu__item" href="/top">Top</a></li>
+                <?php if ($isLogged): ?>
                 <li><a class="menu__item" href="/profile">Profile</a></li>
                 <li><a class="menu__item" href="/admin">Admin</a></li>
+                <?php endif; ?>
                 <li class="divider"></li>
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
                 <li><a class="secondary_menu__item" href="/favorites">Favorites</a></li>
@@ -50,8 +52,10 @@
             <ul class="menu">
                 <li><a class="selected" href="/">Home</a></li>
                 <li><a href="/top">Top</a></li>
+                <?php if ($isLogged): ?>
                 <li><a href="/profile">Profile</a></li>
                 <li><a href="/admin">Admin</a></li>
+                <?php endif; ?>
             </ul>
         </div>
         <div class="header-one-side">
@@ -164,6 +168,12 @@
             <div class="headline-h1-semibold">
                 Add your review
             </div>
+            <? if (!$isLogged): ?>
+                <div class="inter-semibold-16">
+                    You have to be logged in to add a review
+                </div>
+            <?php else: ?>
+
             <div class="card">
                 <img class="imagePreview" src=<?= '/public/uploads/' . $userAvatar ?> alt="News Image 1">
                 <div class="review-content">
@@ -223,6 +233,7 @@
                 </div>
 
             </div>
+            <?php endif; ?>
             <div class="headline-h1-semibold">
                 What people are saying?
             </div>
