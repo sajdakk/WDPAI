@@ -148,6 +148,23 @@ class ReviewRepository extends Repository
         return $result;
     }
 
+    public function hasUserReviewedBook(string $userId, string $bookId): bool
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT COUNT(*) as review_count
+            FROM reviews
+            WHERE user_id = :user_id AND book_id = :book_id AND reject_date IS NULL
+        ');
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_STR);
+        $stmt->bindParam(':book_id', $bookId, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Check if the user has added a review for the given book
+        return ($result['review_count'] > 0);
+    }
+
     public function getReviewToDisplayForBookId(string $bookId)
     {
         $stmt = $this->database->connect()->prepare('

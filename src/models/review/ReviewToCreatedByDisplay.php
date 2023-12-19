@@ -6,7 +6,7 @@ class ReviewToCreatedByDisplay
     private string $book_id;
 
     private string $user_name;
-    private string $user_avatar;
+    private ?string $user_avatar;
     private string $user_id;
     private string $content;
     private int $rate;
@@ -18,7 +18,7 @@ class ReviewToCreatedByDisplay
         string $id,
         string $book_id,
         string $user_name,
-        string $user_avatar,
+        ?string $user_avatar,
         string $user_id,
         string $content,
         int $rate,

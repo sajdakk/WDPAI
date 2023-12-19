@@ -98,9 +98,8 @@
     justify-content: start;
     align-items: start;
     text-overflow: ellipsis;
-    overflow: hidden;
     box-sizing: border-box;
-    width: 100%;
+    flex-grow: 1;
     gap: 12px;
 }
 
@@ -129,6 +128,13 @@
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.placeholder-image {
+    width: 120px;
+    height: 120px;
+    background-color: #ccc;
+    border-radius: 50%;
 }
 
 img {

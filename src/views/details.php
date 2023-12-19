@@ -176,10 +176,19 @@
                 <div class="inter-semibold-16">
                     You have to be logged in to add a review
                 </div>
+            <? elseif ($hasAlreadyReview): ?>
+                <div class="inter-semibold-16">
+                    You have already reviewed this book
+                </div>
             <?php else: ?>
 
                 <div class="card">
-                    <img class="imagePreview" src=<?= '/public/uploads/' . $userAvatar ?> alt="News Image 1">
+                    <?php if ($userAvatar == null): ?>
+                        <div class="placeholder-image">
+                        </div>
+                    <?php else: ?>
+                        <img class="imagePreview" src=<?= 'public/uploads/' . $userAvatar ?> alt="News Image 1">
+                    <?php endif; ?>
                     <div class="review-content">
                         <div class="inter-semibold-16">
                             <?= $userName ?> |
@@ -249,8 +258,15 @@
                 <?php foreach ($reviews as $review): ?>
                     <div class="card">
                         <div class="mobile-left-side-card">
-                            <img class="imagePreview" src=<?= '/public/uploads/' . $review->getUserAvatar() ?>
-                                alt="News Image 1">
+                            <?php if (empty($review->getUserAvatar())): ?>
+                                <div class="placeholder-image">
+                                </div>
+                            <?php else: ?>
+                                <img class="imagePreview" src=<?= '/public/uploads/' . $review->getUserAvatar() ?>
+                                    alt="News Image 1">
+                            <?php endif; ?>
+
+
                             <div class="mobile-stars">
                                 <i class="material-icons custom-icon">star_border</i>
                                 <div class="inter-light-24">

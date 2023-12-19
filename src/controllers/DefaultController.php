@@ -543,7 +543,7 @@ class DefaultController extends AppController
 
         $user = $this->userRepository->getUser($email);
 
-
+        $hasAlreadyReview = $this->reviewRepository->hasUserReviewedBook($user->getId(), $book->getId());
 
         $this->render(
             'details',
@@ -558,7 +558,8 @@ class DefaultController extends AppController
                 'userAvatar' => $user->getAvatar(),
                 'reviews' => $reviews,
                 'average' => $average,
-                'isAdmin' => $user->getRole() == 'admin'
+                'isAdmin' => $user->getRole() == 'admin',
+                'hasAlreadyReview' => $hasAlreadyReview
 
             ],
         );
