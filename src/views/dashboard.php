@@ -132,6 +132,7 @@
 
                                         </div>
                                         <form action="toggleFavorite" method="post">
+                                        <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
                                             <?php if ($isLogged): ?>
                                                 <button type="submit">
                                                     <i class="material-icons">

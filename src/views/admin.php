@@ -105,9 +105,7 @@
                         <div class="icon-background">
                             <i class="material-icons custom-icon">menu_book</i>
                         </div>
-                        <div class="inter-semibold-16">
-                            Waiting Reviews
-                        </div>
+                        <div class="inter-semibold-16">Waiting Reviews</div>
                     </div>
                     <div class="profile-menu-item not-selected-profile-menu-item" onclick="toggleMenuItem(this, 'books')">
                         <div class="icon-background">
@@ -237,7 +235,7 @@
                         </div>
                     <?php endif; ?>
                     <?php foreach ($users as $user): ?>
-                        <div class="card">
+                        <div class="user-card">
                             <div class="card-content">
                                 <div class="card-header">
                                     <div class="inter-semibold-16">
