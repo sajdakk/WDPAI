@@ -1,9 +1,14 @@
 <?php
 
-require_once 'src/controllers/DefaultController.php';
 require_once 'src/controllers/ErrorController.php';
 require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/AddBookController.php';
+require_once 'src/controllers/DashboardController.php';
+require_once 'src/controllers/AdminController.php';
+require_once 'src/controllers/BookDetailsController.php';
+require_once 'src/controllers/ProfileController.php';
+require_once 'src/controllers/TopController.php';
+require_once 'src/controllers/FavoritesController.php';
 
 class Routing {
 

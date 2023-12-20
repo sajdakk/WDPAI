@@ -35,7 +35,7 @@
                 <li><a class="secondary_menu__item" href="/create">Add book</a></li>
                 <li><a class="secondary_menu__item" href="/favorites">Favorites</a></li>
                 <li><a class="secondary_menu__item" href="/login">Log in</a></li>
-                <li><a class="secondary_menu__item" href="/registration">Sign up</a></li>
+                <li><a class="secondary_menu__item" href="/register">Sign up</a></li>
             </ul>
         </div>
         <div class="header-one-side">
@@ -72,7 +72,7 @@
                     }
 
                     function routeToRegistration() {
-                        window.location.href = '/registration';
+                        window.location.href = '/register';
                     }
                 </script>
             </div>
@@ -128,7 +128,7 @@
                     }
 
                     function routeToRegistration() {
-                        window.location.href = '/registration';
+                        window.location.href = '/register';
                     }
                 </script>
             </div>

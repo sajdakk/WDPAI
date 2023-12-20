@@ -7,36 +7,6 @@ require_once __DIR__ . '/../models/book/BookWriteRequest.php';
 
 class BookRepository extends Repository
 {
-    public function getBooks(): array
-    {
-        $stmt = $this->database->connect()->prepare('
-            SELECT * FROM books;
-        ');
-        $stmt->execute();
-        $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-
-        foreach ($books as $book) {
-            $result[] = new Book(
-                $book['id'],
-                $book['title'],
-                $book['genre_id'],
-                $book['language_id'],
-                $book['date_of_publication'],
-                $book['page_count'],
-                $book['image'],
-                $book['isbn_number'],
-                $book['description'],
-                $book['upload_date'],
-                $book['accept_date'],
-                $book['created_by'],
-                $book['reject_date']
-
-            );
-        }
-
-        return $result;
-    }
     public function getMayInterestYouBooks(): array
     {
         $stmt = $this->database->connect()->prepare('
@@ -248,16 +218,23 @@ class BookRepository extends Repository
 
         return $result;
     }
-
-
-
-
-
-
-    public function getBookFromId(string $bookId): ?Book
+    public function getBookFromId(string $bookId): ?BookToDisplay
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT * FROM books WHERE id = :book_id
+        SELECT 
+        b.*,
+        string_agg(a.name || \' \' || a.surname, \', \') AS author_string,
+        COALESCE(AVG(r.rate), 0) AS average_rate,
+        COUNT(r.id) AS rate_count
+    FROM 
+        books b
+        LEFT JOIN author_book ab ON b.id = ab.book_id
+        LEFT JOIN authors a ON ab.author_id = a.id
+        LEFT JOIN reviews r ON b.id = r.book_id
+    WHERE 
+        b.id = :book_id
+    GROUP BY 
+        b.id
         ');
         $stmt->bindParam(':book_id', $bookId, PDO::PARAM_STR);
         $stmt->execute();
@@ -268,9 +245,12 @@ class BookRepository extends Repository
             return null;
         }
 
-        return new Book(
+        return new BookToDisplay(
             $book['id'],
             $book['title'],
+            $book['author_string'],
+            $book['average_rate'],
+            $book['rate_count'],
             $book['genre_id'],
             $book['language_id'],
             $book['date_of_publication'],

@@ -9,14 +9,13 @@ require_once __DIR__ . '/../repository/GenreRepository.php';
 require_once __DIR__ . '/../repository/LanguageRepository.php';
 require_once __DIR__ . '/../repository/AuthorRepository.php';
 require_once __DIR__ . '/../repository/UserRepository.php';
+require_once __DIR__ . '/../validators/UploadImageValidator.php';
+
 
 
 class AddBookController extends AppController
 {
 
-    const MAX_FILE_SIZE = 1024 * 1024;
-    const SUPPORTED_TYPES = ['image/png', 'image/jpeg'];
-    const UPLOAD_DIRECTORY = '/../public/uploads/';
 
     private $bookRepository;
     private $genreRepository;
@@ -98,7 +97,7 @@ class AddBookController extends AppController
             );
         }
 
-        $imageValidationError = $this->validateFile($image);
+        $imageValidationError = UploadImageValidator::validateFile($image);
         if ($imageValidationError) {
             return $this->render(
                 'create',
@@ -114,7 +113,7 @@ class AddBookController extends AppController
 
         move_uploaded_file(
             $image['tmp_name'],
-            dirname(__DIR__) . self::UPLOAD_DIRECTORY . $image['name']
+            dirname(__DIR__) . UploadImageValidator::UPLOAD_DIRECTORY . $image['name']
         );
 
         $title = $_POST['title'];
@@ -150,17 +149,5 @@ class AddBookController extends AppController
 
     }
 
-    private function validateFile(array $file): ?string
-    {
-        if ($file['size'] > self::MAX_FILE_SIZE) {
-            return 'File is too large for destination file system.';
-        }
-
-        if (!isset($file['type']) || !in_array($file['type'], self::SUPPORTED_TYPES)) {
-            return 'File type is not supported.';
-        }
-
-        return null;
-    }
 
 }

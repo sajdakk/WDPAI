@@ -35,15 +35,15 @@
                 <li><a class="secondary_menu__item" href="/favorites">Favorites</a></li>
                 <?php if (!$isLogged): ?>
                     <li><a class="secondary_menu__item" href="/login">Log in</a></li>
-                    <li><a class="secondary_menu__item" href="/registration">Sign up</a></li>
+                    <li><a class="secondary_menu__item" href="/register">Sign up</a></li>
 
                 <?php else: ?>
                     <li>
-                        <form action="logout" method="post">
-                            <a class="secondary_menu__item">
-                                <button type="submit">Log out</button>
-                            </a>
-                        </form>
+
+                        <a class="secondary_menu__item">
+                            <button onclick="logout()">Log out</button>
+                        </a>
+                        >
                     </li>
 
                 <?php endif; ?>
@@ -77,21 +77,25 @@
                         in</button>
                     <button onclick="routeToRegistration()">Sign up</button>
                     </form>
-                    <script>
-                        function routeToLogin() {
-                            window.location.href = '/login';
-                        }
-
-                        function routeToRegistration() {
-                            window.location.href = '/registration';
-                        }
-                    </script>
 
                 <?php else: ?>
-                    <form action="logout" method="post">
-                        <button class="secondary-button" type="submit">Log out</button>
-                    </form>
+                    <button class="secondary-button" onclick="logout()">Log out</button>
+
                 <?php endif; ?>
+                <script>
+                    function routeToLogin() {
+                        window.location.href = '/login';
+                    }
+
+                    function routeToRegistration() {
+                        window.location.href = '/register';
+                    }
+
+                    function logout() {
+                        window.location.href = '/logout';
+                    }
+                </script>
+
             </div>
         </div>
     </nav>
@@ -106,7 +110,7 @@
                         </div>
                         <div class="headline-h4-regular">
                             Author:
-                            <?= $authorString ?>
+                            <?= $book->getAuthorsString() ?>
                         </div>
                         <div class="headline-h4-regular">
                             Language:
@@ -132,7 +136,7 @@
                     <div class="stars">
                         <i class="material-icons custom-icon">star_border</i>
                         <div class="inter-light-24">
-                            <?= $average ?>/5
+                            <?= $book->getAverageRate() ?>/5
                         </div>
                     </div>
                 </div>
@@ -142,7 +146,7 @@
                     </div>
                     <div class="headline-h4-regular">
                         Author:
-                        <?= $authorString ?>
+                        <?= $book->getAuthorsString() ?>
                     </div>
                     <div class="headline-h4-regular">
                         Language:
@@ -225,6 +229,19 @@
 
                                 const reviewRate = document.querySelector('#review-rate');
                                 reviewRate.value = value;
+                            }
+
+                            function logout() {
+                                // Get the current base URL
+                                const baseURL = window.location.origin;
+
+                                const newURL = `${baseURL}/logout`;
+
+                                // Change the form action attribute
+                                document.getElementById('logoutForm').action = newURL;
+
+                                // Submit the form
+                                document.getElementById('logoutForm').submit();
                             }
 
                             function changeFormAction() {

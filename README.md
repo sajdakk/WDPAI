@@ -1,31 +1,23 @@
-# Your Desktop App Name
+# Flipbook
 
 ## Overview
-
-Briefly describe your desktop app, its purpose, and its main features. Include any relevant information that helps users understand what your app does and why they should use it.
+Flipbook is convenient desktop app for exploring books and sharing your reading experiences. Easily search our database to find information on your favorite reads and discover what others think through user reviews. If you're a registered user, express your opinions by adding reviews or contribute by suggesting new books—admin approval ensures content quality. Keep track of your contributions and favorite books in your user profile. Join Flipbook and make your reading journey more interactive and engaging.
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
 - [Usage](#usage)
 - [Features](#features)
 - [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [License](#license)
 
-## Getting Started
+## Prerequisites
 
-Provide instructions for users to get started with your desktop app. Include information on prerequisites, installation steps, and any initial setup that may be required.
+- Docker
 
-### Prerequisites
+## Installation
 
-List any software, libraries, or dependencies that users need to have installed before using your app.
-
-### Installation
-
-Provide step-by-step instructions on how to install your desktop app. Include any necessary download links or commands.
+To get started, download Docker and run the following commands: "docker-compose build" followed by "docker-compose up". Once completed, open "http://localhost:8080/" in your browser. 
 
 ## Usage
 
@@ -46,20 +38,7 @@ List the main features and functionality of your desktop app. You can use bullet
 
 Include screenshots or images that showcase your app's user interface or its functionality. This section helps users visualize what your app looks like and how it works.
 
-## Contributing
-
-If you welcome contributions from the community, provide guidelines for how users can contribute to your project. Include information on how to report bugs, submit feature requests, or contribute code.
-
-## License
-
-Specify the license under which your desktop app is distributed. For example:
-
-This project is licensed under the [Your License Name] - see the [LICENSE.md](LICENSE.md) file for details.
-
-## Acknowledgments
-
-If your app uses open-source libraries, APIs, or other resources, acknowledge and give credit to the authors or projects that have contributed to your app's development.
-
 ## Contact
 
-Provide contact information, such as an email address or a link to your project's issue tracker, where users can reach out for support, feedback, or questions.
+e-mail: anita.sajdak123@gmail.com
+linkedin: https://www.linkedin.com/in/anita-sajdak-02a254243/
