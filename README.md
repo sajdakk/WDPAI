@@ -1,7 +1,7 @@
 # Flipbook
 
 ## Overview
-Flipbook is convenient desktop app for exploring books and sharing your reading experiences. Easily search our database to find information on your favorite reads and discover what others think through user reviews. If you're a registered user, express your opinions by adding reviews or contribute by suggesting new books—admin approval ensures content quality. Keep track of your contributions and favorite books in your user profile. Join Flipbook and make your reading journey more interactive and engaging.
+Flipbook is convenient web app for exploring books and sharing your reading experiences. Easily search our database to find information on your favorite reads and discover what others think through user reviews. If you're a registered user, express your opinions by adding reviews or contribute by suggesting new books—admin approval ensures content quality. Keep track of your contributions and favorite books in your user profile. Join Flipbook and make your reading journey more interactive and engaging.
 
 ## Table of Contents
 - [Get Started](#get-started)
@@ -10,7 +10,7 @@ Flipbook is convenient desktop app for exploring books and sharing your reading 
 - [Features](#features)
 
 ## Get Started
-Welcome to Flipbook, your go-to desktop app for exploring and sharing books! Follow these simple steps to get started:
+Welcome to Flipbook, your go-to web app for exploring and sharing books! Follow these simple steps to get started:
 
 ### Prerequisites
 
@@ -18,7 +18,7 @@ Welcome to Flipbook, your go-to desktop app for exploring and sharing books! Fol
 
 ### Installation
 
-To get started, download Docker and run the following commands: "docker-compose build" followed by "docker-compose up". Once completed, open "http://localhost:8080/" in your browser. 
+To get started, download Docker and run the following commands: `docker-compose build` followed by `docker-compose up`. Once completed, open http://localhost:8080/ in your browser. 
 
 ## Features
 
