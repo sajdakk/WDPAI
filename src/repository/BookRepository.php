@@ -221,20 +221,39 @@ class BookRepository extends Repository
     public function getBookFromId(string $bookId): ?BookToDisplay
     {
         $stmt = $this->database->connect()->prepare('
-        SELECT 
+        SELECT
         b.*,
-        string_agg(a.name || \' \' || a.surname, \', \') AS author_string,
-        COALESCE(AVG(r.rate), 0) AS average_rate,
-        COUNT(r.id) AS rate_count
-    FROM 
+        a.author_string,
+        COALESCE(AVG(r.rate), 0) AS average_mark,
+        COUNT(r.rate) AS rate_count
+    FROM
         books b
-        LEFT JOIN author_book ab ON b.id = ab.book_id
-        LEFT JOIN authors a ON ab.author_id = a.id
-        LEFT JOIN reviews r ON b.id = r.book_id
-    WHERE 
-        b.id = :book_id
-    GROUP BY 
-        b.id
+    LEFT JOIN (
+        SELECT
+            ba.book_id,
+            string_agg(author.name || \' \' || author.surname, \', \') AS author_string
+        FROM
+            authors AS author
+        JOIN
+            author_book AS ba ON author.id = ba.author_id
+        GROUP BY
+            ba.book_id
+    ) AS a ON b.id = a.book_id
+    LEFT JOIN (
+        SELECT
+            book_id,
+            rate
+        FROM
+            reviews
+        WHERE
+            accept_date IS NOT NULL
+    ) r ON b.id = r.book_id
+    WHERE
+    b.id = :book_id
+    GROUP BY
+        b.id, a.author_string
+    ORDER BY
+        average_mark DESC
         ');
         $stmt->bindParam(':book_id', $bookId, PDO::PARAM_STR);
         $stmt->execute();
@@ -249,7 +268,7 @@ class BookRepository extends Repository
             $book['id'],
             $book['title'],
             $book['author_string'],
-            $book['average_rate'],
+            $book['average_mark'],
             $book['rate_count'],
             $book['genre_id'],
             $book['language_id'],

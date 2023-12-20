@@ -79,16 +79,17 @@ class AddBookController extends AppController
             return;
         }
 
-        $this->bookRepository->startTransaction();
-
+        $errors = [];
         $user_id = $data->__get('user-id');
 
         $image = $_FILES['image'];
         if (!is_uploaded_file($image['tmp_name'])) {
+            $errors['image'] = 'You have to upload an image';
+
             return $this->render(
                 'create',
                 [
-                    'error' => 'You have to upload an image',
+                    'errors' => $errors,
                     'isLogged' => $data->__get('is-logged'),
                     'authors' => $authors,
                     'languages' => $languages,
@@ -99,10 +100,11 @@ class AddBookController extends AppController
 
         $imageValidationError = UploadImageValidator::validateFile($image);
         if ($imageValidationError) {
+            $errors['image'] = $imageValidationError;
             return $this->render(
                 'create',
                 [
-                    'error' => $imageValidationError,
+                    'error' => $errors,
                     'isLogged' => $data->__get('is-logged'),
                     'authors' => $authors,
                     'languages' => $languages,
@@ -116,14 +118,69 @@ class AddBookController extends AppController
             dirname(__DIR__) . UploadImageValidator::UPLOAD_DIRECTORY . $image['name']
         );
 
+
+
+        // Validate title
         $title = $_POST['title'];
+        if (empty($title)) {
+            $errors['title'] = 'Title is required';
+        }
+
+        // Validate language
         $language = $_POST['language'];
+        if (empty($language)) {
+            $errors['language'] = 'Language is required';
+        }
+
+        // Validate date of publication
         $dateOfPub = $_POST['date-of-pub'];
+        if (empty($dateOfPub)) {
+            $errors['date-of-pub'] = 'Date of publication is required';
+        }
+
+        // Validate page count
         $pageCount = $_POST['page-count'];
+        if (empty($pageCount) || !is_numeric($pageCount) || $pageCount <= 0) {
+            $errors['page-count'] = 'Page count must be a positive number';
+        }
+
+        // Validate ISBN number
         $isbnNumber = $_POST['isbn-number'];
+        if (empty($isbnNumber)) {
+            $errors['isbn-number'] = 'ISBN number is required';
+        }
+
+        // Validate description
         $description = $_POST['description'];
+        if (empty($description)) {
+            $errors['description'] = 'Description is required';
+        }
+
+        // Validate genre
         $genre = $_POST['genre'];
+        if (empty($genre)) {
+            $errors['genre'] = 'Genre is required';
+        }
+
+        // Validate authors
         $selectedAuthors = $_POST['authors'];
+        if (empty($selectedAuthors)) {
+            $errors['authors'] = 'At least one author must be selected';
+        }
+
+        if (!empty($errors)) {
+            return $this->render(
+                'create',
+                [
+                    'errors' => $errors,
+                    'isLogged' => $data->__get('is-logged'),
+                    'authors' => $authors,
+                    'languages' => $languages,
+                    'genres' => $genres
+                ]
+            );
+        }
+
 
         $book = new BookWriteRequest(
             $title,

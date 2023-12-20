@@ -25,6 +25,8 @@ class SecurityController extends AppController
 
         }
 
+        $errors = [];
+
         $email = $_POST['email'];
         $password = $_POST['password'];
 
@@ -33,15 +35,23 @@ class SecurityController extends AppController
 
 
         if (!$user) {
-            return $this->render('login', ['messages' => ['User not found!']]);
-        }
-
-        if ($user->getEmail() !== $email) {
-            return $this->render('login', ['messages' => ['User with this email not exist!']]);
+            $errors['email'] = 'User with this email does not exist!';
+            return $this->render(
+                'login',
+                [
+                    'errors' => $errors,
+                ],
+            );
         }
 
         if (!password_verify($password, $user->getPassword())) {
-            return $this->render('login', ['messages' => ['Wrong password!']]);
+            $errors['password'] = 'Wrong password!';
+            return $this->render(
+                'login',
+                [
+                    'errors' => $errors,
+                ],
+            );
         }
 
 
@@ -60,6 +70,7 @@ class SecurityController extends AppController
         if (!$this->isPost()) {
             return $this->render('register');
         }
+        $errors = [];
 
         $email = $_POST['email'];
         $password = $_POST['password'];
@@ -67,8 +78,35 @@ class SecurityController extends AppController
         $name = $_POST['name'];
         $surname = $_POST['surname'];
 
+
+        // Validate all fields for non-emptiness
+        if (empty($email)) {
+            $errors['email'] = 'Email is required.';
+        }
+
+        if (empty($password)) {
+            $errors['password'] = 'Password is required.';
+        }
+
+        if (empty($confirmedPassword)) {
+            $errors['confirmedPassword'] = 'Please confirm your password.';
+        }
+
+        if (empty($name)) {
+            $errors['name'] = 'Name is required.';
+        }
+
+        if (empty($surname)) {
+            $errors['surname'] = 'Surname is required.';
+        }
+
         if ($password !== $confirmedPassword) {
-            return $this->render('register', ['messages' => ['Please provide proper password']]);
+            $errors['confirmedPassword'] = 'Passwords do not match.';
+        }
+
+        // If there are errors, render the register page with error messages
+        if (!empty($errors)) {
+            return $this->render('register', ['errors' => $errors]);
         }
 
         $userWriteRequest = new UserWriteRequest($email, password_hash($password, PASSWORD_BCRYPT), $name, $surname);

@@ -86,23 +86,21 @@
                 <div id="sign-up">
                     Log in</div>
                 <form class="login-form" action="login" method="POST">
-                    <input type="text" id="username" name="email" placeholder="E-mail" required>
+                    <input type="text" id="username" name="email" placeholder="E-mail"
+                        value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
+                    <?php if (isset($errors['email']))
+                        echo '<div class="errors">' . $errors['email'] . '</div>'; ?>
+
+
+
                     <div class="password-toggle">
                         <input type="password" name="password" id="password" placeholder="Password">
                         <div class="toggle-button" onclick="togglePassword()"><i class="material-icons"
                                 id="visibilityIcon">visibility</i></div>
                     </div>
-                    <?php if (isset($messages) && !empty($messages)): ?>
-                        <div id="validation">
-                            <?php
-                            foreach ($messages as $message) {
-                                echo $message;
-                            }
-                            ?>
-                        </div>
-                    <?php else: ?>
-                        <div id="validation" style="display: none;"></div>
-                    <?php endif; ?>
+                    <?php if (isset($errors['password']))
+                        echo '<div class="errors">' . $errors['password'] . '</div>'; ?>
+
                     <button type="submit">Sign in</button>
 
                 </form>

@@ -102,11 +102,11 @@
             <?php else: ?>
                 <div class="image-section">
                     <div id="imagePreview">
-                        <?php if ($avatar == null): ?>
+                        <?php if (empty($avatar)): ?>
                             <div class="placeholder-image">
                             </div>
                         <?php else: ?>
-                            <img class="avatar-image" src=<?= 'public/uploads/' . $avatar ?> alt="News Image 1">
+                            <img class="avatar-image" src=<?= '/public/uploads/' . $avatar ?> alt="News Image 1">
                         <?php endif; ?>
                     </div>
                     <label for="imageUpload">

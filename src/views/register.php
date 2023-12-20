@@ -86,14 +86,51 @@
                 <div id="sign-up">
                     Sign up</div>
                 <form class="login-form" action="register" method="POST">
-                    <input type="text" id="email" name="email" placeholder="E-mail" required>
-                    <input type="text" id="name" name="name" placeholder="Name" required>
-                    <input type="text" id="surname" name="surname" placeholder="Surname" required>
-                    <input type="password" name="password" id="password" placeholder="Password">
-                    <input type="password" name="repeat-password" id="repeat-password" placeholder="Repeat password">
-                    <button type="submit">Sign up</button>
+                    <input type="text" id="email" name="email" placeholder="E-mail" required
+                        value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>">
+                    <?php if (isset($errors['email'])): ?>
+                        <div class="errors">
+                            <?= $errors['email'] ?>
+                        </div>
+                    <?php endif; ?>
 
+                    <input type="text" id="name" name="name" placeholder="Name" required
+                        value="<?= isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '' ?>">
+                    <?php if (isset($errors['name'])): ?>
+                        <div class="errors">
+                            <?= $errors['name'] ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <input type="text" id="surname" name="surname" placeholder="Surname" required
+                        value="<?= isset($_POST['surname']) ? htmlspecialchars($_POST['surname']) : '' ?>">
+                    <?php if (isset($errors['surname'])): ?>
+                        <div class="errors">
+                            <?= $errors['surname'] ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <?php if (isset($errors['password'])): ?>
+                        <div class="errors">
+                            <?= $errors['password'] ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <input type="password" name="repeat-password" id="repeat-password" placeholder="Repeat password"
+                        required>
+                    <?php if (isset($errors['confirmedPassword'])): ?>
+                        <div class="errors">
+                            <?= $errors['confirmedPassword'] ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <button type="submit">Register</button>
                 </form>
+
+
+
+
 
                 <div id="have-account-row">
                     <div id="have-account">

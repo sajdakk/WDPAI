@@ -191,7 +191,7 @@
                         <div class="placeholder-image">
                         </div>
                     <?php else: ?>
-                        <img class="imagePreview" src=<?= 'public/uploads/' . $userAvatar ?> alt="News Image 1">
+                        <img class="imagePreview" src=<?= '/public/uploads/' . $userAvatar ?> alt="News Image 1">
                     <?php endif; ?>
                     <div class="review-content">
                         <div class="inter-semibold-16">

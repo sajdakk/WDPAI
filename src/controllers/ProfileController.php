@@ -47,7 +47,6 @@ class ProfileController extends AppController
 
         $books = $this->bookRepository->getBooksToDisplayFromUserId($user->getId());
 
-
         $this->render(
             'profile',
             [

@@ -114,9 +114,17 @@
                     Create book
                 </div>
                 <form class="create-form" action="create" method="post" ENCTYPE="multipart/form-data">
-                    <input type="text" id="title" name="title" placeholder="Title" required>
+                    <input type="text" id="title" name="title" placeholder="Title"
+                        value="<?= isset($_POST['title']) ? htmlspecialchars($_POST['title']) : '' ?>" required>
+                    <?php if (isset($errors['title'])): ?>
+                        <div class="errors">
+                            <?= $errors['title'] ?>
+                        </div>
+                    <?php endif; ?>
+
                     <select id="language" name="language" required>
-                        <option value="" disabled selected>Language</option>
+                        <option value="<?= isset($_POST['language']) ? htmlspecialchars($_POST['language']) : '' ?>"
+                            disabled selected>Language</option>
                         <?php foreach ($languages as $language): ?>
                             <option value="  <?php echo $language->getId() ?>">
                                 <?php echo $language->getLanguage() ?>
@@ -124,19 +132,56 @@
                         <?php endforeach; ?>
 
                     </select>
+                    <?php if (isset($errors['language'])): ?>
+                        <div class="errors">
+                            <?= $errors['language'] ?>
+                        </div>
+                    <?php endif; ?>
 
-                    <input type="date" id="date-of-pub" name="date-of-pub" placeholder="Date of publication" required>
-                    <input type="int" id="page-count" name="page-count" placeholder="Page count" required>
-                    <input type="text" id="isbn-number" name="isbn-number" placeholder="ISBN number" required>
-                    <input type="text" id="description" name="description" placeholder="Description" required>
+                    <input type="date" id="date-of-pub" name="date-of-pub" placeholder="Date of publication"
+                        value="<?= isset($_POST['date-of-pub']) ? htmlspecialchars($_POST['date-of-pub']) : '' ?>" required>
+                    <?php if (isset($errors['date-of-pub'])): ?>
+                        <div class="errors">
+                            <?= $errors['date-of-pub'] ?>
+                        </div>
+                    <?php endif; ?>
+                    <input type="int" id="page-count" name="page-count" placeholder="Page count"
+                        value="<?= isset($_POST['page-count']) ? htmlspecialchars($_POST['page-count']) : '' ?>" required>
+                    <?php if (isset($errors['page-count'])): ?>
+                        <div class="errors">
+                            <?= $errors['page-count'] ?>
+                        </div>
+                    <?php endif; ?>
+                    <input type="text" id="isbn-number" name="isbn-number" placeholder="ISBN number"
+                        value="<?= isset($_POST['isbn-number']) ? htmlspecialchars($_POST['isbn-number']) : '' ?>" required>
+                    <?php if (isset($errors['isbn-number'])): ?>
+                        <div class="errors">
+                            <?= $errors['isbn-number'] ?>
+                        </div>
+                    <?php endif; ?>
+                    <input type="text" id="description" name="description" placeholder="Description"
+                        value="<?= isset($_POST['description']) ? htmlspecialchars($_POST['description']) : '' ?>" required>
+                    <?php if (isset($errors['description'])): ?>
+                        <div class="errors">
+                            <?= $errors['description'] ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="image-section">
                         <div id="imagePreview"></div>
                         <label for="imageUpload" class="custom-file-input">
                             <span class="custom-file-input-label">Choose image</span>
                         </label>
-                        <input type="file" id="imageUpload" name="image" accept="image/*" onchange="previewImage()">
+                        <input type="file" id="imageUpload" name="image" accept="image/*"
+                            value="<?= isset($_POST['image']) ? htmlspecialchars($_POST['image']) : '' ?>"
+                            onchange="previewImage()">
                     </div>
-                    <select id="genre" name="genre" required>
+                    <?php if (isset($errors['image'])): ?>
+                        <div class="errors">
+                            <?= $errors['image'] ?>
+                        </div>
+                    <?php endif; ?>
+                    <select id="genre" name="genre"
+                        value="<?= isset($_POST['genre']) ? htmlspecialchars($_POST['genre']) : '' ?>" required>
                         <option value="" disabled selected>Genre</option>
                         <?php foreach ($genres as $genre): ?>
                             <option value="<?php echo $genre->getId() ?>">
@@ -145,6 +190,11 @@
                         <?php endforeach; ?>
 
                     </select>
+                    <?php if (isset($errors['genre'])): ?>
+                        <div class="errors">
+                            <?= $errors['genre'] ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="header">
                         Author’s section
                     </div>
@@ -162,6 +212,11 @@
                         <?php endforeach; ?>
 
                     </div>
+                    <?php if (isset($errors['authors'])): ?>
+                        <div class="errors">
+                            <?= $errors['authors'] ?>
+                        </div>
+                    <?php endif; ?>
 
                     <div class="subtitle">
                         New authors
@@ -216,7 +271,7 @@
                             }
                         }
                     </script>
-                    <div id="validation">
+                    <div id="errors">
                         <?php echo $error
                             ?>
                     </div>

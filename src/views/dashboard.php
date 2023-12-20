@@ -107,10 +107,14 @@
 
             </div>
             <form class="header-form" action="dashboard" method="post">
-                <input type="text" id="title" name="title" value="<?= $initialTitle ?>" placeholder="Title">
-                <input type="text" id="author_name" name="name" value="<?= $initialName ?>" placeholder="Author's name">
-                <input type="text" id="author_surname" name="surname" value="<?= $initialSurname ?>"
-                    placeholder="Author's surname">
+                <input type="text" id="title" name="title"
+                    value="<?= isset($_POST['title']) ? htmlspecialchars($_POST['title']) : '' ?>" placeholder="Title">
+                <input type="text" id="author_name" name="name"
+                    value="<?= isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '' ?>"
+                    placeholder="Author's name">
+                <input type="text" id="author_surname"
+                    value="<?= isset($_POST['surname']) ? htmlspecialchars($_POST['surname']) : '' ?>"
+                    value="<?= $initialSurname ?>" placeholder="Author's surname">
                 <button type="submit">Search</button>
             </form>
             <div class="dashboard-content">
@@ -132,7 +136,7 @@
 
                                         </div>
                                         <form action="toggleFavorite" method="post">
-                                        <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
+                                            <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
                                             <?php if ($isLogged): ?>
                                                 <button type="submit">
                                                     <i class="material-icons">

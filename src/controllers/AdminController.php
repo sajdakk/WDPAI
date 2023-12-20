@@ -11,7 +11,6 @@ require_once __DIR__ . '/../models/Session.php';
 require_once __DIR__ . '/../repository/BookRepository.php';
 require_once __DIR__ . '/../repository/ReviewRepository.php';
 require_once __DIR__ . '/../repository/UserRepository.php';
-require_once __DIR__ . '/SecurityController.php';
 
 
 class AdminController extends AppController
@@ -20,7 +19,6 @@ class AdminController extends AppController
     private $bookRepository;
     private $userRepository;
     private $reviewRepository;
-    private $securityController;
 
 
     public function __construct()
@@ -125,7 +123,8 @@ class AdminController extends AppController
             $this->userRepository->removeUserWithId($userId);
 
             if ($currentUserId == $userId) {
-                $this->securityController->logout();
+                $url = "http://$_SERVER[HTTP_HOST]";
+                header("Location: {$url}/logout");
                 return;
             }
         }
