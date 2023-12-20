@@ -27,19 +27,19 @@ Discover new reads through our "May Interest You" section, where we highlight th
 ![Dashboard](readme-imgs/image.png)
 
 2. Searching for Books
-Use the search feature to find books that interest you. Enter keywords like titles, or authors. Here's an example:
+Use the search feature to find books that interest you. Enter keywords like titles or authors. Here's an example:
 ![Search](readme-imgs/image-1.png)
 
 3. Viewing Book Details
-Click on a book card to view its details. You'll find information such as the title, author, description, and more. Example:
+Click on a book card to view its details. You'll find information such as the title, authors, description, and more. Example:
 ![Details](readme-imgs/image-2.png)
 
 4. Adding Reviews
-If you're registered and logged in, you can share your opinions by adding reviews. Navigate to the book details page and use the "Add Review" button. Example:
+If you're registered and logged in, you can share your opinions by adding reviews. Navigate to the book details page and use the "Sent to review" button. Example:
 ![Reviews](readme-imgs/image-4.png)
 
 5. Adding New Books
-Logged-in users can contribute by adding new books. Click on the "Add New Book" button, fill in the details, and submit for review by admins. Example:
+Logged-in users can contribute by adding new books. Click on the "Create book" button, fill in the details, and submit for review by admins. Example:
 ![New-book](readme-imgs/image-5.png)
 
 6. Managing Your Profile
