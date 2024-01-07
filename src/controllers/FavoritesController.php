@@ -70,15 +70,18 @@ class FavoritesController extends AppController
     public function toggleFavorite()
     {
         if (!$this->isPost()) {
+            echo '{}';
+
             return;
         }
 
-        $data = Session::getInstance();
-        $userId = $data->__get('user-id');
-
         $bookId = $_POST['book-id'];
 
+        $data = Session::getInstance();
+        $userId = $data->__get('user-id');
         if (!$userId) {
+            echo '{}';
+
             return;
         }
 
@@ -90,12 +93,13 @@ class FavoritesController extends AppController
                     $bookId
                 )
             );
+
+            echo '{"favorite": true}';
         } else {
             $this->favoriteRepository->removeFavoriteWithId($existFavorite->getId());
-        }
 
-        $source = $_SERVER["HTTP_REFERER"];
-        header("Location: $source");
+            echo '{"favorite": false}';
+        }
     }
 
 

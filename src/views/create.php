@@ -10,6 +10,8 @@
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=DM Sans' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <script src="/public/js/common.js"></script>
+    <script src="/public/js/create.js"></script>
 
     <title>Create book</title>
 </head>
@@ -87,19 +89,6 @@
                 <?php else: ?>
                     <button class="secondary-button" onclick="logout()">Log out</button>
                 <?php endif; ?>
-                <script>
-                    function routeToLogin() {
-                        window.location.href = '/login';
-                    }
-
-                    function routeToRegistration() {
-                        window.location.href = '/register';
-                    }
-
-                    function logout() {
-                        window.location.href = '/logout';
-                    }
-                </script>
             </div>
         </div>
     </nav>
@@ -228,78 +217,12 @@
                         </div>
                         <button type="button" onclick="addAuthor()">Add new author</button>
                     </div>
-
-                    <script>
-                        function addAuthor() {
-                            var authorName = document.getElementById('authorName').value.trim();
-                            var authorSurname = document.getElementById('authorSurname').value.trim();
-                            if (authorName !== '' && authorSurname !== '') {
-                                var checkboxContainer = document.getElementsByClassName('checkboxContainer')[0];
-                                var newCheckbox = document.createElement('div');
-                                newCheckbox.className = 'checkbox-input';
-
-                                newCheckbox.innerHTML = '<input type="checkbox" checked name="authors[]" value="' + authorName + ' ' + authorSurname + '">' + authorName + ' ' + authorSurname;
-                                checkboxContainer.appendChild(newCheckbox);
-                                document.getElementById('authorName').value = '';
-                                document.getElementById('authorSurname').value = '';
-
-                            }
-                        }
-                    </script>
-
-                    <script>
-                        function filterCheckboxes() {
-                            // Pobierz wartość z pola wyszukiwania
-                            var searchText = document.getElementById('searchInput').value.trim().toLowerCase();
-
-                            // Pobierz kontener z checkboxami
-                            var checkboxContainer = document.getElementsByClassName('checkboxContainer');
-
-                            // Pobierz wszystkie checkboxy w kontenerze
-                            var checkboxes = checkboxContainer[0].getElementsByClassName('checkbox-input');
-
-                            // Iteruj przez checkboxy i ukryj/ pokaż w zależności od tekstu wyszukiwania
-                            for (var i = 0; i < checkboxes.length; i++) {
-                                var checkboxLabel = checkboxes[i].children[0].nextSibling.nodeValue.trim().toLowerCase();
-                                console.log(checkboxes[i]);
-
-                                if (checkboxLabel.includes(searchText)) {
-                                    checkboxes[i].style.display = 'block';
-                                } else {
-                                    checkboxes[i].style.display = 'none';
-                                }
-                            }
-                        }
-                    </script>
                     <div id="errors">
                         <?php echo $error
                             ?>
                     </div>
                     <button type="submit">Send book to review</button>
                 </form>
-
-
-                <script>
-                    function previewImage() {
-                        const imageUpload = document.getElementById('imageUpload');
-                        const imagePreview = document.getElementById('imagePreview');
-
-                        if (imageUpload.files && imageUpload.files[0]) {
-                            const reader = new FileReader();
-
-                            reader.onload = function (e) {
-                                const preview = document.createElement('img');
-                                preview.src = e.target.result;
-                                imagePreview.innerHTML = '';
-                                imagePreview.appendChild(preview);
-                            };
-
-                            reader.readAsDataURL(imageUpload.files[0]);
-                        } else {
-                            imagePreview.innerHTML = 'No image selected';
-                        }
-                    }
-                </script>
             <?php endif; ?>
 
 

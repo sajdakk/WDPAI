@@ -11,6 +11,8 @@
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=DM Sans' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <script src="/public/js/common.js"></script>
+    <script src="/public/js/top.js"></script>
 
     <title>Top</title>
 </head>
@@ -85,19 +87,6 @@
                         <button class="secondary-button" onclick="logout()">Log out</button>
                     </form>
                 <?php endif; ?>
-                <script>
-                    function routeToLogin() {
-                        window.location.href = '/login';
-                    }
-
-                    function routeToRegistration() {
-                        window.location.href = '/register';
-                    }
-
-                    function logout() {
-                        window.location.href = '/logout';
-                    }
-                </script>
             </div>
         </div>
     </nav>
@@ -118,34 +107,28 @@
                                         <?= $book->getTitle() ?>
 
                                     </div>
-                                    <form action="toggleFavorite" method="post">
-                                        <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
-
-                                        <?php if ($isLogged): ?>
-                                            <button type="submit">
-                                                <i class="material-icons">
-                                                    <?php
-                                                    $contains = false;
-                                                    foreach ($favorites as $favorite) {
-                                                        if ($favorite->getBookId() == $book->getId()) {
-                                                            $contains = true;
-                                                            break;
-                                                        }
+                                    <?php if ($isLogged): ?>
+                                        <button onclick="toggleFavorite(event, <?= $book->getId() ?>);">
+                                            <i class="material-icons">
+                                                <?php
+                                                $contains = false;
+                                                foreach ($favorites as $favorite) {
+                                                    if ($favorite->getBookId() == $book->getId()) {
+                                                        $contains = true;
+                                                        break;
                                                     }
+                                                }
 
-                                                    echo $contains ? 'favorite' : 'favorite_outline';
-                                                    ?>
-                                                </i>
-                                            </button>
-                                        <?php else: ?>
-                                            <button type="button" onclick="showToast(event)">
-                                                <!-- Use type="button" to prevent form submission -->
-                                                <i class="material-icons">favorite_outline</i>
-                                            </button>
-                                        <?php endif; ?>
-
-                                    </form>
-
+                                                echo $contains ? 'favorite' : 'favorite_outline';
+                                                ?>
+                                            </i>
+                                        </button>
+                                    <?php else: ?>
+                                        <button type="button" onclick="showToast(event)">
+                                            <!-- Use type="button" to prevent form submission -->
+                                            <i class="material-icons">favorite_outline</i>
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="inter-regular-12">
                                     <?= $book->getAuthorsString() ?>
@@ -166,23 +149,6 @@
                         </div>
                     </div>
                 <?php endforeach; ?>
-                <script>
-                    function showToast(event) {
-                        // Use your preferred method to show a toast message
-                        // Example using a simple alert:
-                        alert("You have to log in");
-
-                        // Stop the event propagation to prevent the parent form's onclick from being triggered
-                        event.stopPropagation();
-                    }
-
-                    function routeToDetails(bookId) {
-                        window.location.href = '/details/' + bookId;
-                    }
-                </script>
-
-
-
             </div>
     </main>
 </body>

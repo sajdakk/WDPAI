@@ -11,6 +11,8 @@
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=DM Sans' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <script src="/public/js/common.js"></script>
+    <script src="/public/js/admin.js"></script>
 
     <title>Admin</title>
 </head>
@@ -77,19 +79,6 @@
                     <button class="secondary-button" onclick="logout()">Log out</button>
 
                 <?php endif; ?>
-                <script>
-                    function routeToLogin() {
-                        window.location.href = '/login';
-                    }
-
-                    function routeToRegistration() {
-                        window.location.href = '/register';
-                    }
-
-                    function logout() {
-                        window.location.href = '/logout';
-                    }
-                </script>
             </div>
         </div>
     </nav>
@@ -278,51 +267,6 @@
                             </div>
                         </div>
                     <?php endforeach; ?>
-                </div>
-
-                <div class="list">
-
-                    <script>
-                        function routeToDetails(bookId) {
-                            window.location.href = '/details/' + bookId;
-                        }
-
-                        function toggleMenuItem(clickedItem, listType) {
-                            // Get all menu items
-                            const menuItems = document.querySelectorAll('.profile-menu-item');
-
-                            // Remove "selected" class from all items
-                            menuItems.forEach(item => {
-                                item.classList.remove('selected-profile-menu-item');
-                                item.classList.add('not-selected-profile-menu-item');
-                            });
-
-                            // Add "selected" class to the clicked item
-                            clickedItem.classList.add('selected-profile-menu-item');
-                            clickedItem.classList.remove('not-selected-profile-menu-item');
-
-                            // Show/hide the corresponding list based on the selected menu item
-                            const reviewsList = document.getElementById('reviewsList');
-                            const booksList = document.getElementById('booksList');
-                            const usersList = document.getElementById('usersList');
-
-                            if (listType === 'reviews') {
-                                reviewsList.style.display = 'flex';
-                                booksList.style.display = 'none';
-                                usersList.style.display = 'none';
-                            } else if (listType === 'books') {
-                                reviewsList.style.display = 'none';
-                                booksList.style.display = 'flex';
-                                usersList.style.display = 'none';
-                            }
-                            else if (listType === 'users') {
-                                reviewsList.style.display = 'none';
-                                booksList.style.display = 'none';
-                                usersList.style.display = 'flex';
-                            }
-                        }
-
-                    </script>
                 </div>
             <?php endif; ?>
         </div>

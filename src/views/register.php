@@ -10,6 +10,8 @@
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=DM Sans' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <script src="/public/js/common.js"></script>
+    <script src="/public/js/register.js"></script>
 
     <title>Registration</title>
 </head>
@@ -66,15 +68,6 @@
                     in</button>
                 <button onclick="routeToRegistration()">Sign up</button>
                 </form>
-                <script>
-                    function routeToLogin() {
-                        window.location.href = '/login';
-                    }
-
-                    function routeToRegistration() {
-                        window.location.href = '/register';
-                    }
-                </script>
             </div>
         </div>
     </nav>
@@ -133,26 +126,9 @@
 
 
                 <div id="have-account-row">
-                    <div id="have-account">
-                        Dov you already have an account?</div>
-                    <div id="have-account-answer" onclick="routeToLogin()">
-                        Log In</div>
+                    <div id="have-account">Do you already have an account?</div>
+                    <div id="have-account-answer" onclick="routeToLogin()">Log In</div>
                 </div>
-
-                <script>
-                    function togglePassword() {
-                        const passwordInput = document.getElementById('password');
-                        if (passwordInput.type === 'password') {
-                            passwordInput.type = 'text';
-                        } else {
-                            passwordInput.type = 'password';
-                        }
-                    }
-
-                    function routeToLogin() {
-                        window.location.href = '/login;
-                    }
-                </script>
             </div>
         </div>
     </main>

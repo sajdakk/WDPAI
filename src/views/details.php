@@ -10,6 +10,9 @@
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=DM Sans' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <script src="/public/js/common.js"></script>
+    <script src="/public/js/details.js"></script>
+
     <title>Book details</title>
 </head>
 
@@ -41,7 +44,7 @@
                     <li>
 
                         <a class="secondary_menu__item">
-                            <button onclick="logout()">Log out</button>
+                            <button onclick="logoutDetails()">Log out</button>
                         </a>
                         >
                     </li>
@@ -79,23 +82,9 @@
                     </form>
 
                 <?php else: ?>
-                    <button class="secondary-button" onclick="logout()">Log out</button>
+                    <button class="secondary-button" onclick="logoutDetails()">Log out</button>
 
                 <?php endif; ?>
-                <script>
-                    function routeToLogin() {
-                        window.location.href = '/login';
-                    }
-
-                    function routeToRegistration() {
-                        window.location.href = '/register';
-                    }
-
-                    function logout() {
-                        window.location.href = '/logout';
-                    }
-                </script>
-
             </div>
         </div>
     </nav>
@@ -217,49 +206,6 @@
                             <i class="material-icons review-icon" onclick="selectStar(4)">star_border</i>
                             <i class="material-icons review-icon" onclick="selectStar(5)">star_border</i>
                         </div>
-
-                        <script>
-                            function selectStar(value) {
-                                const stars = document.querySelectorAll('.review-stars > i');
-
-                                stars.forEach(star => star.textContent = 'star_border');
-                                for (let i = 0; i < value; i++) {
-                                    stars[i].textContent = 'star';
-                                }
-
-                                const reviewRate = document.querySelector('#review-rate');
-                                reviewRate.value = value;
-                            }
-
-                            function logout() {
-                                // Get the current base URL
-                                const baseURL = window.location.origin;
-
-                                const newURL = `${baseURL}/logout`;
-
-                                // Change the form action attribute
-                                document.getElementById('logoutForm').action = newURL;
-
-                                // Submit the form
-                                document.getElementById('logoutForm').submit();
-                            }
-
-                            function changeFormAction() {
-                                // Get the current base URL
-                                const baseURL = window.location.origin;
-
-                                // Replace everything after the base URL with '/addReview'
-                                const newURL = `${baseURL}/addReview`;
-
-
-
-                                // Change the form action attribute
-                                document.getElementById('reviewForm').action = newURL;
-
-                                // Submit the form
-                                document.getElementById('reviewForm').submit();
-                            }
-                        </script>
                     </div>
 
                 </div>

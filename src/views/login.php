@@ -10,6 +10,8 @@
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=DM Sans' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <script src="/public/js/common.js"></script>
+    <script src="/public/js/login.js"></script>
 
     <title>Login</title>
 </head>
@@ -66,25 +68,14 @@
                     in</button>
                 <button onclick="routeToRegistration()">Sign up</button>
                 </form>
-                <script>
-                    function routeToLogin() {
-                        window.location.href = '/login';
-                    }
-
-                    function routeToRegistration() {
-                        window.location.href = '/register';
-                    }
-                </script>
             </div>
         </div>
     </nav>
     <main>
         <div class="page-content">
             <div id="login-container">
-                <div id="logo">
-                    Flipbook</div>
-                <div id="sign-up">
-                    Log in</div>
+                <div id="logo">Flipbook</div>
+                <div id="sign-up">Log in</div>
                 <form class="login-form" action="login" method="POST">
                     <input type="text" id="username" name="email" placeholder="E-mail"
                         value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
@@ -111,24 +102,6 @@
                     <div id="have-account-answer" onclick="routeToRegistration()">
                         Sign Up</div>
                 </div>
-                <script>
-                    function togglePassword() {
-                        const passwordInput = document.getElementById('password');
-                        const visibilityIcon = document.getElementById('visibilityIcon');
-
-                        if (passwordInput.type === 'password') {
-                            passwordInput.type = 'text';
-                            visibilityIcon.textContent = 'visibility_off';
-                        } else {
-                            passwordInput.type = 'password';
-                            visibilityIcon.textContent = 'visibility';
-                        }
-                    }
-
-                    function routeToRegistration() {
-                        window.location.href = '/register';
-                    }
-                </script>
             </div>
         </div>
     </main>
