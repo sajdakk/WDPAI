@@ -10,41 +10,8 @@ class BookRepository extends Repository
     public function getMayInterestYouBooks(): array
     {
         $stmt = $this->database->connect()->prepare('
-        SELECT
-            b.*,
-            a.author_string,
-            COALESCE(AVG(r.rate), 0) AS average_mark,
-            COUNT(r.rate) AS rate_count
-        FROM
-            books b
-        LEFT JOIN (
-            SELECT
-                ba.book_id,
-                string_agg(author.name || \' \' || author.surname, \', \') AS author_string
-            FROM
-                authors AS author
-            JOIN
-                author_book AS ba ON author.id = ba.author_id
-            GROUP BY
-                ba.book_id
-        ) AS a ON b.id = a.book_id
-        LEFT JOIN (
-            SELECT
-                book_id,
-                rate
-            FROM
-                reviews
-            WHERE
-                accept_date IS NOT NULL
-        ) r ON b.id = r.book_id
-        WHERE
-            b.accept_date IS NOT NULL
-        GROUP BY
-            b.id, a.author_string
-        ORDER BY
-            average_mark DESC
-        LIMIT
-            3;
+        SELECT * FROM top_books_view
+        LIMIT 3;
         ');
         $stmt->execute();
         $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -77,39 +44,7 @@ class BookRepository extends Repository
     public function getTopBooks(): array
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT
-                b.*,
-                a.author_string,
-                COALESCE(AVG(r.rate), 0) AS average_mark,
-                COUNT(r.rate) AS rate_count
-            FROM
-                books b
-            LEFT JOIN (
-                SELECT
-                    ba.book_id,
-                    string_agg(author.name || \' \' || author.surname, \', \') AS author_string
-                FROM
-                    authors AS author
-                JOIN
-                    author_book AS ba ON author.id = ba.author_id
-                GROUP BY
-                    ba.book_id
-            ) AS a ON b.id = a.book_id
-            LEFT JOIN (
-                SELECT
-                    book_id,
-                    rate
-                FROM
-                    reviews
-                WHERE
-                    accept_date IS NOT NULL
-            ) r ON b.id = r.book_id
-            WHERE
-                b.accept_date IS NOT NULL
-            GROUP BY
-                b.id, a.author_string
-            ORDER BY
-                average_mark DESC
+        SELECT * FROM top_books_view;
         ');
 
         $stmt->execute();
@@ -423,29 +358,6 @@ class BookRepository extends Repository
 
         return $result;
     }
-
-
-
-    public function getAuthorStringForBookId(int $bookId): string
-    {
-
-        //Query to get authors for book (name and surname in one string, separated by comma)
-        $stmt = $this->database->connect()->prepare('
-        SELECT string_agg(a.name || \' \' || a.surname, \', \') AS author_string
-        FROM authors AS a
-        JOIN author_book AS ba ON a.id = ba.author_id
-        WHERE ba.book_id = :bookId;
-        ');
-        $stmt->bindParam(':bookId', $bookId, PDO::PARAM_STR);
-        $stmt->execute();
-
-        $result = $stmt->fetch(PDO::FETCH_COLUMN);
-
-        return strval($result) ?: '';
-    }
-
-
-
 
     public function addBook(BookWriteRequest $bookWriteRequest, $authors): ?int
     {

@@ -28,17 +28,4 @@ class AuthorRepository extends Repository
 
         return $result;
     }
-
-    public function addAuthor(AuthorWriteRequest $request): void
-    {
-        $stmt = $this->database->connect()->prepare('
-            INSERT INTO authors (name, surname)
-            VALUES (?, ?)
-        ');
-
-        $stmt->execute([
-            $request->getName(),
-            $request->getSurname()
-        ]);
-    }
 }

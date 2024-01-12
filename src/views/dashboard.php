@@ -142,7 +142,7 @@
                                         <?php endif; ?>
                                     </div>
                                     <div class="inter-regular-12">
-                                        <?= $book->authors_string ?>
+                                        <?= $book->authorsString ?>
                                     </div>
                                 </div>
                                 <div class="extra-info">

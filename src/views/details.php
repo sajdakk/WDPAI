@@ -99,7 +99,7 @@
                         </div>
                         <div class="headline-h4-regular">
                             Author:
-                            <?= $book->authors_string ?>
+                            <?= $book->authorsString ?>
                         </div>
                         <div class="headline-h4-regular">
                             Language:
@@ -135,7 +135,7 @@
                     </div>
                     <div class="headline-h4-regular">
                         Author:
-                        <?= $book->authors_string ?>
+                        <?= $book->authorsString ?>
                     </div>
                     <div class="headline-h4-regular">
                         Language:
