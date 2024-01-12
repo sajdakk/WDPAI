@@ -48,8 +48,8 @@ class BookDetailsController extends AppController
         $reviews = $this->reviewRepository->getReviewToDisplayForBookId($params);
 
 
-        $genre = $this->genreRepository->getGenreFromId($book->getGenreId());
-        $language = $this->languageRepository->getLanguageFromId($book->getLanguageId());
+        $genre = $this->genreRepository->getGenreFromId($book->genre_id);
+        $language = $this->languageRepository->getLanguageFromId($book->language_id);
 
         $date = new DateTime();
         $isLogged = $data->__get('is-logged');
@@ -79,7 +79,7 @@ class BookDetailsController extends AppController
 
         $user = $this->userRepository->getUser($email);
 
-        $hasAlreadyReview = $this->reviewRepository->hasUserReviewedBook($user->getId(), $book->getId());
+        $hasAlreadyReview = $this->reviewRepository->hasUserReviewedBook($user->getId(), $book->id);
 
         $this->render(
             'details',

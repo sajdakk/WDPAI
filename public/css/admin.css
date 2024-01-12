@@ -21,3 +21,6 @@
 .inter-semibold-16{
     justify-content: center;
 }
+.empty-header-container .inter-semibold-16{
+    text-align: center;
+}

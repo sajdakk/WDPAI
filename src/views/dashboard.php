@@ -95,41 +95,36 @@
                 What can I find for you?
 
             </div>
-            <form class="header-form" action="dashboard" method="post">
-                <input type="text" id="title" name="title"
-                    value="<?= isset($_POST['title']) ? htmlspecialchars($_POST['title']) : '' ?>" placeholder="Title">
-                <input type="text" id="author_name" name="name"
-                    value="<?= isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '' ?>"
-                    placeholder="Author's name">
-                <input type="text" id="author_surname"
-                    value="<?= isset($_POST['surname']) ? htmlspecialchars($_POST['surname']) : '' ?>"
-                    value="<?= $initialSurname ?>" placeholder="Author's surname">
-                <button type="submit">Search</button>
+            <form class="header-form">
+                <input type="text" id="title" name="title" placeholder="Title">
+                <input type="text" id="author_name" name="name" placeholder="Author's name">
+                <input type="text" id="author_surname" placeholder="Author's surname">
+                <button onclick="search(event);">Search</button>
             </form>
             <div class="dashboard-content">
                 <?php if ($mayInterestYou): ?>
 
-                    <div class="header">
+                    <div class="header" id="may-interest-you">
                         May interest you
                     </div>
                 <?php endif; ?>
                 <div class="news">
                     <?php foreach ($books as $book): ?>
-                        <div class="news-container" onclick="routeToDetails('<?= $book->getId() ?>')">
-                            <img class="news-image" src=<?= '/public/uploads/' . $book->getImage() ?> alt="News Image 1">
+                        <div class="news-container" onclick="routeToDetails('<?= $book->id ?>')">
+                            <img class="news-image" src=<?= '/public/uploads/' . $book->image ?> alt="News Image 1">
                             <div class="news-description">
                                 <div class="card-header">
                                     <div class="title">
                                         <div class="inter-semibold-16">
-                                            <?= $book->getTitle() ?>
+                                            <?= $book->title ?>
                                         </div>
                                         <?php if ($isLogged): ?>
-                                            <button onclick="toggleFavorite(event, <?= $book->getId() ?>);">
+                                            <button onclick="toggleFavorite(event, <?= $book->id ?>);">
                                                 <i class="material-icons">
                                                     <?php
                                                     $contains = false;
                                                     foreach ($favorites as $favorite) {
-                                                        if ($favorite->getBookId() == $book->getId()) {
+                                                        if ($favorite->getBookId() == $book->id) {
                                                             $contains = true;
                                                             break;
                                                         }
@@ -147,18 +142,18 @@
                                         <?php endif; ?>
                                     </div>
                                     <div class="inter-regular-12">
-                                        <?= $book->getAuthorsString() ?>
+                                        <?= $book->authors_string ?>
                                     </div>
                                 </div>
                                 <div class="extra-info">
                                     <div class="score">
                                         <i class="material-icons">star_border</i>
                                         <div class="inter-light-14">
-                                            <?= $book->getAverageRate() ?>/5
+                                            <?= round($book->average_rate, 1) ?>/5
                                         </div>
                                     </div>
                                     <div class="inter-extra-light-14">
-                                        <?= $book->getRateCount() ?> reviews
+                                        <?= $book->rate_count ?> reviews
                                     </div>
                                 </div>
                             </div>

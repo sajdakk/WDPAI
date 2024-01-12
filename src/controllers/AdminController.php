@@ -58,6 +58,7 @@ class AdminController extends AppController
             'admin',
             [
                 'isLogged' => $data->__get('is-logged'),
+                'currentUserId' => $data->__get('user-id'),
                 'reviews' => $reviews,
                 'books' => $books,
                 'users' => $users
@@ -80,8 +81,6 @@ class AdminController extends AppController
             $this->reviewRepository->rejectReviewForReviewId($reviewId);
         }
 
-        $source = $_SERVER["HTTP_REFERER"];
-        header("Location: $source");
     }
     public function toggleBookStatus()
     {
@@ -97,9 +96,6 @@ class AdminController extends AppController
         } else if ($action == 'reject') {
             $this->bookRepository->rejectBookForBookId($bookId);
         }
-
-        $source = $_SERVER["HTTP_REFERER"];
-        header("Location: $source");
     }
 
     public function toggleUserStatus()
@@ -111,27 +107,22 @@ class AdminController extends AppController
         $userId = trim($_POST['user-id']);
         $action = trim($_POST['action']);
 
+        switch ($action) {
+            case 'removeUser':
+                $this->userRepository->removeUserWithId($userId);
+                break;
 
-        if ($action == 'removeAdmin') {
-            $this->userRepository->removeAdminToUserId($userId);
-        } else if ($action == 'addAdmin') {
-            $this->userRepository->addAdminToUserId($userId);
-        } else if ($action == 'removeUser') {
-            $data = Session::getInstance();
-            $currentUserId = $data->__get('user-id');
+            case 'removeAdmin':
+                $this->userRepository->removeAdminToUserId($userId);
+                break;
 
-            $this->userRepository->removeUserWithId($userId);
-
-            if ($currentUserId == $userId) {
-                $url = "http://$_SERVER[HTTP_HOST]";
-                header("Location: {$url}/logout");
-                return;
-            }
+            case 'addAdmin':
+                $this->userRepository->addAdminToUserId($userId);
+                break;
         }
 
-
-
-        $source = $_SERVER["HTTP_REFERER"];
-        header("Location: $source");
+        echo json_encode([
+            'isAdmin' => $action == 'addAdmin'
+        ]);
     }
 }

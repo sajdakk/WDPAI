@@ -98,22 +98,22 @@
             <div class="news">
                 <?php foreach ($books as $book): ?>
 
-                    <div class="news-container" onclick="routeToDetails('<?= $book->getId() ?>')">
-                        <img class="news-image" src=<?= 'public/uploads/' . $book->getImage() ?> alt="News Image 1">
+                    <div class="news-container" onclick="routeToDetails('<?= $book->id ?>')">
+                        <img class="news-image" src=<?= 'public/uploads/' . $book->image ?> alt="News Image 1">
                         <div class="news-description">
                             <div class="card-header">
                                 <div class="title">
                                     <div class="inter-semibold-16">
-                                        <?= $book->getTitle() ?>
+                                        <?= $book->title ?>
 
                                     </div>
                                     <?php if ($isLogged): ?>
-                                        <button onclick="toggleFavorite(event, <?= $book->getId() ?>);">
+                                        <button onclick="toggleFavorite(event, <?= $book->id ?>);">
                                             <i class="material-icons">
                                                 <?php
                                                 $contains = false;
                                                 foreach ($favorites as $favorite) {
-                                                    if ($favorite->getBookId() == $book->getId()) {
+                                                    if ($favorite->getBookId() == $book->id) {
                                                         $contains = true;
                                                         break;
                                                     }
@@ -131,7 +131,7 @@
                                     <?php endif; ?>
                                 </div>
                                 <div class="inter-regular-12">
-                                    <?= $book->getAuthorsString() ?>
+                                    <?= $book->authors_string ?>
                                 </div>
 
                             </div>
@@ -139,11 +139,11 @@
                                 <div class="score">
                                     <i class="material-icons">star_border</i>
                                     <div class="inter-light-14">
-                                        <?= $book->getAverageRate() ?> / 5
+                                        <?= round($book->average_rate, 1) ?> / 5
                                     </div>
                                 </div>
                                 <div class="inter-extra-light-14">
-                                    <?= $book->getRateCount() ?> reviews
+                                    <?= $book->rate_count ?> reviews
                                 </div>
                             </div>
                         </div>

@@ -115,15 +115,15 @@
                 </div>
 
                 <div class="list" id="reviewsList">
-                    <? if (empty($reviews)): ?>
-                        <div class="empty-header-container">
-                            <div class="inter-semibold-16">
-                                No reviews to accept or reject
-                            </div>
+                    <div class="empty-header-container">
+                        <div class="inter-semibold-16" id="review-empty-header" ,
+                            style="display:  <?= (empty($reviews)) ? 'initial' : 'none' ?> ">
+                            No reviews to accept or reject
                         </div>
-                    <?php endif; ?>
+                    </div>
                     <?php foreach ($reviews as $review): ?>
-                        <div class="card" onclick="routeToDetails('<?= $review->getBookId() ?>')">
+                        <div class="card" id="review-card-<?= $review->getId() ?>"
+                            onclick="routeToDetails('<?= $review->getBookId() ?>')">
                             <div class="card-content">
                                 <div class="card-header">
                                     <div class="inter-semibold-16">
@@ -139,35 +139,27 @@
                                 </div>
                             </div>
                             <div class="profile-card-right-side">
-                                <form action="/toggleReviewStatus" method="post">
-                                    <input type="hidden" name="review-id" value="<?= $review->getId() ?>">
-                                    <input type="hidden" name="action" value="accept">
-                                    <a class="secondary_menu__item">
-                                        <button type="submit">Accept</button>
-                                    </a>
-                                </form>
-
-                                <form action="/toggleReviewStatus" method="post">
-                                    <input type="hidden" name="review-id" value="<?= $review->getId() ?>">
-                                    <input type="hidden" name="action" value="reject">
-                                    <button class="secondary-button" type="submit">Reject</button>
-                                </form>
+                                <a class="secondary_menu__item">
+                                    <button
+                                        onclick="toggleReviewStatus(event, <?= $review->getId() ?>, 'accept')">Accept</button>
+                                </a>
+                                <button class="secondary-button"
+                                    onclick="toggleReviewStatus(event, <?= $review->getId() ?>, 'reject')">Reject</button>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
 
                 <div class="list" id="booksList" style="display: none;">
-                    <? if (empty($books)): ?>
-                        <div class="empty-header-container">
-                            <div class="inter-semibold-16">
-                                No books to accept or reject
-                            </div>
+                    <div class="empty-header-container" id="book-empty-header" ,
+                        style="display:  <?= (empty($books)) ? 'initial' : 'none' ?> ">
+                        <div class="inter-semibold-16">
+                            No books to accept or reject
                         </div>
-                    <?php endif; ?>
-
+                    </div>
                     <?php foreach ($books as $book): ?>
-                        <div class="card" onclick="routeToDetails('<?= $book->getId() ?>')">
+                        <div class="card" id="book-card-<?= $book->getId() ?>"
+                            onclick="routeToDetails('<?= $book->getId() ?>')">
                             <div class="card-content">
                                 <div class="card-header">
                                     <div class="inter-semibold-16">
@@ -197,19 +189,12 @@
                             </div>
                             <div class="profile-card-right-side">
 
-                                <form action="/toggleBookStatus" method="post">
-                                    <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
-                                    <input type="hidden" name="action" value="accept">
-                                    <a class="secondary_menu__item">
-                                        <button type="submit">Accept</button>
-                                    </a>
-                                </form>
+                                <a class="secondary_menu__item">
+                                    <button onclick="toggleBookStatus(event, <?= $book->getId() ?>, 'accept')">Accept</button>
+                                </a>
 
-                                <form action="/toggleBookStatus" method="post">
-                                    <input type="hidden" name="book-id" value="<?= $book->getId() ?>">
-                                    <input type="hidden" name="action" value="reject">
-                                    <button class="secondary-button" type="submit">Reject</button>
-                                </form>
+                                <button class="secondary-button"
+                                    onclick="toggleBookStatus(event, <?= $book->getId() ?>, 'reject')">Reject</button>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -224,7 +209,7 @@
                         </div>
                     <?php endif; ?>
                     <?php foreach ($users as $user): ?>
-                        <div class="user-card">
+                        <div class="user-card" id="user-card-<?= $user->getId() ?>">
                             <div class="card-content">
                                 <div class="card-header">
                                     <div class="inter-semibold-16">
@@ -243,27 +228,20 @@
                                 </div>
                             </div>
                             <div class="profile-card-right-side">
-                                <form action="/toggleUserStatus" method="post">
-                                    <input type="hidden" name="user-id" value="<?= $user->getId() ?>">
-                                    <input type="hidden" name="action"
-                                        value="<?php echo trim(($user->getRole() == 'admin') ? 'removeAdmin' : 'addAdmin'); ?>">
-                                    <a class="secondary_menu__item">
-                                        <button type="submit">
-                                            <?php if ($user->getRole() == 'admin') {
-                                                echo 'Remove admin';
-                                            } else {
-                                                echo 'Add admin';
-                                            } ?>
+                                <a class="secondary_menu__item">
+                                    <button onclick="toggleUserStatus(event, <?= $user->getId() ?>)">
+                                        <?php if ($user->getRole() == 'admin') {
+                                            echo 'Remove admin';
+                                        } else {
+                                            echo 'Add admin';
+                                        } ?>
 
-                                        </button>
-                                    </a>
-                                </form>
-
-                                <form action="/toggleUserStatus" method="post">
-                                    <input type="hidden" name="user-id" value="<?= $user->getId() ?>">
-                                    <input type="hidden" name="action" value="removeUser">
-                                    <button class="secondary-button" type="submit">Delete account</button>
-                                </form>
+                                    </button>
+                                </a>
+                                <button class="secondary-button"
+                                    onclick="removeUser(event, <?= $user->getId() ?>, <?= ($currentUserId == $user->getId()) ? 'true' : 'false' ?>)">
+                                    Delete account
+                                </button>
                             </div>
                         </div>
                     <?php endforeach; ?>

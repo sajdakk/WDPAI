@@ -32,36 +32,11 @@ class DashboardController extends AppController
     {
 
         $data = Session::getInstance();
-        $title = $_POST['title'];
-        $name = $_POST['name'];
-        $surname = $_POST['surname'];
-
-        $isEmpty = empty($title) && empty($name) && empty($surname);
 
         $userId = $data->__get('user-id');
         $favorites = $userId ? $this->favoriteRepository->getFavoriteFromUserId($userId) : [];
 
 
-
-        if ($this->isPost() && !$isEmpty) {
-            $filtered = $this->bookRepository->getFilteredBooks($title, $name, $surname);
-
-            $this->render(
-                'dashboard',
-                [
-                    'isLogged' => $data->__get('is-logged'),
-                    'filtered' => $filtered,
-                    'mayInterestYou' => false,
-                    'books' => $filtered,
-                    'favorites' => $favorites,
-                    'initialTitle' => $title,
-                    'initialName' => $name,
-                    'initialSurname' => $surname
-
-                ],
-            );
-            return;
-        }
 
         $mayInterestYou = $this->bookRepository->getMayInterestYouBooks();
 
@@ -74,9 +49,6 @@ class DashboardController extends AppController
                     'mayInterestYou' => !empty($mayInterestYou),
                     'books' => $mayInterestYou,
                     'favorites' => [],
-                    'initialTitle' => $title,
-                    'initialName' => $name,
-                    'initialSurname' => $surname
                 ],
             );
             return;
@@ -93,9 +65,6 @@ class DashboardController extends AppController
                     'mayInterestYou' => !empty($mayInterestYou),
                     'books' => $mayInterestYou,
                     'favorites' => [],
-                    'initialTitle' => $title,
-                    'initialName' => $name,
-                    'initialSurname' => $surname
                 ],
             );
             return;
@@ -109,12 +78,51 @@ class DashboardController extends AppController
                 'mayInterestYou' => !empty($mayInterestYou),
                 'books' => $mayInterestYou,
                 'favorites' => $favorites,
-                'initialTitle' => $title,
-                'initialName' => $name,
-                'initialSurname' => $surname,
                 'isAdmin' => $user->getRole() == 'admin'
             ],
         );
+    }
+
+    public function search()
+    {
+        if (!$this->isPost()) {
+            echo '[]';
+
+            return;
+        }
+
+        $data = Session::getInstance();
+        $userId = $data->__get('user-id');
+
+        $title = $_POST['title'];
+        $name = $_POST['name'];
+        $surname = $_POST['surname'];
+
+        $isEmpty = empty($title) && empty($name) && empty($surname);
+
+        if ($isEmpty) {
+            $filtered = $this->bookRepository->getMayInterestYouBooks();
+        } else {
+            $filtered = $this->bookRepository->getFilteredBooks($title, $name, $surname);
+        }
+
+        if ($userId) {
+            $favorites = $this->favoriteRepository->getFavoriteFromUserId($userId);
+
+            foreach ($filtered as $filter) {
+                $contains = false;
+                foreach ($favorites as $favorite) {
+                    if ($favorite->getBookId() == $filter->id) {
+                        $contains = true;
+                        break;
+                    }
+                }
+
+                $filter->isFavorite = $contains;
+            }
+        }
+
+        echo json_encode($filtered);
     }
 
 

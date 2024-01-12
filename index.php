@@ -25,7 +25,7 @@ Routing::post('addReview', 'BookDetailsController');
 Routing::post('toggleReviewStatus', 'AdminController');
 Routing::post('toggleBookStatus', 'AdminController');
 Routing::post('toggleUserStatus', 'AdminController');
-Routing::post('dashboard', 'DashboardController');
+Routing::post('search', 'DashboardController');
 
 Routing::run($path);
 

@@ -2,22 +2,24 @@
 
 class BookToDisplay
 {
-    private string $id;
-    private string $title;
-    private string $authorsString;
-    private string $average_rate;
-    private string $rate_count;
-    private string $genre_id;
-    private string $language_id;
-    private string $date_of_publication;
-    private int $page_count;
-    private string $image;
-    private string $isbn_number;
-    private string $description;
-    private string $upload_date;
-    private ?string $accept_date;
-    private int $created_by;
-    private ?string $reject_date;
+    public string $id;
+    public string $title;
+    public string $authorsString;
+    public string $average_rate;
+    public string $rate_count;
+    public string $genre_id;
+    public string $language_id;
+    public string $date_of_publication;
+    public int $page_count;
+    public string $image;
+    public string $isbn_number;
+    public string $description;
+    public string $upload_date;
+    public ?string $accept_date;
+    public int $created_by;
+    public ?string $reject_date;
+
+    // TODO(Anitka): Remove getters and setters
 
     public function __construct(
         string $id,
@@ -55,41 +57,11 @@ class BookToDisplay
         $this->reject_date = $reject_date;
 
     }
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    public function getAuthorsString()
-    {
-        return $this->authorsString;
-    }
 
     public function getAverageRate()
     {
         $value = floatval($this->average_rate);
-        return round($value, 1, null) ;
-    }
-
-    public function getRateCount()
-    {
-        return $this->rate_count;
-    }
-
-
-    public function getGenreId()
-    {
-        return $this->genre_id;
-    }
-
-    public function getLanguageId()
-    {
-        return $this->language_id;
+        return round($value, 1, null);
     }
 
     public function getDateOfPublication()
@@ -98,57 +70,17 @@ class BookToDisplay
         return $dt->format('d.m.Y') . 'r.';
     }
 
-    public function getPageCount()
-    {
-        return $this->page_count;
-    }
-
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    public function getUploadDate()
-    {
-        return $this->upload_date;
-    }
-
-    public function getAcceptDate()
-    {
-        return $this->accept_date;
-    }
-
-    public function getCreatedBy()
-    {
-        return $this->created_by;
-    }
-
-    public function getRejectDate()
-    {
-        return $this->reject_date;
-    }
     public function getCreatedAt()
     {
         $dt = \DateTime::createFromFormat('Y-m-d H:i:s', $this->upload_date);
         return $dt->format('d.m.Y') . 'r.';
     }
+    
     public function getAcceptedAt()
     {
         $dt = \DateTime::createFromFormat('Y-m-d H:i:s', $this->accept_date);
         return $dt->format('d.m.Y') . 'r.';
     }
-
-    public function getIsbnNumber()
-    {
-        return $this->isbn_number;
-    }
-
-
 }
 
 

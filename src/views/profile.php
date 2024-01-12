@@ -172,18 +172,18 @@
 
                 <div class="list" id="booksList" style="display: none;">
                     <?php foreach ($books as $book): ?>
-                        <div class="card" onclick="routeToDetails('<?= $book->getId() ?>')">
+                        <div class="card" onclick="routeToDetails('<?= $book->id ?>')">
                             <div class="card-content">
                                 <div class="card-header">
                                     <div class="inter-semibold-16">
-                                        <?= $book->getTitle() ?>
+                                        <?= $book->title ?>
                                     </div>
                                     <div class="inter-regular-12">
-                                        <?= $book->getAuthorsString() ?>
+                                        <?= $book->authorsString ?>
                                     </div>
                                     <div class="dmsans-regular-14">
                                         Description:
-                                        <?= $book->getDescription() ?>
+                                        <?= $book->description ?>
                                     </div>
                                     <div class="dmsans-regular-14">
                                         Date of publication:
@@ -191,22 +191,22 @@
                                     </div>
                                     <div class="dmsans-regular-14">
                                         Page count:
-                                        <?= $book->getPageCount() ?>
+                                        <?= $book->pageCount ?>
                                     </div>
                                     <div class="dmsans-regular-14">
                                         ISBN number:
-                                        <?= $book->getIsbnNumber() ?>
+                                        <?= $book->isbnNumber ?>
                                     </div>
 
                                 </div>
                             </div>
                             <div class="profile-card-right-side">
                                 <?php
-                                if ($book->getAcceptDate() !== null) {
+                                if ($book->accept_date !== null) {
                                     echo ' <div class="stars">
                                     <i class="material-icons">star_border</i>
                                     <div class="inter-light-14">
-                                        ' . $book->getAverageRate() . '/5
+                                        ' . round($book->average_rate, 1) . '/5
                                     </div>
                                 </div>';
                                 }
@@ -214,9 +214,9 @@
 
                                 <?php
                                 // Determine the status based on accept_date and reject_date
-                                if ($book->getAcceptDate() !== null) {
+                                if ($book->accept_date !== null) {
                                     echo '<div class="status-accepted">Accepted</div>';
-                                } elseif ($book->getRejectDate() !== null) {
+                                } elseif ($book->reject_date !== null) {
                                     echo '<div class="status-rejected">Rejected</div>';
                                 } else {
                                     echo '<div class="status-awaiting">Awaiting</div>';

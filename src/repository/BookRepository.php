@@ -145,6 +145,10 @@ class BookRepository extends Repository
 
     public function getFilteredBooks(?string $title, ?string $author_name, ?string $author_surname): array
     {
+        $title = strtolower($title);
+        $author_name = strtolower($author_name);
+        $author_surname = strtolower($author_surname);
+
         $query = '
         SELECT
         b.*,
@@ -167,9 +171,11 @@ class BookRepository extends Repository
     LEFT JOIN
         reviews r ON b.id = r.book_id
     WHERE
-        (COALESCE(:title, \'\') = \'\' OR b.title LIKE :titleWildcard)
-        AND (COALESCE(:author_name, \'\') = \'\' OR author_names.author_string LIKE :authorNameWildcard)
-        AND (COALESCE(:author_surname, \'\') = \'\' OR author_names.author_string LIKE :authorSurnameWildcard)
+        (COALESCE(:title, \'\') = \'\' OR LOWER(b.title) LIKE :titleWildcard)
+        AND (COALESCE(:author_name, \'\') = \'\' OR LOWER(author_names.author_string) LIKE :authorNameWildcard)
+        AND (COALESCE(:author_surname, \'\') = \'\' OR LOWER(author_names.author_string) LIKE :authorSurnameWildcard)
+        AND r.accept_date IS NOT NULL
+
     GROUP BY
         b.id, author_names.author_string;
         ';

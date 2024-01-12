@@ -92,14 +92,14 @@
         <div class="page-content">
             <div class="mobile-page-content">
                 <div class="details">
-                    <img class="book-image" src=<?= '/public/uploads/' . $book->getImage() ?> alt="News Image 2">
+                    <img class="book-image" src=<?= '/public/uploads/' . $book->image ?> alt="News Image 2">
                     <div class="info">
                         <div class="headline-h1-semibold">
-                            <?= $book->getTitle() ?>
+                            <?= $book->title ?>
                         </div>
                         <div class="headline-h4-regular">
                             Author:
-                            <?= $book->getAuthorsString() ?>
+                            <?= $book->authors_string ?>
                         </div>
                         <div class="headline-h4-regular">
                             Language:
@@ -111,11 +111,11 @@
                         </div>
                         <div class="headline-h4-regular">
                             Page count:
-                            <?= $book->getPageCount() ?>
+                            <?= $book->page_count ?>
                         </div>
                         <div class="headline-h4-regular">
                             ISBN number:
-                            <?= $book->getIsbnNumber() ?>
+                            <?= $book->isbn_number ?>
                         </div>
                         <div class="headline-h4-regular">
                             Genre:
@@ -125,17 +125,17 @@
                     <div class="stars">
                         <i class="material-icons custom-icon">star_border</i>
                         <div class="inter-light-24">
-                            <?= $book->getAverageRate() ?>/5
+                            <?= round($book->average_rate, 1) ?>/5
                         </div>
                     </div>
                 </div>
                 <div class="mobile-info">
                     <div class="headline-h1-semibold">
-                        <?= $book->getTitle() ?>
+                        <?= $book->title ?>
                     </div>
                     <div class="headline-h4-regular">
                         Author:
-                        <?= $book->getAuthorsString() ?>
+                        <?= $book->authors_string ?>
                     </div>
                     <div class="headline-h4-regular">
                         Language:
@@ -147,11 +147,11 @@
                     </div>
                     <div class="headline-h4-regular">
                         Page count:
-                        <?= $book->getPageCount() ?>
+                        <?= $book->page_count ?>
                     </div>
                     <div class="headline-h4-regular">
                         ISBN number:
-                        <?= $book->getIsbnNumber() ?>
+                        <?= $book->isbn_number ?>
                     </div>
                     <div class="headline-h4-regular">
                         Genre:
@@ -160,100 +160,102 @@
                 </div>
             </div>
             <div class="description">
-                <?= $book->getDescription() ?>
+                <?= $book->description ?>
             </div>
-            <div class="headline-h1-semibold">
-                Add your review
-            </div>
-            <? if (!$isLogged): ?>
-                <div class="inter-semibold-16">
-                    You have to be logged in to add a review
+            <? if ($book->reject_date != null || $book->accept_date != null): ?>
+                <div class="headline-h1-semibold">
+                    Add your review
                 </div>
-            <? elseif ($hasAlreadyReview): ?>
-                <div class="inter-semibold-16">
-                    You have already reviewed this book
-                </div>
-            <?php else: ?>
+                <? if (!$isLogged): ?>
+                    <div class="inter-semibold-16">
+                        You have to be logged in to add a review
+                    </div>
+                <? elseif ($hasAlreadyReview): ?>
+                    <div class="inter-semibold-16">
+                        You have already reviewed this book
+                    </div>
+                <?php else: ?>
 
-                <div class="card">
-                    <?php if ($userAvatar == null): ?>
-                        <div class="placeholder-image">
-                        </div>
-                    <?php else: ?>
-                        <img class="imagePreview" src=<?= '/public/uploads/' . $userAvatar ?> alt="News Image 1">
-                    <?php endif; ?>
-                    <div class="review-content">
-                        <div class="inter-semibold-16">
-                            <?= $userName ?> |
-                            <?= $nowString ?>
-                        </div>
-                        <form class="header-form" id="reviewForm" action="addReview" method="post">
-                            <input type="text" id="review" name="review" placeholder="Type something..." required>
-                            <div class="review-mobile-stars" onclick="selectStar(event)">
+                    <div class="card">
+                        <?php if ($userAvatar == null): ?>
+                            <div class="placeholder-image">
+                            </div>
+                        <?php else: ?>
+                            <img class="imagePreview" src=<?= '/public/uploads/' . $userAvatar ?> alt="News Image 1">
+                        <?php endif; ?>
+                        <div class="review-content">
+                            <div class="inter-semibold-16">
+                                <?= $userName ?> |
+                                <?= $nowString ?>
+                            </div>
+                            <form class="header-form" id="reviewForm" action="addReview" method="post">
+                                <input type="text" id="review" name="review" placeholder="Type something..." required>
+                                <div class="review-mobile-stars" onclick="selectStar(event)">
+                                    <i class="material-icons review-icon" onclick="selectStar(1)">star_border</i>
+                                    <i class="material-icons review-icon" onclick="selectStar(2)">star_border</i>
+                                    <i class="material-icons review-icon" onclick="selectStar(3)">star_border</i>
+                                    <i class="material-icons review-icon" onclick="selectStar(4)">star_border</i>
+                                    <i class="material-icons review-icon" onclick="selectStar(5)">star_border</i>
+                                </div>
+                                <input type="hidden" name="rate" id="review-rate" value="0" />
+                                <button type="submit" onclick="changeFormAction()">Sent to review</button>
+                            </form>
+                            <div class="review-stars">
                                 <i class="material-icons review-icon" onclick="selectStar(1)">star_border</i>
                                 <i class="material-icons review-icon" onclick="selectStar(2)">star_border</i>
                                 <i class="material-icons review-icon" onclick="selectStar(3)">star_border</i>
                                 <i class="material-icons review-icon" onclick="selectStar(4)">star_border</i>
                                 <i class="material-icons review-icon" onclick="selectStar(5)">star_border</i>
                             </div>
-                            <input type="hidden" name="rate" id="review-rate" value="0" />
-                            <button type="submit" onclick="changeFormAction()">Sent to review</button>
-                        </form>
-                        <div class="review-stars">
-                            <i class="material-icons review-icon" onclick="selectStar(1)">star_border</i>
-                            <i class="material-icons review-icon" onclick="selectStar(2)">star_border</i>
-                            <i class="material-icons review-icon" onclick="selectStar(3)">star_border</i>
-                            <i class="material-icons review-icon" onclick="selectStar(4)">star_border</i>
-                            <i class="material-icons review-icon" onclick="selectStar(5)">star_border</i>
                         </div>
+
                     </div>
+                <?php endif; ?>
+                <div class="headline-h1-semibold">
+                    What people are saying?
+                </div>
+                <?php if ($reviews == null): ?>
+                    <div class="inter-semibold-16">
+                        No reviews yet
+                    </div>
+                <?php else: ?>
+                    <?php foreach ($reviews as $review): ?>
+                        <div class="card">
+                            <div class="mobile-left-side-card">
+                                <?php if (empty($review->getUserAvatar())): ?>
+                                    <div class="placeholder-image">
+                                    </div>
+                                <?php else: ?>
+                                    <img class="imagePreview" src=<?= '/public/uploads/' . $review->getUserAvatar() ?>
+                                        alt="News Image 1">
+                                <?php endif; ?>
 
-                </div>
-            <?php endif; ?>
-            <div class="headline-h1-semibold">
-                What people are saying?
-            </div>
-            <?php if ($reviews == null): ?>
-                <div class="inter-semibold-16">
-                    No reviews yet
-                </div>
-            <?php else: ?>
-                <?php foreach ($reviews as $review): ?>
-                    <div class="card">
-                        <div class="mobile-left-side-card">
-                            <?php if (empty($review->getUserAvatar())): ?>
-                                <div class="placeholder-image">
+
+                                <div class="mobile-stars">
+                                    <i class="material-icons custom-icon">star_border</i>
+                                    <div class="inter-light-24">
+                                        <?= $review->getRate() ?>/5
+                                    </div>
                                 </div>
-                            <?php else: ?>
-                                <img class="imagePreview" src=<?= '/public/uploads/' . $review->getUserAvatar() ?>
-                                    alt="News Image 1">
-                            <?php endif; ?>
-
-
-                            <div class="mobile-stars">
+                            </div>
+                            <div class="card-content">
+                                <div class="inter-semibold-16">
+                                    <?= $review->getUserName() ?> |
+                                    <?= $review->getUploadDate() ?>
+                                </div>
+                                <div class="dmsans-regular-14">
+                                    <?= $review->getContent() ?>
+                                </div>
+                            </div>
+                            <div class="stars">
                                 <i class="material-icons custom-icon">star_border</i>
                                 <div class="inter-light-24">
                                     <?= $review->getRate() ?>/5
                                 </div>
                             </div>
                         </div>
-                        <div class="card-content">
-                            <div class="inter-semibold-16">
-                                <?= $review->getUserName() ?> |
-                                <?= $review->getUploadDate() ?>
-                            </div>
-                            <div class="dmsans-regular-14">
-                                <?= $review->getContent() ?>
-                            </div>
-                        </div>
-                        <div class="stars">
-                            <i class="material-icons custom-icon">star_border</i>
-                            <div class="inter-light-24">
-                                <?= $review->getRate() ?>/5
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             <?php endif; ?>
 
     </main>
