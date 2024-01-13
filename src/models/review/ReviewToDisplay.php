@@ -4,7 +4,6 @@ class ReviewToDisplay
 {
     private string $id;
     private string $book_id;
-
     private string $book_title;
     private string $book_authors;
     private string $user_id;

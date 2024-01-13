@@ -9,7 +9,7 @@ class UserRepository extends Repository
 
     public function getUser(string $email): ?User
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         SELECT
         u.*,
         r.name AS role_name
@@ -42,7 +42,7 @@ class UserRepository extends Repository
 
     public function getUsers(): array
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         SELECT
         u.*,
         r.name AS role_name
@@ -72,7 +72,7 @@ class UserRepository extends Repository
     }
     public function getUserWithId(string $id): ?User
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         SELECT
         u.*,
         r.name AS role_name
@@ -105,7 +105,7 @@ class UserRepository extends Repository
 
     public function addUser(UserWriteRequest $userWriteRequest)
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             INSERT INTO users (name, surname, email, password, role_id )
             VALUES (?, ?, ?, ?, 2)
         ');
@@ -120,7 +120,7 @@ class UserRepository extends Repository
 
     public function removeUserWithId(int $userId): void
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
     SELECT remove_user_and_reviews(:user_id)
     ');
 
@@ -130,7 +130,7 @@ class UserRepository extends Repository
 
     public function updateAvatarWithUserId($avatar, $id)
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             UPDATE users SET avatar = :avatar WHERE id = :id
         ');
 
@@ -140,7 +140,7 @@ class UserRepository extends Repository
     }
     public function addAdminToUserId($id)
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             UPDATE users SET role_id = 3 WHERE id = :id
         ');
 
@@ -149,7 +149,7 @@ class UserRepository extends Repository
     }
     public function removeAdminToUserId($id)
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             UPDATE users SET role_id = 2 WHERE id = :id
         ');
 

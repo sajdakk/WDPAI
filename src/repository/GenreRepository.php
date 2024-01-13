@@ -10,7 +10,7 @@ class GenreRepository extends Repository
     {
 
 
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT * FROM genres;
         ');
         $stmt->execute();
@@ -30,7 +30,7 @@ class GenreRepository extends Repository
 
     public function getGenreFromId(string $genreId): ?Genre
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT * FROM genres WHERE id = :genre_id
         ');
         $stmt->bindParam(':genre_id', $genreId, PDO::PARAM_STR);

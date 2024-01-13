@@ -10,7 +10,7 @@ class LanguageRepository extends Repository
     {
 
 
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT * FROM languages;
         ');
         $stmt->execute();
@@ -30,7 +30,7 @@ class LanguageRepository extends Repository
 
     public function getLanguageFromId(string $languageId): ?Language
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT * FROM languages WHERE id = :language_id
         ');
         $stmt->bindParam(':language_id', $languageId, PDO::PARAM_STR);

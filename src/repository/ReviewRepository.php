@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Repository.php';
-require_once __DIR__ . '/../models/review/Review.php';
 require_once __DIR__ . '/../models/review/ReviewToDisplay.php';
 require_once __DIR__ . '/../models/review/ReviewWriteRequest.php';
 require_once __DIR__ . '/../models/review/ReviewToCreatedByDisplay.php';
@@ -11,7 +10,7 @@ class ReviewRepository extends Repository
 
     public function getReviewToDisplayFromUserId(string $userId)
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT
                 r.id,
                 r.book_id,
@@ -61,7 +60,7 @@ class ReviewRepository extends Repository
 
     public function hasUserReviewedBook(string $userId, string $bookId): bool
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT COUNT(*) as review_count
             FROM reviews
             WHERE user_id = :user_id AND book_id = :book_id AND reject_date IS NULL
@@ -78,7 +77,7 @@ class ReviewRepository extends Repository
 
     public function getReviewToDisplayForBookId(string $bookId)
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT
                 r.id,
                 r.book_id,
@@ -124,7 +123,7 @@ class ReviewRepository extends Repository
 
     public function getReviewToDisplayForAdmin()
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         SELECT
             r.id,
             r.book_id,
@@ -174,7 +173,7 @@ class ReviewRepository extends Repository
 
     public function acceptReviewForReviewId(string $reviewId): bool
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         UPDATE reviews
         SET accept_date = CURRENT_TIMESTAMP
         WHERE id = :review_id
@@ -193,7 +192,7 @@ class ReviewRepository extends Repository
 
     public function rejectReviewForReviewId(string $reviewId): bool
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         UPDATE reviews
         SET reject_date = CURRENT_TIMESTAMP
         WHERE id = :review_id
@@ -212,7 +211,7 @@ class ReviewRepository extends Repository
 
     public function addReview(ReviewWriteRequest $request): void
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             INSERT INTO reviews (user_id, book_id, content, rate, upload_date, accept_date, reject_date)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         ');

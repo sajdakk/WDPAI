@@ -9,7 +9,7 @@ class FavoriteRepository extends Repository
 
     public function getFavoriteFromId(string $favoriteId): ?Favorite
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT * FROM favorites WHERE id = :favorite_id
         ');
         $stmt->bindParam(':favorite_id', $favoriteId, PDO::PARAM_STR);
@@ -31,7 +31,7 @@ class FavoriteRepository extends Repository
 
     public function getFavoriteFromUserId(string $userId)
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT * FROM favorites WHERE user_id = :user_id
         ');
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_STR);
@@ -53,7 +53,7 @@ class FavoriteRepository extends Repository
 
     public function getFavoriteFromUserIdAndBookId(int $userId, int $bookId): ?Favorite
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT * FROM favorites WHERE user_id = :user_id AND book_id = :book_id
         ');
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_STR);
@@ -80,7 +80,7 @@ class FavoriteRepository extends Repository
 
     public function addFavorite(FavoriteWriteRequest $request): void
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             INSERT INTO favorites (user_id, book_id)
             VALUES (?, ?)
         ');
@@ -93,7 +93,7 @@ class FavoriteRepository extends Repository
 
     public function removeFavoriteWithId(string $favoriteId): void
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         DELETE FROM favorites WHERE id = ?
         ');
 

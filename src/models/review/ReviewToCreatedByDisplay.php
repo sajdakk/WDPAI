@@ -4,7 +4,6 @@ class ReviewToCreatedByDisplay
 {
     private string $id;
     private string $book_id;
-
     private string $user_name;
     private ?string $user_avatar;
     private string $user_id;

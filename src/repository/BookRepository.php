@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Repository.php';
-require_once __DIR__ . '/../models/book/Book.php';
 require_once __DIR__ . '/../models/book/BookToDisplay.php';
 require_once __DIR__ . '/../models/book/BookWriteRequest.php';
 
@@ -9,7 +8,7 @@ class BookRepository extends Repository
 {
     public function getMayInterestYouBooks(): array
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         SELECT * FROM top_books_view
         LIMIT 3;
         ');
@@ -43,7 +42,7 @@ class BookRepository extends Repository
     }
     public function getTopBooks(): array
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         SELECT * FROM top_books_view;
         ');
 
@@ -117,7 +116,7 @@ class BookRepository extends Repository
 
 
 
-        $stmt = $this->database->connect()->prepare($query);
+        $stmt = $this->database::getInstance()->connect()->prepare($query);
 
         // Bind parameters
         $stmt->bindParam(':title', $title, PDO::PARAM_STR);
@@ -161,7 +160,7 @@ class BookRepository extends Repository
     }
     public function getBookFromId(string $bookId): ?BookToDisplay
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         SELECT
         b.*,
         a.author_string,
@@ -227,7 +226,7 @@ class BookRepository extends Repository
 
     public function getBooksToDisplayFromUserId(string $userId)
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT
                 b.*,
                 a.author_string,
@@ -295,7 +294,7 @@ class BookRepository extends Repository
 
     public function getBooksToDisplayForAdmin()
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT
                 b.*,
                 a.author_string,
@@ -371,7 +370,7 @@ class BookRepository extends Repository
         $languageId = intval($bookWriteRequest->getLanguageId());
 
 
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         SELECT add_book(
           ?,
         ?,
@@ -406,7 +405,7 @@ class BookRepository extends Repository
 
     public function acceptBookForBookId(string $bookId): bool
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         UPDATE books
         SET accept_date = CURRENT_TIMESTAMP
         WHERE id = :book_id
@@ -425,7 +424,7 @@ class BookRepository extends Repository
 
     public function rejectBookForBookId(string $bookId): bool
     {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
         UPDATE books
         SET reject_date = CURRENT_TIMESTAMP
         WHERE id = :book_id
@@ -440,42 +439,5 @@ class BookRepository extends Repository
             // Handle the exception or log the error
             return false; // Update failed
         }
-    }
-
-
-    public function getBookFromUserId(string $userId)
-    {
-        $stmt = $this->database->connect()->prepare('
-            SELECT * FROM books WHERE user_id = :user_id
-        ');
-        $stmt->bindParam(':user_id', $userId, PDO::PARAM_STR);
-        $stmt->execute();
-
-
-
-
-
-        $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-
-        foreach ($books as $book) {
-            $result[] = new Book(
-                $book['id'],
-                $book['title'],
-                $book['genre_id'],
-                $book['language_id'],
-                $book['date_of_publication'],
-                $book['page_count'],
-                $book['image'],
-                $book['isbn_number'],
-                $book['description'],
-                $book['upload_date'],
-                $book['accept_date'],
-                $book['created_by'],
-                $book['reject_date']
-            );
-        }
-
-        return $result;
     }
 }

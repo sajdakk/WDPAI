@@ -158,31 +158,30 @@
                         </div>
                     </div>
                     <?php foreach ($books as $book): ?>
-                        <div class="card" id="book-card-<?= $book->getId() ?>"
-                            onclick="routeToDetails('<?= $book->getId() ?>')">
+                        <div class="card" id="book-card-<?= $book->id ?>" onclick="routeToDetails('<?= $book->id ?>')">
                             <div class="card-content">
                                 <div class="card-header">
                                     <div class="inter-semibold-16">
-                                        <?= $book->getTitle() ?>
+                                        <?= $book->title ?>
                                     </div>
                                     <div class="inter-regular-12">
-                                        <?= $book->getAuthorsString() ?>
+                                        <?= $book->authorsString ?>
                                     </div>
                                     <div class="dmsans-regular-14">
                                         Description:
-                                        <?= $book->getDescription() ?>
+                                        <?= $book->description ?>
                                     </div>
                                     <div class="dmsans-regular-14">
                                         Date of publication:
-                                        <?= $book->getDateOfPublication() ?>
+                                        <?= $book->date_of_publication ?>
                                     </div>
                                     <div class="dmsans-regular-14">
                                         Page count:
-                                        <?= $book->getPageCount() ?>
+                                        <?= $book->page_count ?>
                                     </div>
                                     <div class="dmsans-regular-14">
                                         ISBN number:
-                                        <?= $book->getIsbnNumber() ?>
+                                        <?= $book->isbn_number ?>
                                     </div>
 
                                 </div>
@@ -190,11 +189,11 @@
                             <div class="profile-card-right-side">
 
                                 <a class="secondary_menu__item">
-                                    <button onclick="toggleBookStatus(event, <?= $book->getId() ?>, 'accept')">Accept</button>
+                                    <button onclick="toggleBookStatus(event, <?= $book->id ?>, 'accept')">Accept</button>
                                 </a>
 
                                 <button class="secondary-button"
-                                    onclick="toggleBookStatus(event, <?= $book->getId() ?>, 'reject')">Reject</button>
+                                    onclick="toggleBookStatus(event, <?= $book->id ?>, 'reject')">Reject</button>
                             </div>
                         </div>
                     <?php endforeach; ?>

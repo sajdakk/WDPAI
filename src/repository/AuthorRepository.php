@@ -10,7 +10,7 @@ class AuthorRepository extends Repository
     {
 
 
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database::getInstance()->connect()->prepare('
             SELECT * FROM authors;
         ');
         $stmt->execute();

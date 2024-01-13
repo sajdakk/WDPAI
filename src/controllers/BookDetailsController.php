@@ -1,7 +1,6 @@
 <?php
 
 require_once 'AppController.php';
-require_once __DIR__ . '/../models/book/Book.php';
 require_once __DIR__ . '/../models/favorite/Favorite.php';
 require_once __DIR__ . '/../models/favorite/FavoriteWriteRequest.php';
 require_once __DIR__ . '/../models/author/Author.php';
